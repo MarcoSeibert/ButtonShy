@@ -1,10 +1,7 @@
 import tkinter as tk
-import threading
-from tkinter import Toplevel
-
 from Classes.controllers import StartController, BaseController
 from Classes.views import StartView, BaseView
-from Classes.models import StartModel, BaseModel
+from Classes.models import BaseModel
 
 
 class App(tk.Tk):
@@ -29,8 +26,6 @@ class App(tk.Tk):
 class StartApp(App):
     def __init__(self):
         super().__init__(4, 2)
-        # set up model
-        model_start = StartModel()
 
         # set up view
         view_start = StartView(self)
@@ -38,7 +33,7 @@ class StartApp(App):
         view_start.place(in_=self, anchor="c", relx=0.5, rely=0.5)
 
         # set up controller
-        controller_start = StartController(model_start, view_start)
+        controller_start = StartController(view_start)
         view_start.set_controller(controller_start)
 
     def start_game(self, chosen_game):

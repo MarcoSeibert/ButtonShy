@@ -1,9 +1,9 @@
-from Classes.models import StartModel, BaseModel
+from Classes.models import BaseModel
 from Classes.views import StartView, BaseView
 
+
 class StartController:
-    def __init__(self, model: StartModel, view: StartView):
-        self.model = model
+    def __init__(self, view: StartView):
         self.view = view
 
     def click_play(self):
