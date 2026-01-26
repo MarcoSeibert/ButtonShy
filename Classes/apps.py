@@ -1,0 +1,68 @@
+import tkinter as tk
+import threading
+from tkinter import Toplevel
+
+from Classes.controllers import StartController, BaseController
+from Classes.views import StartView, BaseView
+from Classes.models import StartModel, BaseModel
+
+
+class App(tk.Tk):
+    def __init__(self, factor_x: float, factor_y: float, offset_factor_y: float = 1):
+        super().__init__()
+
+        # get some measurements
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        self.window_width = int(screen_width / factor_x)
+        self.window_height = int(screen_height / factor_y)
+        self.offset_x = (screen_width - self.window_width) // 2
+        self.offset_y = offset_factor_y * (screen_height - self.window_height) // 2
+
+        # set up basic parameters
+        self.title("Button Shy Games")
+        self.geometry(f"{self.window_width}x{self.window_height}+{self.offset_x}+{self.offset_y}")
+        self.resizable(False, False)
+        # self.iconbitmap("Resources/Icon.ico")
+
+
+class StartApp(App):
+    def __init__(self):
+        super().__init__(4, 2)
+        # set up model
+        model_start = StartModel()
+
+        # set up view
+        view_start = StartView(self)
+        view_start.grid(row=0, column=0, pady=10, padx=10)
+        view_start.place(in_=self, anchor="c", relx=0.5, rely=0.5)
+
+        # set up controller
+        controller_start = StartController(model_start, view_start)
+        view_start.set_controller(controller_start)
+
+    def start_game(self, chosen_game):
+        self.destroy()
+        app_game = BaseApp(chosen_game)
+        app_game.focus_force()
+        app_game.mainloop()
+
+
+class BaseApp(App):
+    def __init__(self, chosen_game):
+        super().__init__(1E6, 1E6, 0)
+        self.attributes("-fullscreen", True)
+        self.chosen_game = chosen_game
+        self.start_up()
+
+    def start_up(self):
+        # set up model
+        base_model = BaseModel()
+
+        # set up view
+        base_view = BaseView(self)
+        base_view.grid(row=0, column=0, pady=10, padx=10)
+
+        # set up controller
+        base_controller = BaseController(base_model, base_view)
+        base_view.set_controller(base_controller)

@@ -4,24 +4,64 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="- Initial commit&#10;- Brainstorming" />
+    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="- Initial commit&#10;- Brainstorming">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/controllers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Table.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ButtonShy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ButtonShy.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/GameOverview.ods" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/GameOverview.ods" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/agropolis.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/agropolis.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/atthehelm.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/atthehelm.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/combopolis-ultimopolis.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/combopolis-ultimopolis.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/fci.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/fci.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/fishinglessons.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/fishinglessons.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/naturopolis.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/naturopolis.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/sos-monstrance.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/sos-monstrance.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/sos.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/sos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/sprawl.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/sprawl.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/ugi.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/ugi.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ressources/Rules/unsurmountable.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/unsurmountable.png" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/MarcoSeibert/ButtonShy.git",
-    "accountId": "9f61419b-a85a-43ad-9abf-57d208a244e2"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;MarcoSeibert&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/MarcoSeibert/ButtonShy&quot;,
+    &quot;accountId&quot;: &quot;cf92c272-8b85-4fc6-ad99-0412c7db4c02&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="38frQkzhtEtGyte6NpkDub7Ykmo" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -30,13 +70,50 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.Classes.executor": "Run",
+    "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true"
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Backup/Python/ButtonShy/Ressources"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Backup\Python\ButtonShy\Ressources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Backup\Python\ButtonShy\Classes" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python">
+      <module name="ButtonShy" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.13" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

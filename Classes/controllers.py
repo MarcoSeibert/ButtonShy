@@ -1,0 +1,16 @@
+from Classes.models import StartModel, BaseModel
+from Classes.views import StartView, BaseView
+
+class StartController:
+    def __init__(self, model: StartModel, view: StartView):
+        self.model = model
+        self.view = view
+
+    def click_play(self):
+        chosen_game = self.view.chosen_game.get()
+        self.view.master.start_game(chosen_game)
+
+class BaseController:
+    def __init__(self, model: BaseModel, view: BaseView):
+        self.model = model
+        self.view = view
