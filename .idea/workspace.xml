@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="Restructure code structure&#10;- base classes in one folder&#10;- all games get separate folder&#10;Asset creation&#10;- Extract the image from the PnP pdfs if not already done&#10;Mapping for Sprawlopolis&#10;- Map the images to the card numbers">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="Correct .gitignore">
+      <change afterPath="$PROJECT_DIR$/start_up.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/base/controllers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/controllers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/Games.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Games.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,12 +63,13 @@
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Backup/Python/ButtonShy/Resources/PnPs",
-    "settings.editor.selected.configurable": "editor.preferences.jsonOptions"
+    "last_opened_file_path": "C:/Backup/Python/ButtonShy/Resources",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Backup\Python\ButtonShy\Resources" />
       <recent name="C:\Backup\Python\ButtonShy\Resources\PnPs" />
       <recent name="C:\Backup\Python\ButtonShy\Ressources" />
     </key>
@@ -143,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769595117501</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Correct .gitignore">
+      <option name="closed" value="true" />
+      <created>1769595242890</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1769595242890</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -151,6 +166,7 @@
     <MESSAGE value="Add starting screen&#10;- game selection&#10;- play or quit buttons&#10;Open initial main screen&#10;- Display title&#10;- Menu with quit button" />
     <MESSAGE value="Formatting and cleaning" />
     <MESSAGE value="Restructure code structure&#10;- base classes in one folder&#10;- all games get separate folder&#10;Asset creation&#10;- Extract the image from the PnP pdfs if not already done&#10;Mapping for Sprawlopolis&#10;- Map the images to the card numbers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Restructure code structure&#10;- base classes in one folder&#10;- all games get separate folder&#10;Asset creation&#10;- Extract the image from the PnP pdfs if not already done&#10;Mapping for Sprawlopolis&#10;- Map the images to the card numbers" />
+    <MESSAGE value="Correct .gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Correct .gitignore" />
   </component>
 </project>
