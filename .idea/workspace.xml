@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="Correct .gitignore">
-      <change afterPath="$PROJECT_DIR$/start_up.py" afterDir="false" />
+    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/base/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/base/controllers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/controllers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/Games.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Games.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,22 +51,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.Classes.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Backup/Python/ButtonShy/Resources",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.Classes.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Backup/Python/ButtonShy/Resources&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Backup\Python\ButtonShy\Resources" />
@@ -158,8 +158,27 @@
       <option name="project" value="LOCAL" />
       <updated>1769595242890</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Created Loading screen when extracting assets&#10;- checks which games need asset to be extracted&#10;- extracts assets from pdf&#10;- parallel extraction&#10;- loading window&#10;Put some more games into Games.json&#10;- mainly for extraction testing&#10;- mapping done">
+      <option name="closed" value="true" />
+      <created>1769608334080</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1769608334080</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="- Initial commit&#10;- Brainstorming" />
@@ -167,6 +186,7 @@
     <MESSAGE value="Formatting and cleaning" />
     <MESSAGE value="Restructure code structure&#10;- base classes in one folder&#10;- all games get separate folder&#10;Asset creation&#10;- Extract the image from the PnP pdfs if not already done&#10;Mapping for Sprawlopolis&#10;- Map the images to the card numbers" />
     <MESSAGE value="Correct .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Correct .gitignore" />
+    <MESSAGE value="Created Loading screen when extracting assets&#10;- checks which games need asset to be extracted&#10;- extracts assets from pdf&#10;- parallel extraction&#10;- loading window&#10;Put some more games into Games.json&#10;- mainly for extraction testing&#10;- mapping done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created Loading screen when extracting assets&#10;- checks which games need asset to be extracted&#10;- extracts assets from pdf&#10;- parallel extraction&#10;- loading window&#10;Put some more games into Games.json&#10;- mainly for extraction testing&#10;- mapping done" />
   </component>
 </project>

@@ -1,7 +1,10 @@
+import json
 import tkinter as tk
 from Classes.base.controllers import StartController, BaseController
 from Classes.base.views import StartView, BaseView
 from Classes.base.models import BaseModel
+from functions import get_game_data_by_name
+from start_up import games_dict
 
 
 class App(tk.Tk):
@@ -48,11 +51,15 @@ class BaseApp(App):
         super().__init__(1E6, 1E6, 0)
         self.attributes("-fullscreen", True)
         self.chosen_game = chosen_game
+        with open("Resources/Games.json") as json_file:
+            json_data = json.load(json_file)["games"]
+        self.game_data = get_game_data_by_name(json_data, games_dict[self.chosen_game])
+        print(self.game_data)
         self.start_up()
 
     def start_up(self):
         # set up model
-        base_model = BaseModel()
+        base_model = BaseModel(self.game_data)
 
         # set up view
         base_view = BaseView(self)

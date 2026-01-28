@@ -7,6 +7,7 @@
       "double_sided_cards": 18,
       "single_sided_cards": 0,
       "backsides": 0,
+      "grid_size": [100, 74.5],
       "mapping": [
         {
           "1_0": {
@@ -264,9 +265,10 @@
       "name": "A Nice Cuppa",
       "nr_of_cards": 18,
       "first_page_with_cards": 1,
-      "double_sided_cards": 8,
-      "single_sided_cards": 10,
-      "backsides": 2,
+          "double_sided_cards": 8,
+          "single_sided_cards": 10,
+          "backsides": 2,
+      "grid_size": [1, 1],
       "mapping": [
         {
           "1_0": {
