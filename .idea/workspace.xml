@@ -4,33 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="- Initial commit&#10;- Brainstorming">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/controllers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Table.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ButtonShy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ButtonShy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Resources/Games.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/GameOverview.ods" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/GameOverview.ods" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/agropolis.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/agropolis.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/atthehelm.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/atthehelm.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/combopolis-ultimopolis.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/combopolis-ultimopolis.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/fci.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/fci.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/fishinglessons.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/fishinglessons.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/naturopolis.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/naturopolis.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/sos-monstrance.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/sos-monstrance.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/sos.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/sos.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/sprawl.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/sprawl.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/ugi.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/ugi.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ressources/Rules/unsurmountable.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Rules/unsurmountable.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/controllers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/controllers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/Config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/GameOverview.ods" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/GameOverview.ods" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,12 +46,16 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="38frQkzhtEtGyte6NpkDub7Ykmo" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.Classes.executor": "Run",
     "Python.main.executor": "Run",
@@ -78,14 +65,17 @@
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Backup/Python/ButtonShy/Ressources"
+    "last_opened_file_path": "C:/Backup/Python/ButtonShy/Resources/PnPs",
+    "settings.editor.selected.configurable": "editor.preferences.jsonOptions"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Backup\Python\ButtonShy\Resources\PnPs" />
       <recent name="C:\Backup\Python\ButtonShy\Ressources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Backup\Python\ButtonShy\Classes\base" />
       <recent name="C:\Backup\Python\ButtonShy\Classes" />
     </key>
   </component>
@@ -137,11 +127,29 @@
       <option name="project" value="LOCAL" />
       <updated>1769204666937</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add starting screen&#10;- game selection&#10;- play or quit buttons&#10;Open initial main screen&#10;- Display title&#10;- Menu with quit button">
+      <option name="closed" value="true" />
+      <created>1769430971166</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1769430971166</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Formatting and cleaning">
+      <option name="closed" value="true" />
+      <created>1769431102664</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1769431102664</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="- Initial commit&#10;- Brainstorming" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Initial commit&#10;- Brainstorming" />
+    <MESSAGE value="Add starting screen&#10;- game selection&#10;- play or quit buttons&#10;Open initial main screen&#10;- Display title&#10;- Menu with quit button" />
+    <MESSAGE value="Formatting and cleaning" />
+    <option name="LAST_COMMIT_MESSAGE" value="Formatting and cleaning" />
   </component>
 </project>

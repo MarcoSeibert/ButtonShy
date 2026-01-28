@@ -1,5 +1,5 @@
-from Classes.models import BaseModel
-from Classes.views import StartView, BaseView
+from Classes.base.models import BaseModel
+from Classes.base.views import StartView, BaseView
 
 
 class StartController:

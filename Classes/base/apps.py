@@ -1,7 +1,7 @@
 import tkinter as tk
-from Classes.controllers import StartController, BaseController
-from Classes.views import StartView, BaseView
-from Classes.models import BaseModel
+from Classes.base.controllers import StartController, BaseController
+from Classes.base.views import StartView, BaseView
+from Classes.base.models import BaseModel
 
 
 class App(tk.Tk):

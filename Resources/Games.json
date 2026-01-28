@@ -1,0 +1,228 @@
+{
+  "games": [
+    {
+      "name": "Sprawlopolis",
+      "nr_of_cards": 18,
+      "first_page_with_cards": 1,
+      "double_sided_cards": 1,
+      "mapping": [
+        {
+          "1_0": {
+            "card_nr": 2,
+            "side": "front"
+          }
+        },
+        {
+          "1_1": {
+            "card_nr": 1,
+            "side": "front"
+          }
+        },
+        {
+          "1_2": {
+            "card_nr": 3,
+            "side": "front"
+          }
+        },
+        {
+          "1_3": {
+            "card_nr": 4,
+            "side": "front"
+          }
+        },
+        {
+          "1_4": {
+            "card_nr": 5,
+            "side": "front"
+          }
+        },
+        {
+          "1_5": {
+            "card_nr": 6,
+            "side": "front"
+          }
+        },
+        {
+          "2_0": {
+            "card_nr": 2,
+            "side": "back"
+          }
+        },
+        {
+          "2_1": {
+            "card_nr": 3,
+            "side": "back"
+          }
+        },
+        {
+          "2_2": {
+            "card_nr": 1,
+            "side": "back"
+          }
+        },
+        {
+          "2_3": {
+            "card_nr": 6,
+            "side": "back"
+          }
+        },
+        {
+          "2_4": {
+            "card_nr": 5,
+            "side": "back"
+          }
+        },
+        {
+          "2_5": {
+            "card_nr": 4,
+            "side": "back"
+          }
+        },
+        {
+          "3_0": {
+            "card_nr": 8,
+            "side": "front"
+          }
+        },
+        {
+          "3_1": {
+            "card_nr": 7,
+            "side": "front"
+          }
+        },
+        {
+          "3_2": {
+            "card_nr": 9,
+            "side": "front"
+          }
+        },
+        {
+          "3_3": {
+            "card_nr": 10,
+            "side": "front"
+          }
+        },
+        {
+          "3_4": {
+            "card_nr": 11,
+            "side": "front"
+          }
+        },
+        {
+          "3_5": {
+            "card_nr": 12,
+            "side": "front"
+          }
+        },
+        {
+          "4_0": {
+            "card_nr": 8,
+            "side": "back"
+          }
+        },
+        {
+          "4_1": {
+            "card_nr": 9,
+            "side": "back"
+          }
+        },
+        {
+          "4_2": {
+            "card_nr": 7,
+            "side": "back"
+          }
+        },
+        {
+          "4_3": {
+            "card_nr": 12,
+            "side": "back"
+          }
+        },
+        {
+          "4_4": {
+            "card_nr": 11,
+            "side": "back"
+          }
+        },
+        {
+          "4_5": {
+            "card_nr": 10,
+            "side": "back"
+          }
+        },
+        {
+          "5_0": {
+            "card_nr": 14,
+            "side": "front"
+          }
+        },
+        {
+          "5_1": {
+            "card_nr": 13,
+            "side": "front"
+          }
+        },
+        {
+          "5_2": {
+            "card_nr": 15,
+            "side": "front"
+          }
+        },
+        {
+          "5_3": {
+            "card_nr": 16,
+            "side": "front"
+          }
+        },
+        {
+          "5_4": {
+            "card_nr": 17,
+            "side": "front"
+          }
+        },
+        {
+          "5_5": {
+            "card_nr": 18,
+            "side": "front"
+          }
+        },
+        {
+          "6_0": {
+            "card_nr": 14,
+            "side": "back"
+          }
+        },
+        {
+          "6_1": {
+            "card_nr": 15,
+            "side": "back"
+          }
+        },
+        {
+          "6_2": {
+            "card_nr": 13,
+            "side": "back"
+          }
+        },
+        {
+          "6_3": {
+            "card_nr": 18,
+            "side": "back"
+          }
+        },
+        {
+          "6_4": {
+            "card_nr": 17,
+            "side": "back"
+          }
+        },
+        {
+          "6_5": {
+            "card_nr": 16,
+            "side": "back"
+          }
+        }
+      ]
+    }
+  ]
+}
