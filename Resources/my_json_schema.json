@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Button Shy Games Registry",
+  "description": "Schema for registering Button Shy games and their MVC components, including card and grid metadata.",
+  "type": "object",
+  "properties": {
+    "games": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the game (e.g., 'Sprawlopolis')."
+          },
+          "typ": {
+            "type": "string",
+            "description": "Base game or expansion",
+            "enum": ["Base", "Exp"]
+          },
+          "nr_of_cards": {
+            "type": "integer",
+            "description": "Total number of cards in the game."
+          },
+          "first_page_with_cards": {
+            "type": "integer",
+            "description": "First page in the PDF containing cards."
+          },
+          "double_sided_cards": {
+            "type": "integer",
+            "description": "Number of double-sided cards."
+          },
+          "single_sided_cards": {
+            "type": "integer",
+            "description": "Number of single-sided cards."
+          },
+          "backsides": {
+            "type": "integer",
+            "description": "Number of backside cards."
+          },
+          "grid_size": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Size of the game grid (e.g., [100, 74.5])."
+          },
+          "play_area": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Size of the play area (e.g., [100, 100])."
+          },
+          "mapping": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "card_id": {
+                    "type": ["string", "integer"],
+                    "description": "ID of the card (e.g., 1 or 'Technology')."
+                  },
+                  "side": {
+                    "type": "string",
+                    "enum": ["front", "back"],
+                    "description": "Side of the card."
+                  }
+                },
+                "required": ["card_id", "side"]
+              }
+            },
+            "description": "Mapping of card positions and sides."
+          },
+          "mvc_components": {
+            "type": "object",
+            "properties": {
+              "model": {
+                "type": "string",
+                "description": "Name of the Model class (e.g., 'SprawlopolisModel')."
+              },
+              "view": {
+                "type": "string",
+                "description": "Name of the View class (e.g., 'SprawlopolisView')."
+              },
+              "controller": {
+                "type": "string",
+                "description": "Name of the Controller class (e.g., 'SprawlopolisController')."
+              }
+            },
+            "required": ["model", "view", "controller"],
+            "description": "MVC component class names for the game."
+          }
+        },
+        "required": ["name", "typ", "nr_of_cards", "mapping", "mvc_components"]
+      }
+    }
+  },
+  "required": ["games"]
+}

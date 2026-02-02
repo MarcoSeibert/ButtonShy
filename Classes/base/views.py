@@ -78,6 +78,8 @@ class BaseView(ttk.Frame):
         chosen_game_title = games_dict[self.master.chosen_game]
         ttk.Label(self, text=chosen_game_title, font=TITLE_FONT).grid(column=0, row=0, columnspan=17)
 
+    def set_play_area(self):
+        pass
 
     def set_controller(self, controller):
         self.controller = controller

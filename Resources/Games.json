@@ -7,7 +7,11 @@
       "double_sided_cards": 18,
       "single_sided_cards": 0,
       "backsides": 0,
-      "grid_size": [100, 74.5],
+      "grid_size": [
+        100,
+        74.5
+      ],
+      "play_area": [1500, 700],
       "mapping": [
         {
           "1_0": {
@@ -225,7 +229,13 @@
             "side": "back"
           }
         }
-      ]
+      ],
+      "mvc_components": {
+        "controller": "SprawlopolisController",
+        "model": "SprawlopolisModel",
+        "view": "SprawlopolisView"
+      },
+      "typ": "Base"
     },
     {
       "name": "Sprawlopolis - Wrecktar",
@@ -259,16 +269,26 @@
             "side": "back"
           }
         }
-      ]
+      ],
+      "mvc_components": {
+        "controller": "SprawlopolisWrecktarController",
+        "model": "SprawlopolisWrecktarModel",
+        "view": "SprawlopolisWrecktarView"
+      },
+      "typ": "Exp"
     },
     {
       "name": "A Nice Cuppa",
       "nr_of_cards": 18,
       "first_page_with_cards": 1,
-          "double_sided_cards": 8,
-          "single_sided_cards": 10,
-          "backsides": 2,
-      "grid_size": [1, 1],
+      "double_sided_cards": 8,
+      "single_sided_cards": 10,
+      "backsides": 2,
+      "grid_size": [
+        1,
+        1
+      ],
+      "play_area": [0, 0],
       "mapping": [
         {
           "1_0": {
@@ -432,7 +452,13 @@
             "side": "back"
           }
         }
-      ]
+      ],
+      "mvc_components": {
+        "model": "ANiceCuppaModel",
+        "view": "ANiceCuppaView",
+        "controller": "ANiceCuppaController"
+      },
+      "typ": "Base"
     }
   ]
 }
