@@ -5,21 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Resources/my_json_schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ButtonShy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ButtonShy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/base/boardstate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisController.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisModel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisView.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Approve.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Blue.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Decline.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Gray.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Green.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Orange.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Street.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Turn.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/base/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/base/controllers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/controllers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/GameOverview.ods" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/GameOverview.ods" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/Games.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Games.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/atthehelm.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/combopolis-ultimopolis.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/fci.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/fishinglessons.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/sos-monstrance.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/sos.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/sprawl.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Rules/ugi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/my_json_schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/my_json_schema.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start_up.py" beforeDir="false" afterPath="$PROJECT_DIR$/start_up.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,12 +78,13 @@
     &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Backup/Python/ButtonShy/Resources&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Backup/Python/ButtonShy/Resources/Assets/Sprawlopolis&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;settings.json.schema&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Backup\Python\ButtonShy\Resources\Assets\Sprawlopolis" />
       <recent name="C:\Backup\Python\ButtonShy\Resources" />
       <recent name="C:\Backup\Python\ButtonShy\Resources\PnPs" />
       <recent name="C:\Backup\Python\ButtonShy\Ressources" />

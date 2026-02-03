@@ -1,6 +1,5 @@
 import os
 import json
-
 import pymupdf
 import tkinter as tk
 from tkinter import ttk
@@ -9,12 +8,13 @@ from threading import Thread
 import time
 
 games_dict = {}
-ASSET_PATH = "Resources/Assets"
+ASSET_BASE_PATH = "Resources/Assets"
 
 def extract_images(args):
     game_name, first_page = args
     pdf_path = f"Resources/PnPs/{game_name}.pdf"
-    output_folder = "Resources/Assets/"
+    output_folder = f"{ASSET_BASE_PATH}/{game_name}/Cards/"
+    os.makedirs(output_folder, exist_ok=True)  # Ensure the folder exists
     doc = pymupdf.open(pdf_path)
 
     for page_num in range(len(doc)):
@@ -29,15 +29,16 @@ def extract_images(args):
                 f.write(image_bytes)
 
 def create_assets(args):
-    """Erstellt Assets für ein Spiel und gibt den Namen zurück."""
+    """Creates assets for a game and returns the name and elapsed time."""
     game_name, game_data = args
     start_time = time.time()
-    # Lösche bestehende Assets für dieses Spiel
-    for asset_file in os.listdir(ASSET_PATH):
-        if asset_file.startswith(f"{game_name}_"):
-            os.remove(os.path.join(ASSET_PATH, asset_file))
+    # Delete existing assets for this game
+    game_asset_path = f"{ASSET_BASE_PATH}/{game_name}/Cards/"
+    if os.path.exists(game_asset_path):
+        for asset_file in os.listdir(game_asset_path):
+            os.remove(os.path.join(game_asset_path, asset_file))
 
-    # Ermittle first_page
+    # Determine first_page
     first_page = 0
     for game in game_data:
         if game["name"] == game_name:
@@ -49,12 +50,12 @@ def create_assets(args):
     return game_name, elapsed
 
 def process_game(args, result_queue):
-    """Wrapper-Funktion für Multiprocessing."""
+    """Wrapper function for multiprocessing."""
     game_name, elapsed = create_assets(args)
-    result_queue.put((game_name, elapsed))  # Sende Spielname und Dauer an die Queue
+    result_queue.put((game_name, elapsed))
 
 def check_for_assets(result_queue, games_to_process):
-    """Prüft und erstellt Assets, sendet Fortschritt an die Queue."""
+    """Checks and creates assets, sends progress to the queue."""
     global games_dict
 
     if games_to_process:
@@ -62,20 +63,20 @@ def check_for_assets(result_queue, games_to_process):
             pool.starmap(process_game, [(args, result_queue) for args in games_to_process])
 
 def show_loading_window():
-    """Zeigt ein Ladefenster mit dynamischer Liste, Farbcodierung und Restzeit."""
+    """Shows a loading window with dynamic list, color coding, and remaining time."""
     root = tk.Tk()
     root.title("Loading Assets...")
     root.geometry("550x450")
 
-    # Frame für die Liste der Spiele
+    # Frame for the list of games
     list_frame = ttk.Frame(root)
     list_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-    # Label für die Überschrift
+    # Label for the title
     list_label = ttk.Label(list_frame, text="Games being processed:")
     list_label.pack(anchor=tk.W)
 
-    # Text-Widget für die Liste der Spiele (mit Scrollbar)
+    # Text widget for the list of games (with scrollbar)
     game_list_text = tk.Text(list_frame, height=15, width=60, state="normal", wrap=tk.WORD)
     game_list_scroll = ttk.Scrollbar(list_frame, orient="vertical", command=game_list_text.yview)
     game_list_text.configure(yscrollcommand=game_list_scroll.set)
@@ -83,7 +84,7 @@ def show_loading_window():
     game_list_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     game_list_text.tag_config("done", foreground="green")
 
-    # Fortschrittsbalken und Restzeit
+    # Progress bar and remaining time
     progress_frame = ttk.Frame(root)
     progress_frame.pack(pady=10, fill=tk.X)
     progress = ttk.Progressbar(progress_frame, orient="horizontal", length=300, mode="determinate")
@@ -93,7 +94,7 @@ def show_loading_window():
     time_label = ttk.Label(progress_frame, text="Estimated time left: calculating...")
     time_label.pack(side=tk.RIGHT, padx=5)
 
-    # Spiele zählen, die verarbeitet werden müssen
+    # Count games to be processed
     with open("Resources/Games.json") as json_file:
         game_data = json.load(json_file)["games"]
     games_to_process = []
@@ -102,8 +103,8 @@ def show_loading_window():
         for game in game_data:
             if game["name"] == game_name:
                 nr_of_cards = 2 * game["double_sided_cards"] + game["single_sided_cards"] + game["backsides"]
-                nr_of_assets = sum(1 for asset_file in os.listdir(ASSET_PATH)
-                                  if asset_file.startswith(f"{game_name}_"))
+                game_asset_path = f"{ASSET_BASE_PATH}/{game_name}/Cards/"
+                nr_of_assets = sum(1 for asset_file in os.listdir(game_asset_path) if asset_file.startswith(f"{game_name}_")) if os.path.exists(game_asset_path) else 0
                 if nr_of_assets != nr_of_cards:
                     games_to_process.append((game_name, game_data))
                 if "-" not in game_name:
@@ -111,13 +112,13 @@ def show_loading_window():
                     games_dict[new_key] = game_name
                 break
 
-    # Zeige alle Spiele in der Liste an
+    # Show all games in the list
     game_list_text.insert(tk.END, "\n".join([f"- {game[0]}" for game in games_to_process]))
     progress["maximum"] = len(games_to_process)
     manager = Manager()
     result_queue = manager.Queue()
     processed_names = []
-    avg_time_per_game = 5.0  # Standard-Schätzung (wird aktualisiert)
+    avg_time_per_game = 5.0  # Default estimate (will be updated)
 
     def update_progress():
         processed_games = 0
@@ -141,7 +142,7 @@ def show_loading_window():
                 progress["value"] = processed_games
                 progress_label.config(text=f"Progress: {processed_games}/{progress['maximum']}")
 
-                # Berechne geschätzte Restzeit
+                # Calculate estimated remaining time
                 remaining_games = progress["maximum"] - processed_games
                 estimated_time_left = remaining_games * avg_time_per_game
                 time_label.config(text=f"Estimated time left: {estimated_time_left:.1f} seconds")
@@ -158,7 +159,6 @@ def show_loading_window():
         daemon=True
     ).start()
 
-    # Starte die Fortschrittsaktualisierung
+    # Start progress updates
     root.after(10, update_progress)
     root.mainloop()
-

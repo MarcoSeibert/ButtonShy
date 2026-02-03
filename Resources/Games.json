@@ -11,225 +11,156 @@
         100,
         74.5
       ],
-      "play_area": [1500, 700],
-      "mapping": [
-        {
-          "1_0": {
-            "card_id": 2,
-            "side": "front"
-          }
-        },
-        {
-          "1_1": {
-            "card_id": 1,
-            "side": "front"
-          }
-        },
-        {
-          "1_2": {
-            "card_id": 3,
-            "side": "front"
-          }
-        },
-        {
-          "1_3": {
-            "card_id": 4,
-            "side": "front"
-          }
-        },
-        {
-          "1_4": {
-            "card_id": 5,
-            "side": "front"
-          }
-        },
-        {
-          "1_5": {
-            "card_id": 6,
-            "side": "front"
-          }
-        },
-        {
-          "2_0": {
-            "card_id": 2,
-            "side": "back"
-          }
-        },
-        {
-          "2_1": {
-            "card_id": 3,
-            "side": "back"
-          }
-        },
-        {
-          "2_2": {
-            "card_id": 1,
-            "side": "back"
-          }
-        },
-        {
-          "2_3": {
-            "card_id": 6,
-            "side": "back"
-          }
-        },
-        {
-          "2_4": {
-            "card_id": 5,
-            "side": "back"
-          }
-        },
-        {
-          "2_5": {
-            "card_id": 4,
-            "side": "back"
-          }
-        },
-        {
-          "3_0": {
-            "card_id": 8,
-            "side": "front"
-          }
-        },
-        {
-          "3_1": {
-            "card_id": 7,
-            "side": "front"
-          }
-        },
-        {
-          "3_2": {
-            "card_id": 9,
-            "side": "front"
-          }
-        },
-        {
-          "3_3": {
-            "card_id": 10,
-            "side": "front"
-          }
-        },
-        {
-          "3_4": {
-            "card_id": 11,
-            "side": "front"
-          }
-        },
-        {
-          "3_5": {
-            "card_id": 12,
-            "side": "front"
-          }
-        },
-        {
-          "4_0": {
-            "card_id": 8,
-            "side": "back"
-          }
-        },
-        {
-          "4_1": {
-            "card_id": 9,
-            "side": "back"
-          }
-        },
-        {
-          "4_2": {
-            "card_id": 7,
-            "side": "back"
-          }
-        },
-        {
-          "4_3": {
-            "card_id": 12,
-            "side": "back"
-          }
-        },
-        {
-          "4_4": {
-            "card_id": 11,
-            "side": "back"
-          }
-        },
-        {
-          "4_5": {
-            "card_id": 10,
-            "side": "back"
-          }
-        },
-        {
-          "5_0": {
-            "card_id": 14,
-            "side": "front"
-          }
-        },
-        {
-          "5_1": {
-            "card_id": 13,
-            "side": "front"
-          }
-        },
-        {
-          "5_2": {
-            "card_id": 15,
-            "side": "front"
-          }
-        },
-        {
-          "5_3": {
-            "card_id": 16,
-            "side": "front"
-          }
-        },
-        {
-          "5_4": {
-            "card_id": 17,
-            "side": "front"
-          }
-        },
-        {
-          "5_5": {
-            "card_id": 18,
-            "side": "front"
-          }
-        },
-        {
-          "6_0": {
-            "card_id": 14,
-            "side": "back"
-          }
-        },
-        {
-          "6_1": {
-            "card_id": 15,
-            "side": "back"
-          }
-        },
-        {
-          "6_2": {
-            "card_id": 13,
-            "side": "back"
-          }
-        },
-        {
-          "6_3": {
-            "card_id": 18,
-            "side": "back"
-          }
-        },
-        {
-          "6_4": {
-            "card_id": 17,
-            "side": "back"
-          }
-        },
-        {
-          "6_5": {
-            "card_id": 16,
-            "side": "back"
-          }
-        }
+      "canvas_size": [
+        1500,
+        700
       ],
+      "mapping": {
+        "1_0": {
+          "card_id": 2,
+          "side": "front"
+        },
+        "1_1": {
+          "card_id": 1,
+          "side": "front"
+        },
+        "1_2": {
+          "card_id": 3,
+          "side": "front"
+        },
+        "1_3": {
+          "card_id": 4,
+          "side": "front"
+        },
+        "1_4": {
+          "card_id": 5,
+          "side": "front"
+        },
+        "1_5": {
+          "card_id": 6,
+          "side": "front"
+        },
+        "2_0": {
+          "card_id": 2,
+          "side": "back"
+        },
+        "2_1": {
+          "card_id": 3,
+          "side": "back"
+        },
+        "2_2": {
+          "card_id": 1,
+          "side": "back"
+        },
+        "2_3": {
+          "card_id": 6,
+          "side": "back"
+        },
+        "2_4": {
+          "card_id": 5,
+          "side": "back"
+        },
+        "2_5": {
+          "card_id": 4,
+          "side": "back"
+        },
+        "3_0": {
+          "card_id": 8,
+          "side": "front"
+        },
+        "3_1": {
+          "card_id": 7,
+          "side": "front"
+        },
+        "3_2": {
+          "card_id": 9,
+          "side": "front"
+        },
+        "3_3": {
+          "card_id": 10,
+          "side": "front"
+        },
+        "3_4": {
+          "card_id": 11,
+          "side": "front"
+        },
+        "3_5": {
+          "card_id": 12,
+          "side": "front"
+        },
+        "4_0": {
+          "card_id": 8,
+          "side": "back"
+        },
+        "4_1": {
+          "card_id": 9,
+          "side": "back"
+        },
+        "4_2": {
+          "card_id": 7,
+          "side": "back"
+        },
+        "4_3": {
+          "card_id": 12,
+          "side": "back"
+        },
+        "4_4": {
+          "card_id": 11,
+          "side": "back"
+        },
+        "4_5": {
+          "card_id": 10,
+          "side": "back"
+        },
+        "5_0": {
+          "card_id": 14,
+          "side": "front"
+        },
+        "5_1": {
+          "card_id": 13,
+          "side": "front"
+        },
+        "5_2": {
+          "card_id": 15,
+          "side": "front"
+        },
+        "5_3": {
+          "card_id": 16,
+          "side": "front"
+        },
+        "5_4": {
+          "card_id": 17,
+          "side": "front"
+        },
+        "5_5": {
+          "card_id": 18,
+          "side": "front"
+        },
+        "6_0": {
+          "card_id": 14,
+          "side": "back"
+        },
+        "6_1": {
+          "card_id": 15,
+          "side": "back"
+        },
+        "6_2": {
+          "card_id": 13,
+          "side": "back"
+        },
+        "6_3": {
+          "card_id": 18,
+          "side": "back"
+        },
+        "6_4": {
+          "card_id": 17,
+          "side": "back"
+        },
+        "6_5": {
+          "card_id": 16,
+          "side": "back"
+        }
+      },
       "mvc_components": {
         "controller": "SprawlopolisController",
         "model": "SprawlopolisModel",
@@ -244,32 +175,24 @@
       "double_sided_cards": 2,
       "single_sided_cards": 0,
       "backsides": 0,
-      "mapping": [
-        {
-          "0_0": {
-            "card_id": "card",
-            "side": "front"
-          }
+      "mapping": {
+        "0_0": {
+          "card_id": "card",
+          "side": "front"
         },
-        {
-          "0_1": {
-            "card_id": "title",
-            "side": "front"
-          }
+        "0_1": {
+          "card_id": "title",
+          "side": "front"
         },
-        {
-          "1_0": {
-            "card_id": "ref",
-            "side": "back"
-          }
+        "1_0": {
+          "card_id": "ref",
+          "side": "back"
         },
-        {
-          "1_1": {
-            "card_id": "rules",
-            "side": "back"
-          }
+        "1_1": {
+          "card_id": "rules",
+          "side": "back"
         }
-      ],
+      },
       "mvc_components": {
         "controller": "SprawlopolisWrecktarController",
         "model": "SprawlopolisWrecktarModel",
@@ -288,171 +211,120 @@
         1,
         1
       ],
-      "play_area": [0, 0],
-      "mapping": [
-        {
-          "1_0": {
-            "card_id": 1,
-            "side": "front"
-          }
-        },
-        {
-          "1_1": {
-            "card_id": 4,
-            "side": "front"
-          }
-        },
-        {
-          "1_2": {
-            "card_id": 2,
-            "side": "front"
-          }
-        },
-        {
-          "1_3": {
-            "card_id": 5,
-            "side": "front"
-          }
-        },
-        {
-          "1_4": {
-            "card_id": 3,
-            "side": "front"
-          }
-        },
-        {
-          "1_5": {
-            "card_id": 6,
-            "side": "front"
-          }
-        },
-        {
-          "2_0": {
-            "card_id": 3,
-            "side": "back"
-          }
-        },
-        {
-          "2_1": {
-            "card_id": 6,
-            "side": "back"
-          }
-        },
-        {
-          "2_2": {
-            "card_id": 2,
-            "side": "back"
-          }
-        },
-        {
-          "2_3": {
-            "card_id": 5,
-            "side": "back"
-          }
-        },
-        {
-          "2_4": {
-            "card_id": 1,
-            "side": "back"
-          }
-        },
-        {
-          "2_5": {
-            "card_id": 4,
-            "side": "back"
-          }
-        },
-        {
-          "3_0": {
-            "card_id": 7,
-            "side": "front"
-          }
-        },
-        {
-          "3_1": {
-            "card_id": "Technology",
-            "side": "front"
-          }
-        },
-        {
-          "3_2": {
-            "card_id": "Home",
-            "side": "front"
-          }
-        },
-        {
-          "3_3": {
-            "card_id": "Work",
-            "side": "front"
-          }
-        },
-        {
-          "3_4": {
-            "card_id": "Politics",
-            "side": "front"
-          }
-        },
-        {
-          "3_5": {
-            "card_id": "Health",
-            "side": "front"
-          }
-        },
-        {
-          "4_0": {
-            "card_id": "Back1",
-            "side": "back"
-          }
-        },
-        {
-          "4_1": {
-            "card_id": 7,
-            "side": "back"
-          }
-        },
-        {
-          "5_0": {
-            "card_id": "Commute",
-            "side": "front"
-          }
-        },
-        {
-          "5_1": {
-            "card_id": "Aging",
-            "side": "front"
-          }
-        },
-        {
-          "5_2": {
-            "card_id": "Finances",
-            "side": "front"
-          }
-        },
-        {
-          "5_3": {
-            "card_id": "Education",
-            "side": "front"
-          }
-        },
-        {
-          "5_4": {
-            "card_id": "Existential",
-            "side": "front"
-          }
-        },
-        {
-          "5_5": {
-            "card_id": "Ref",
-            "side": "front"
-          }
-        },
-        {
-          "6_0": {
-            "card_id": "Back2",
-            "side": "back"
-          }
-        }
+      "canvas_size": [
+        0,
+        0
       ],
+      "mapping": {
+        "1_0": {
+          "card_id": 1,
+          "side": "front"
+        },
+        "1_1": {
+          "card_id": 4,
+          "side": "front"
+        },
+        "1_2": {
+          "card_id": 2,
+          "side": "front"
+        },
+        "1_3": {
+          "card_id": 5,
+          "side": "front"
+        },
+        "1_4": {
+          "card_id": 3,
+          "side": "front"
+        },
+        "1_5": {
+          "card_id": 6,
+          "side": "front"
+        },
+        "2_0": {
+          "card_id": 3,
+          "side": "back"
+        },
+        "2_1": {
+          "card_id": 6,
+          "side": "back"
+        },
+        "2_2": {
+          "card_id": 2,
+          "side": "back"
+        },
+        "2_3": {
+          "card_id": 5,
+          "side": "back"
+        },
+        "2_4": {
+          "card_id": 1,
+          "side": "back"
+        },
+        "2_5": {
+          "card_id": 4,
+          "side": "back"
+        },
+        "3_0": {
+          "card_id": 7,
+          "side": "front"
+        },
+        "3_1": {
+          "card_id": "Technology",
+          "side": "front"
+        },
+        "3_2": {
+          "card_id": "Home",
+          "side": "front"
+        },
+        "3_3": {
+          "card_id": "Work",
+          "side": "front"
+        },
+        "3_4": {
+          "card_id": "Politics",
+          "side": "front"
+        },
+        "3_5": {
+          "card_id": "Health",
+          "side": "front"
+        },
+        "4_0": {
+          "card_id": "Back1",
+          "side": "back"
+        },
+        "4_1": {
+          "card_id": 7,
+          "side": "back"
+        },
+        "5_0": {
+          "card_id": "Commute",
+          "side": "front"
+        },
+        "5_1": {
+          "card_id": "Aging",
+          "side": "front"
+        },
+        "5_2": {
+          "card_id": "Finances",
+          "side": "front"
+        },
+        "5_3": {
+          "card_id": "Education",
+          "side": "front"
+        },
+        "5_4": {
+          "card_id": "Existential",
+          "side": "front"
+        },
+        "5_5": {
+          "card_id": "Ref",
+          "side": "front"
+        },
+        "6_0": {
+          "card_id": "Back2",
+          "side": "back"
+        }
+      },
       "mvc_components": {
         "model": "ANiceCuppaModel",
         "view": "ANiceCuppaView",

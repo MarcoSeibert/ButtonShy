@@ -53,7 +53,7 @@
             "description": "Size of the play area (e.g., [100, 100])."
           },
           "mapping": {
-            "type": "array",
+            "type": "object",
             "items": {
               "type": "object",
               "additionalProperties": {
@@ -61,18 +61,21 @@
                 "properties": {
                   "card_id": {
                     "type": ["string", "integer"],
-                    "description": "ID of the card (e.g., 1 or 'Technology')."
+                    "description": "ID of the card"
                   },
                   "side": {
                     "type": "string",
                     "enum": ["front", "back"],
-                    "description": "Side of the card."
+                    "description": "Side of the card"
                   }
                 },
                 "required": ["card_id", "side"]
-              }
+              },
+              "minProperties": 1,
+              "maxProperties": 1,
+              "description": "Each object contains a single key (e.g., '1_0') mapping to a card's side and ID."
             },
-            "description": "Mapping of card positions and sides."
+            "description": "Mapping of card positions and sides, where each entry is an object with a single key (e.g., '1_0') and a value describing the card's side and ID."
           },
           "mvc_components": {
             "type": "object",

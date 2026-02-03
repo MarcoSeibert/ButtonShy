@@ -1,8 +1,9 @@
 import json
 import tkinter as tk
-from Classes.base.controllers import StartController, BaseController
-from Classes.base.views import StartView, BaseView
-from Classes.base.models import BaseModel
+from importlib import import_module
+
+from Classes.base.controllers import StartController
+from Classes.base.views import StartView
 from functions import get_game_data_by_name
 from start_up import games_dict
 
@@ -25,6 +26,8 @@ class App(tk.Tk):
         self.resizable(False, False)
         # self.iconbitmap("Resources/Icon.ico")
 
+        self.game_data = None
+        self.chosen_game = None
 
 class StartApp(App):
     def __init__(self):
@@ -50,21 +53,27 @@ class BaseApp(App):
     def __init__(self, chosen_game):
         super().__init__(1E6, 1E6, 0)
         self.attributes("-fullscreen", True)
-        self.chosen_game = chosen_game
         with open("Resources/Games.json") as json_file:
             json_data = json.load(json_file)["games"]
-        self.game_data = get_game_data_by_name(json_data, games_dict[self.chosen_game])
-        print(self.game_data)
+        self.game_data = get_game_data_by_name(json_data, games_dict[chosen_game])
+        self.chosen_game = self.game_data["name"]
+        self.chosen_game_compact = self.chosen_game.replace(" ", "")
         self.start_up()
 
     def start_up(self):
+        # import the classes
+        components = self.game_data["mvc_components"]
+        model_class = getattr(import_module(f"Classes.{self.chosen_game_compact.lower()}.{self.chosen_game_compact}Model"), components["model"])
+        controller_class = getattr(import_module(f"Classes.{self.chosen_game_compact.lower()}.{self.chosen_game_compact}Controller"), components["controller"])
+        view_class = getattr(import_module(f"Classes.{self.chosen_game_compact.lower()}.{self.chosen_game_compact}View"), components["view"])
+
         # set up model
-        base_model = BaseModel(self.game_data)
+        model = model_class(self.game_data)
 
         # set up view
-        base_view = BaseView(self)
-        base_view.grid(row=0, column=0, pady=10, padx=10)
+        view = view_class(self)
+        view.grid(row=0, column=0, pady=10, padx=10)
 
         # set up controller
-        base_controller = BaseController(base_model, base_view)
-        base_view.set_controller(base_controller)
+        controller = controller_class(model, view)
+        view.set_controller(controller)
