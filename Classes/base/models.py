@@ -2,7 +2,9 @@ import os
 import random
 from importlib import import_module
 
+from Classes.base.boardstate import BaseBoardstate
 from functions import adjust_image
+from Classes.events import BoardStateEvent
 
 
 class BaseModel:
@@ -10,6 +12,9 @@ class BaseModel:
         self.hand_cards = None
         self.score_cards = None
         self.game_data = game_data
+        self.boardstate = BaseBoardstate(game_data)
+        self.boardstate.add_observer(self)
+        self.observers = []
 
         self.cards = self.create_deck_of_cards()
 
@@ -17,7 +22,12 @@ class BaseModel:
         cards = []
         mapping_data = self.game_data["mapping"]
         chosen_game_compact = self.game_data["name"].replace(" ", "").title()
-        card_class = getattr(import_module(f"Classes.{chosen_game_compact.lower()}.{chosen_game_compact}Model"), f"{chosen_game_compact}Card")
+        card_class = getattr(
+            import_module(
+                f"Classes.{chosen_game_compact.lower()}.{chosen_game_compact}Model"
+            ),
+            f"{chosen_game_compact}Card",
+        )
 
         fp = f"Resources/Assets/{self.game_data["name"]}/cards"
         for image in os.listdir(fp):
@@ -28,7 +38,9 @@ class BaseModel:
 
             adjusted_image = adjust_image(fp, image)
 
-            card_in_list = next((card for card in cards if card.card_id == card_id), None)
+            card_in_list = next(
+                (card for card in cards if card.card_id == card_id), None
+            )
             if card_in_list is None:
                 new_card = card_class(card_id, side, adjusted_image)
                 cards.append(new_card)
@@ -36,6 +48,26 @@ class BaseModel:
                 card_in_list.add_image(side, adjusted_image)
         random.shuffle(cards)
         return cards
+
+    def on_boardstate_change(self, event):
+        """Wird aufgerufen, wenn sich der BoardState ändert."""
+        print(f"Model: Event erhalten - {event.type}")  # Debug-Print
+        if event.type == "CARD_PLAYED":
+            print(
+                f"Model: Karte {event.data['card_id']} auf {event.data['position']} gespielt!"
+            )
+            # Hier könntest du den Controller benachrichtigen, z.B.:
+            self.notify_observers(event)
+
+    def add_observer(self, observer):
+        """Fügt einen Observer hinzu (z. B. Controller)."""
+        self.observers.append(observer)
+
+    def notify_observers(self, event: BoardStateEvent):
+        """Benachrichtigt alle Observer (z. B. Controller)."""
+        for observer in self.observers:
+            observer.on_boardstate_change(event)
+
 
 class BaseCard:
     def __init__(self, card_id, side, image):
