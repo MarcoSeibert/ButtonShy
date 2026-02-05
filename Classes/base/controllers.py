@@ -1,5 +1,3 @@
-from tkinter import Event
-
 from Classes.base.models import BaseModel
 from Classes.base.views import StartView, BaseView
 
@@ -10,7 +8,8 @@ class StartController:
 
     def click_play(self):
         chosen_game = self.view.chosen_game.get()
-        self.view.master.start_game(chosen_game)
+        chosen_game_name = games_dict[chosen_game].replace(" ", "")
+        start_game(self.view.master, chosen_game_name)
 
 class BaseController:
     def __init__(self, model: BaseModel, view: BaseView):

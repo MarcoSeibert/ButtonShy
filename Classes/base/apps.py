@@ -4,8 +4,7 @@ from importlib import import_module
 
 from Classes.base.controllers import StartController
 from Classes.base.views import StartView
-from functions import get_game_data_by_name
-from start_up import games_dict
+from functions import get_game_data_by_name, import_mvc_components
 
 
 class App(tk.Tk):
@@ -47,7 +46,6 @@ class StartApp(App):
         app_game = BaseApp(chosen_game)
         app_game.focus_force()
         app_game.mainloop()
-
 
 class BaseApp(App):
     def __init__(self, chosen_game):

@@ -7,10 +7,12 @@ from functions import adjust_image
 
 class BaseModel:
     def __init__(self, game_data):
+        self.boardstate = None
         self.hand_cards = None
         self.score_cards = None
         self.game_data = game_data
 
+        self.init_boardstate()
         self.cards = self.create_deck_of_cards()
 
     def create_deck_of_cards(self):

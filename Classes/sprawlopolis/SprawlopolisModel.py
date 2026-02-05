@@ -1,4 +1,3 @@
-from Classes.base.models import BaseModel, BaseCard
 import random
 
 class SprawlopolisModel(BaseModel):
@@ -22,6 +21,12 @@ class SprawlopolisModel(BaseModel):
             given_card = random.choice(self.cards)
             self.cards.remove(given_card)
             self.hand_cards.append(given_card)
+
+    def play_first_card(self):
+        pass
+
+    def init_boardstate(self):
+        self.boardstate = SprawlopolisBoardstate(self.game_data)
 
 
 class SprawlopolisCard(BaseCard):

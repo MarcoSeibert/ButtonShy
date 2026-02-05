@@ -1,3 +1,6 @@
+from tkinter import ttk
+import pywinstyles
+
 from Classes.base.controllers import BaseController
 from Classes.sprawlopolis.SprawlopolisModel import SprawlopolisModel
 from Classes.sprawlopolis.SprawlopolisView import SprawlopolisView

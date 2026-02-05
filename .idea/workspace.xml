@@ -4,29 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Classes/base/boardstate.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisController.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisModel.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisView.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Approve.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Blue.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Decline.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Gray.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Green.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Orange.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Street.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/Assets/Sprawlopolis/Turn.png" afterDir="false" />
+    <list default="true" id="28d0b1fe-ffcb-4903-938d-1d171488c8fb" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/base/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/base/controllers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/controllers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/base/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/Games.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/Games.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/my_json_schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/my_json_schema.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/canvasgamecontroller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/canvasgamecontroller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/events.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisApp.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisApp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisController.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/sprawlopolis/SprawlopolisModel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start_up.py" beforeDir="false" afterPath="$PROJECT_DIR$/start_up.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,15 +59,17 @@
     &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.Classes.executor&quot;: &quot;Run&quot;,
+    &quot;Python.draft.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.models.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Backup/Python/ButtonShy/Resources/Assets/Sprawlopolis&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.json.schema&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.black.configuration.BlackFormatterConfigurable&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -181,7 +171,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769608334080</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Apps.py:&#10;- made classes dynamic in start_up method&#10;Base Controller:&#10;- added method for canvas dragging&#10;- removed card moving for now&#10;Functions.py:&#10;- adjust_image, so cards are not rectangles&#10;Games.json and my_json_schema.json:&#10;- moving from list to dict&#10;Base models:&#10;- create a lit of card objects as deck&#10;- added Card class&#10;Sprawlopolis:&#10;- added first version of the classes&#10;- generate the start up of the game&#10;- added images&#10;Base views:&#10;- added optional canvas view&#10;Misc:&#10;- restructured asset folder structure">
+      <option name="closed" value="true" />
+      <created>1770121439934</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1770121439934</updated>
+    </task>
+    <task id="LOCAL-00008" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1770216356910</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1770216356910</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -202,6 +208,8 @@
     <MESSAGE value="Restructure code structure&#10;- base classes in one folder&#10;- all games get separate folder&#10;Asset creation&#10;- Extract the image from the PnP pdfs if not already done&#10;Mapping for Sprawlopolis&#10;- Map the images to the card numbers" />
     <MESSAGE value="Correct .gitignore" />
     <MESSAGE value="Created Loading screen when extracting assets&#10;- checks which games need asset to be extracted&#10;- extracts assets from pdf&#10;- parallel extraction&#10;- loading window&#10;Put some more games into Games.json&#10;- mainly for extraction testing&#10;- mapping done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created Loading screen when extracting assets&#10;- checks which games need asset to be extracted&#10;- extracts assets from pdf&#10;- parallel extraction&#10;- loading window&#10;Put some more games into Games.json&#10;- mainly for extraction testing&#10;- mapping done" />
+    <MESSAGE value="Apps.py:&#10;- made classes dynamic in start_up method&#10;Base Controller:&#10;- added method for canvas dragging&#10;- removed card moving for now&#10;Functions.py:&#10;- adjust_image, so cards are not rectangles&#10;Games.json and my_json_schema.json:&#10;- moving from list to dict&#10;Base models:&#10;- create a lit of card objects as deck&#10;- added Card class&#10;Sprawlopolis:&#10;- added first version of the classes&#10;- generate the start up of the game&#10;- added images&#10;Base views:&#10;- added optional canvas view&#10;Misc:&#10;- restructured asset folder structure" />
+    <MESSAGE value="WIP" />
+    <option name="LAST_COMMIT_MESSAGE" value="WIP" />
   </component>
 </project>
