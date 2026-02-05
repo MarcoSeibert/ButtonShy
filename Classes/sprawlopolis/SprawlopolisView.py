@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+from Classes.canvasgameview import CanvasGameView
+
 if TYPE_CHECKING:
     from Classes.sprawlopolis.SprawlopolisApp import SprawlopolisApp
 from Classes.base.views import BaseView
@@ -8,9 +10,10 @@ from tkinter import ttk
 from globals import BASIC_FONT, BOLD_FONT
 
 
-class SprawlopolisView(BaseView):
+class SprawlopolisView(BaseView, CanvasGameView):
     def __init__(self, parent: SprawlopolisApp) -> None:
-        super().__init__(parent)
+        BaseView.__init__(self, parent)
+        CanvasGameView.__init__(self, parent)
 
         # add area for decks
         self.deck_area = tk.LabelFrame(
@@ -69,3 +72,9 @@ class SprawlopolisView(BaseView):
         )
         self.total_score = ttk.Label(self, text="0", font=BOLD_FONT)
         self.total_score.grid(column=15, row=18, sticky="w")
+
+    def add_card_to_canvas(self, *args, **kwargs):
+        return CanvasGameView.add_card_to_canvas(self, *args, **kwargs)
+
+    def delete_card_from_canvas(self, *args, **kwargs) -> None:
+        return CanvasGameView.delete_card_from_canvas(self, *args, **kwargs)

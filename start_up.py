@@ -56,7 +56,6 @@ def create_assets(args: tuple) -> tuple:
 
 
 def process_game(args: tuple, result_queue: Queue) -> None:
-    print(type(result_queue))
     """Wrapper function for multiprocessing."""
     game_name, elapsed = create_assets(args)
     result_queue.put((game_name, elapsed))

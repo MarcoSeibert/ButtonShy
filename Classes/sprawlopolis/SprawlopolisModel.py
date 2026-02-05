@@ -36,9 +36,7 @@ class SprawlopolisModel(BaseModel):
         self.play_card_to_observer(card_to_play, first_card=True)
         self.add_card_to_graph(card_to_play, (30, 18))
 
-    def play_card_to_observer(
-        self, card: SprawlopolisCard, first_card: bool = False
-    ) -> None:
+    def play_card_to_observer(self, card: BaseCard, first_card: bool = False) -> None:
         if not first_card:
             event = ModelEvent("CARD_PLAYED", {"card": card})
         else:
@@ -136,13 +134,6 @@ class SprawlopolisModel(BaseModel):
         # connected_gray_zones = find_connected_gray_zones(self.graph)
         # for i, zone in enumerate(connected_gray_zones, 1):
         #     print(f"Graue Zone {i}: {len(zone)} Blöcke ({len(zone)} Punkte)")
-
-
-class SprawlopolisCard(BaseCard):
-    def __init__(self, card_id: int, side: str, image: PhotoImage) -> None:
-        super().__init__(card_id, side, image)
-        self.points = card_id
-        self.blocks = None
 
 
 from collections import deque

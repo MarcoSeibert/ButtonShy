@@ -3,13 +3,13 @@ from functools import partial
 from tkinter import ttk
 from typing import TYPE_CHECKING
 
-from Classes.base.models import BaseCard
 from globals import TITLE_FONT, BASIC_FONT, LEFT_MOUSE_BUTTON
 from start_up import games_dict
 
 if TYPE_CHECKING:
     from Classes.base.controllers import StartController, BaseController
     from Classes.base.apps import BaseApp
+    from Classes.base.models import BaseCard
 
 RETURN = "<Return>"
 
@@ -76,7 +76,7 @@ class StartView(ttk.Frame):
     def on_change_game(self, *args) -> None:
         self.chosen_game.set(args[0])
 
-    def on_play(self, *args) -> None:
+    def on_play(self, _) -> None:
         if self.controller:
             self.controller.click_play()
 
@@ -115,48 +115,16 @@ class BaseView(ttk.Frame):
             column=0, row=0, columnspan=17
         )
 
-        # set canvas if any
-        if self.parent.game_data.get("canvas_size", [0, 0]) != [0, 0]:
-            self.set_canvas_area()
-
-    def set_canvas_area(self) -> None:
-        self.canvas = self.parent.game_data["canvas_size"]
-        canvas_x = self.canvas[0]
-        canvas_y = self.canvas[1]
-        self.canvas_area = tk.Canvas(
-            self,
-            width=canvas_x,
-            height=canvas_y,
-            background="white",
-            scrollregion=(0, 0, 4 * canvas_x, 4 * canvas_y),
-        )
-        self.canvas_area.xview_moveto(0.375)
-        self.canvas_area.yview_moveto(0.375)
-        self.canvas_area.grid(column=1, row=1, columnspan=12, rowspan=15)
-        ## add scrollbars
-        self.hbar = ttk.Scrollbar(self, orient=tk.HORIZONTAL)
-        self.hbar.config(command=self.canvas_area.xview)
-        self.hbar.grid(column=1, row=16, columnspan=12, sticky="we")
-        self.vbar = ttk.Scrollbar(self, orient=tk.VERTICAL)
-        self.vbar.config(command=self.canvas_area.yview)
-        self.vbar.grid(column=0, row=1, rowspan=15, sticky="ns")
-        self.canvas_area.config(
-            xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set
-        )
-
-        self.images_on_canvas = []
-
-    def add_card_to_canvas(self, card: BaseCard, side: str, position: tuple) -> None:
-        image = None
-        if side == "front":
-            image = card.front_image
-        elif side == "back":
-            image = card.back_image
-        self.images_on_canvas.append(image)
-        self.canvas_area.create_image(position[0], position[1], image=image)
-
     def set_controller(self, controller: BaseController) -> None:
         self.controller = controller
 
     def quit(self) -> None:
         self.parent.destroy()
+
+    def add_card_to_canvas(self, *args, **kwargs) -> None:
+        # Placeholder for child class
+        pass
+
+    def delete_card_from_canvas(self, *args, **kwargs) -> None:
+        # Placeholder for child class
+        pass

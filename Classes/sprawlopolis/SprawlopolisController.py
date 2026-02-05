@@ -1,3 +1,4 @@
+from functools import partial
 from tkinter import ttk
 import pywinstyles
 
@@ -35,10 +36,13 @@ class SprawlopolisController(BaseController, CanvasGameController):
         # add images to the cards
         for i, card in enumerate(self.view.hand_area.winfo_children()):
             card.config(
-                image=self.model.hand_cards[i].front_image, background="#000001"
+                image=self.model.hand_cards[i].front_image,
+                background="#000001",
             )
             pywinstyles.set_opacity(card, color="#000001")
-            card.bind(LEFT_MOUSE_BUTTON, self.play_card)
+            card.bind(
+                LEFT_MOUSE_BUTTON, partial(self.play_card, self.model.hand_cards[i])
+            )
 
         # add deck to the grid
         self.next_card = ttk.Label(self.view.deck_area)
@@ -59,11 +63,11 @@ class SprawlopolisController(BaseController, CanvasGameController):
             image = self.model.cards[0].front_image
             for deck in self.view.deck_area.winfo_children():
                 deck.configure(image=image, background="#000001")
-                pywinstyles.set_opacity(deck, color="#000001")
 
             # show the first card on the canvas
-            coords = (self.grid_size[0] * 30, self.grid_size[1] * 18)
-            self.view.add_card_to_canvas(card, "front", coords)
+            self.view.add_card_to_canvas(
+                card, "front", (30, 18), self.grid_size, movable=False
+            )
 
         elif event.type == "CARD_PLAYED":
             card = event.data["card"]

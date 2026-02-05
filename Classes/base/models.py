@@ -27,6 +27,7 @@ class BaseCard:
 
 class BaseModel:
     def __init__(self, game_data: dict) -> None:
+        self.active_card = None
         self.boardstate = None
         self.hand_cards = None
         self.score_cards = None
@@ -51,13 +52,6 @@ class BaseModel:
     def create_deck_of_cards(self) -> list:
         cards = []
         mapping_data = self.game_data["mapping"]
-        chosen_game_compact = self.game_data["name"].replace(" ", "").title()
-        card_class = getattr(
-            import_module(
-                f"Classes.{chosen_game_compact.lower()}.{chosen_game_compact}Model"
-            ),
-            f"{chosen_game_compact}Card",
-        )
 
         fp = f"Resources/Assets/{self.game_data["name"]}/cards"
         for image in os.listdir(fp):
@@ -65,14 +59,13 @@ class BaseModel:
             mapping_id = page_nr + "_" + card_nr
             card_id = mapping_data[mapping_id]["card_id"]
             side = mapping_data[mapping_id]["side"]
-
             adjusted_image = adjust_image(fp, image)
 
             card_in_list = next(
                 (card for card in cards if card.card_id == card_id), None
             )
             if card_in_list is None:
-                new_card = card_class(card_id, side, adjusted_image)
+                new_card = BaseCard(card_id, side, adjusted_image)
                 cards.append(new_card)
             else:
                 card_in_list.add_image(side, adjusted_image)
