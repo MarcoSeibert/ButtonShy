@@ -73,7 +73,7 @@ class SprawlopolisView(BaseView, CanvasGameView):
         self.total_score = ttk.Label(self, text="0", font=BOLD_FONT)
         self.total_score.grid(column=15, row=18, sticky="w")
 
-    def add_card_to_canvas(self, *args, **kwargs):
+    def add_card_to_canvas(self, *args, **kwargs) -> None:
         return CanvasGameView.add_card_to_canvas(self, *args, **kwargs)
 
     def delete_card_from_canvas(self, *args, **kwargs) -> None:

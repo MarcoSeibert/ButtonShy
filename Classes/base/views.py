@@ -9,7 +9,6 @@ from start_up import games_dict
 if TYPE_CHECKING:
     from Classes.base.controllers import StartController, BaseController
     from Classes.base.apps import BaseApp
-    from Classes.base.models import BaseCard
 
 RETURN = "<Return>"
 

@@ -1,6 +1,5 @@
 import os
 import random
-from importlib import import_module
 
 from PIL.ImageTk import PhotoImage
 

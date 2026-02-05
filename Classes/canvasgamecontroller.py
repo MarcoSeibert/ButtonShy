@@ -9,6 +9,8 @@ from Classes.base.models import BaseModel, BaseCard
 from Classes.canvasgameview import CanvasGameView
 from globals import LEFT_MOUSE_BUTTON
 
+BUTTON_PRESS_1 = "<ButtonPress-1>"
+
 
 class CanvasGameController:
     def __init__(self, model: BaseModel, view: CanvasGameView) -> None:
@@ -26,14 +28,14 @@ class CanvasGameController:
         self.view.canvas_area.bind("<ButtonPress-3>", self.print_coords)
 
         # add bindings to drag cards
-        self.view.canvas_area.tag_bind("movable", "<ButtonPress-1>", self.pick_up_card)
+        self.view.canvas_area.tag_bind("movable", BUTTON_PRESS_1, self.pick_up_card)
         self.view.canvas_area.tag_bind("movable", "<ButtonRelease-1>", self.drop_card)
         self.view.canvas_area.tag_bind("movable", "<B1-Motion>", self.drag_card)
 
         # add bindings to buttons
-        self.view.canvas_area.tag_bind("approve", "<ButtonPress-1>", self.press_approve)
-        self.view.canvas_area.tag_bind("decline", "<ButtonPress-1>", self.press_decline)
-        self.view.canvas_area.tag_bind("turn", "<ButtonPress-1>", self.press_turn)
+        self.view.canvas_area.tag_bind("approve", BUTTON_PRESS_1, self.press_approve)
+        self.view.canvas_area.tag_bind("decline", BUTTON_PRESS_1, self.press_decline)
+        self.view.canvas_area.tag_bind("turn", BUTTON_PRESS_1, self.press_turn)
 
         self.image_approve = tk.PhotoImage(
             file="Resources/Assets/Approve.png", format="png"

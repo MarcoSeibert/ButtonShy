@@ -2,7 +2,6 @@ import json
 import random
 
 import networkx as nx
-from PIL.ImageTk import PhotoImage
 
 from Classes.base.events import ModelEvent
 from Classes.base.models import BaseModel, BaseCard
@@ -44,7 +43,7 @@ class SprawlopolisModel(BaseModel):
         self.notify_observers(event)  # Benachrichtige alle Observer
 
     def add_card_to_graph(
-        self, card_to_play: SprawlopolisCard, position: tuple
+        self, card_to_play: BaseCard, position: tuple
     ) -> None:
         card = next(
             c for c in self.cards_data if c["id"] == card_to_play.card_id
