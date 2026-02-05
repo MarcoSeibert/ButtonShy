@@ -4,8 +4,7 @@ from importlib import import_module
 
 from Classes.base.controllers import StartController
 from Classes.base.views import StartView
-from functions import get_game_data_by_name
-from start_up import games_dict
+from functions import get_game_data_by_name, import_mvc_components
 
 
 class App(tk.Tk):
@@ -22,12 +21,15 @@ class App(tk.Tk):
 
         # set up basic parameters
         self.title("Button Shy Games")
-        self.geometry(f"{self.window_width}x{self.window_height}+{self.offset_x}+{self.offset_y}")
+        self.geometry(
+            f"{self.window_width}x{self.window_height}+{self.offset_x}+{self.offset_y}"
+        )
         self.resizable(False, False)
         # self.iconbitmap("Resources/Icon.ico")
 
         self.game_data = None
         self.chosen_game = None
+
 
 class StartApp(App):
     def __init__(self):
@@ -42,20 +44,17 @@ class StartApp(App):
         controller_start = StartController(view_start)
         view_start.set_controller(controller_start)
 
-    def start_game(self, chosen_game):
-        self.destroy()
-        app_game = BaseApp(chosen_game)
-        app_game.focus_force()
-        app_game.mainloop()
-
 
 class BaseApp(App):
-    def __init__(self, chosen_game):
-        super().__init__(1E6, 1E6, 0)
+    def __init__(self, chosen_game_name):
+        super().__init__(1e6, 1e6, 0)
+        self.model = None
+        self.view = None
+        self.controller = None
         self.attributes("-fullscreen", True)
         with open("Resources/Games.json") as json_file:
             json_data = json.load(json_file)["games"]
-        self.game_data = get_game_data_by_name(json_data, games_dict[chosen_game])
+        self.game_data = get_game_data_by_name(json_data, chosen_game_name)
         self.chosen_game = self.game_data["name"]
         self.chosen_game_compact = self.chosen_game.replace(" ", "")
         self.start_up()
@@ -63,17 +62,17 @@ class BaseApp(App):
     def start_up(self):
         # import the classes
         components = self.game_data["mvc_components"]
-        model_class = getattr(import_module(f"Classes.{self.chosen_game_compact.lower()}.{self.chosen_game_compact}Model"), components["model"])
-        controller_class = getattr(import_module(f"Classes.{self.chosen_game_compact.lower()}.{self.chosen_game_compact}Controller"), components["controller"])
-        view_class = getattr(import_module(f"Classes.{self.chosen_game_compact.lower()}.{self.chosen_game_compact}View"), components["view"])
+        model_class, view_class, controller_class = import_mvc_components(
+            components, self.chosen_game_compact
+        )
 
         # set up model
-        model = model_class(self.game_data)
+        self.model = model_class(self.game_data)
 
         # set up view
-        view = view_class(self)
-        view.grid(row=0, column=0, pady=10, padx=10)
+        self.view = view_class(self)
+        self.view.grid(row=0, column=0, pady=10, padx=10)
 
         # set up controller
-        controller = controller_class(model, view)
-        view.set_controller(controller)
+        self.controller = controller_class(self.model, self.view)
+        self.view.set_controller(self.controller)

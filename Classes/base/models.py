@@ -7,17 +7,24 @@ from functions import adjust_image
 
 class BaseModel:
     def __init__(self, game_data):
+        self.boardstate = None
         self.hand_cards = None
         self.score_cards = None
         self.game_data = game_data
 
+        self.init_boardstate()
         self.cards = self.create_deck_of_cards()
 
     def create_deck_of_cards(self):
         cards = []
         mapping_data = self.game_data["mapping"]
         chosen_game_compact = self.game_data["name"].replace(" ", "").title()
-        card_class = getattr(import_module(f"Classes.{chosen_game_compact.lower()}.{chosen_game_compact}Model"), f"{chosen_game_compact}Card")
+        card_class = getattr(
+            import_module(
+                f"Classes.{chosen_game_compact.lower()}.{chosen_game_compact}Model"
+            ),
+            f"{chosen_game_compact}Card",
+        )
 
         fp = f"Resources/Assets/{self.game_data["name"]}/cards"
         for image in os.listdir(fp):
@@ -28,7 +35,9 @@ class BaseModel:
 
             adjusted_image = adjust_image(fp, image)
 
-            card_in_list = next((card for card in cards if card.card_id == card_id), None)
+            card_in_list = next(
+                (card for card in cards if card.card_id == card_id), None
+            )
             if card_in_list is None:
                 new_card = card_class(card_id, side, adjusted_image)
                 cards.append(new_card)
@@ -36,6 +45,10 @@ class BaseModel:
                 card_in_list.add_image(side, adjusted_image)
         random.shuffle(cards)
         return cards
+
+    def init_boardstate(self):
+        raise NotImplementedError("Every game needs a boardstate")
+
 
 class BaseCard:
     def __init__(self, card_id, side, image):
