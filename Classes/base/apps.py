@@ -1,6 +1,5 @@
 import json
 import tkinter as tk
-from importlib import import_module
 
 from Classes.base.controllers import StartController
 from Classes.base.views import StartView
@@ -8,7 +7,9 @@ from functions import get_game_data_by_name, import_mvc_components
 
 
 class App(tk.Tk):
-    def __init__(self, factor_x: float, factor_y: float, offset_factor_y: float = 1):
+    def __init__(
+        self, factor_x: float, factor_y: float, offset_factor_y: float = 1
+    ) -> None:
         super().__init__()
 
         # get some measurements
@@ -32,7 +33,7 @@ class App(tk.Tk):
 
 
 class StartApp(App):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(4, 2)
 
         # set up view
@@ -46,7 +47,7 @@ class StartApp(App):
 
 
 class BaseApp(App):
-    def __init__(self, chosen_game_name):
+    def __init__(self, chosen_game_name: str) -> None:
         super().__init__(1e6, 1e6, 0)
         self.model = None
         self.view = None
@@ -59,7 +60,7 @@ class BaseApp(App):
         self.chosen_game_compact = self.chosen_game.replace(" ", "")
         self.start_up()
 
-    def start_up(self):
+    def start_up(self) -> None:
         # import the classes
         components = self.game_data["mvc_components"]
         model_class, view_class, controller_class = import_mvc_components(

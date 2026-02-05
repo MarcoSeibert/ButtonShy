@@ -2,6 +2,7 @@ from tkinter import ttk
 import pywinstyles
 
 from Classes.base.controllers import BaseController
+from Classes.base.events import ModelEvent
 from Classes.canvasgamecontroller import CanvasGameController
 from Classes.sprawlopolis.SprawlopolisModel import SprawlopolisModel
 from Classes.sprawlopolis.SprawlopolisView import SprawlopolisView
@@ -9,7 +10,7 @@ from globals import LEFT_MOUSE_BUTTON
 
 
 class SprawlopolisController(BaseController, CanvasGameController):
-    def __init__(self, model: SprawlopolisModel, view: SprawlopolisView):
+    def __init__(self, model: SprawlopolisModel, view: SprawlopolisView) -> None:
         BaseController.__init__(self, model, view)
         CanvasGameController.__init__(self, model, view)
 
@@ -37,7 +38,7 @@ class SprawlopolisController(BaseController, CanvasGameController):
                 image=self.model.hand_cards[i].front_image, background="#000001"
             )
             pywinstyles.set_opacity(card, color="#000001")
-            card.bind(LEFT_MOUSE_BUTTON, self.play_card2)
+            card.bind(LEFT_MOUSE_BUTTON, self.play_card)
 
         # add deck to the grid
         self.next_card = ttk.Label(self.view.deck_area)
@@ -47,3 +48,31 @@ class SprawlopolisController(BaseController, CanvasGameController):
         for card in self.view.deck_area.winfo_children():
             card.configure(image=image, background="#000001")
             pywinstyles.set_opacity(card, color="#000001")
+
+    def on_model_change(self, event: ModelEvent) -> None:
+        """Reagiert auf Events vom Model."""
+        if event.type == "FIRST_CARD_PLAYED":
+            card = event.data["card"]
+            print(f"Controller: Erste Karte {card.card_id} gespielt!")
+
+            # update the deck
+            image = self.model.cards[0].front_image
+            for deck in self.view.deck_area.winfo_children():
+                deck.configure(image=image, background="#000001")
+                pywinstyles.set_opacity(deck, color="#000001")
+
+            # show the first card on the canvas
+            coords = (self.grid_size[0] * 30, self.grid_size[1] * 18)
+            self.view.add_card_to_canvas(card, "front", coords)
+
+        elif event.type == "CARD_PLAYED":
+            card = event.data["card"]
+            print(f"Controller: Karte {card.card_id} gespielt!")
+            self.active_card_image = card.front_image
+            # pywinstyles.set_opacity(event.widget, value=0.5, color="#000001") brauchen wir erst für spätere Karten
+            self.view.canvas_area.create_image(
+                self.grid_size[0] * 30,
+                self.grid_size[1] * 18,
+                image=self.active_card_image,
+                tag="movable",
+            )

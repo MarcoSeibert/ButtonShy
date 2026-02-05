@@ -1,12 +1,17 @@
 import os.path
 from importlib import import_module
+from typing import TYPE_CHECKING
 
 from PIL import Image, ImageTk, ImageDraw
+from PIL.ImageTk import PhotoImage
 
 from globals import CARD_SIZE
 
+if TYPE_CHECKING:
+    from Classes.base.apps import StartApp
 
-def start_game(app, chosen_game_name):
+
+def start_game(app: StartApp, chosen_game_name: str) -> None:
     app.destroy()
     app_class = getattr(
         import_module(f"Classes.{chosen_game_name.lower()}.{chosen_game_name}App"),
@@ -17,14 +22,20 @@ def start_game(app, chosen_game_name):
     app_game.mainloop()
 
 
-def get_game_data_by_name(json_data, game_name):
+def get_game_data_by_name(json_data: dict, game_name: str) -> dict:
     for game in json_data:
         if game["name"] == game_name:
             return game
-    return None
+    return {}
 
 
-def adjust_image(fp, image_name, card_size=CARD_SIZE, radius=5, border_size=3):
+def adjust_image(
+    fp: str,
+    image_name: str,
+    card_size: tuple = CARD_SIZE,
+    radius: int = 5,
+    border_size: int = 3,
+) -> PhotoImage:
     # Bild öffnen, drehen und Größe anpassen
     with Image.open(os.path.join(fp, image_name)) as img:
         img = img.convert("RGBA").rotate(-90, expand=True).resize(card_size)
@@ -49,7 +60,7 @@ def adjust_image(fp, image_name, card_size=CARD_SIZE, radius=5, border_size=3):
         return ImageTk.PhotoImage(border.resize(card_size))
 
 
-def import_mvc_components(components, chosen_game_name: str):
+def import_mvc_components(components: dict, chosen_game_name: str) -> tuple:
     model_class = getattr(
         import_module(f"Classes.{chosen_game_name.lower()}.{chosen_game_name}Model"),
         components["model"],

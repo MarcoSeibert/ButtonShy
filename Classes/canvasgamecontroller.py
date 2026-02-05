@@ -3,13 +3,15 @@ import pywinstyles
 from tkinter import Event
 import tkinter as tk
 
+from PIL.ImageTk import PhotoImage
+
 from Classes.base.models import BaseModel
 from Classes.base.views import BaseView
 from globals import LEFT_MOUSE_BUTTON
 
 
 class CanvasGameController:
-    def __init__(self, model: BaseModel, view: BaseView):
+    def __init__(self, model: BaseModel, view: BaseView) -> None:
         self.model = model
         self.view = view
 
@@ -21,7 +23,7 @@ class CanvasGameController:
         self.view.canvas_area.bind("<ButtonPress-2>", self.pick_up_canvas)
         self.view.canvas_area.bind("<ButtonRelease-2>", self.drop_canvas)
         self.view.canvas_area.bind("<B2-Motion>", self.drag_canvas)
-        self.view.canvas_area.bind("<ButtonPress-1>", self.print_coords)
+        self.view.canvas_area.bind("<ButtonPress-3>", self.print_coords)
 
         # add bindings to drag cards
         self.view.canvas_area.tag_bind("movable", "<ButtonPress-1>", self.pick_up_card)
@@ -62,7 +64,7 @@ class CanvasGameController:
             mouse_move_event.y,
         )
 
-    def pick_up_card(self, event: Event):
+    def pick_up_card(self, event: Event) -> None:
         x = self.view.canvas_area.canvasx(event.x)
         y = self.view.canvas_area.canvasy(event.y)
         self.drag_data["item"] = self.view.canvas_area.find_closest(x, y)[0]
@@ -70,7 +72,7 @@ class CanvasGameController:
         self.drag_data["y"] = y
         self.show_buttons(False)
 
-    def drop_card(self, event: Event):
+    def drop_card(self, event: Event) -> None:
         grid_x_pix = self.view.canvas_area.canvasx(event.x, self.grid_size[0])
         grid_y_pix = self.view.canvas_area.canvasy(event.y, self.grid_size[1])
         self.view.canvas_area.coords(self.drag_data["item"], grid_x_pix, grid_y_pix)
@@ -79,7 +81,7 @@ class CanvasGameController:
         self.drag_data["y"] = 0
         self.show_buttons(True, grid_x_pix, grid_y_pix)
 
-    def drag_card(self, event: Event):
+    def drag_card(self, event: Event) -> None:
         x = self.view.canvas_area.canvasx(event.x)
         y = self.view.canvas_area.canvasy(event.y)
         delta_x = x - self.drag_data["x"]
@@ -88,7 +90,9 @@ class CanvasGameController:
         self.drag_data["x"] = x
         self.drag_data["y"] = y
 
-    def show_buttons(self, active: bool, grid_x_pix: int = 0, grid_y_pix: int = 0):
+    def show_buttons(
+        self, active: bool, grid_x_pix: int = 0, grid_y_pix: int = 0
+    ) -> None:
         if active:
             self.view.canvas_area.create_image(
                 grid_x_pix - self.grid_size[0],
@@ -111,10 +115,10 @@ class CanvasGameController:
         else:
             self.view.canvas_area.delete("canvas_buttons")
 
-    def play_card2(self, event: Event):
+    def play_card(self, event: Event) -> None:
         self.active_card_image = event.widget.cget("image")[0]
         pywinstyles.set_opacity(event.widget, value=0.5, color="#000001")
-        self.draw_card(self.active_card_image, [30, 18], True)
+        self.draw_card(self.active_card_image, (30, 18), True)
         # self.view.canvas_area.create_image(
         #     self.grid_size[0] * 30,
         #     self.grid_size[1] * 18,
@@ -125,7 +129,9 @@ class CanvasGameController:
         for i, card in enumerate(self.view.hand_area.winfo_children()):
             card.unbind(LEFT_MOUSE_BUTTON)
 
-    def draw_card(self, card_image, coordinates, movable=False):
+    def draw_card(
+        self, card_image: PhotoImage, coordinates: tuple, movable: bool = False
+    ) -> None:
         tag = "movable" if movable else None
         self.view.canvas_area.create_image(
             self.grid_size[0] * coordinates[0],

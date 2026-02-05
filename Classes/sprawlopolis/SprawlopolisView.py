@@ -1,28 +1,40 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Classes.sprawlopolis.SprawlopolisApp import SprawlopolisApp
 from Classes.base.views import BaseView
 import tkinter as tk
 from tkinter import ttk
 from globals import BASIC_FONT, BOLD_FONT
 
+
 class SprawlopolisView(BaseView):
-    def __init__(self, parent):
+    def __init__(self, parent: SprawlopolisApp) -> None:
         super().__init__(parent)
 
-
         # add area for decks
-        self.deck_area = tk.LabelFrame(self, text="Deck", foreground="black", font=BASIC_FONT, relief="flat")
+        self.deck_area = tk.LabelFrame(
+            self, text="Deck", foreground="black", font=BASIC_FONT, relief="flat"
+        )
         self.deck_area.grid(column=7, row=17, columnspan=6, rowspan=2)
 
         # add area for hand cards
-        self.hand_area = tk.LabelFrame(self, text="Hand", foreground="black", font=BASIC_FONT, relief="flat")
+        self.hand_area = tk.LabelFrame(
+            self, text="Hand", foreground="black", font=BASIC_FONT, relief="flat"
+        )
         self.hand_area.grid(column=1, columnspan=6, row=17, rowspan=2)
 
         # add area for score cards
-        self.score_area = tk.LabelFrame(self, foreground="black", font=BASIC_FONT, relief="flat")
+        self.score_area = tk.LabelFrame(
+            self, foreground="black", font=BASIC_FONT, relief="flat"
+        )
         self.score_area.grid(column=13, columnspan=2, row=1, rowspan=12)
 
         # insert scorecard
         ## load images
-        self.orange_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Orange.png")
+        self.orange_block = tk.PhotoImage(
+            file="Resources/Assets/Sprawlopolis/Orange.png"
+        )
         self.blue_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Blue.png")
         self.gray_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Gray.png")
         self.green_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Green.png")
@@ -46,10 +58,14 @@ class SprawlopolisView(BaseView):
         self.street_score = ttk.Label(self, text="0", font=BOLD_FONT)
         self.street_score.grid(column=14, row=15)
         ### for goal
-        ttk.Label(self, text="Goal Score:", font=BOLD_FONT).grid(column=13, row=17, columnspan=2)
+        ttk.Label(self, text="Goal Score:", font=BOLD_FONT).grid(
+            column=13, row=17, columnspan=2
+        )
         self.goal_score = ttk.Label(self, text="0", font=BOLD_FONT)
         self.goal_score.grid(column=15, row=17, sticky="w")
         ### for total
-        ttk.Label(self, text="Total Score:", font=BOLD_FONT).grid(column=13, row=18, columnspan=2)
+        ttk.Label(self, text="Total Score:", font=BOLD_FONT).grid(
+            column=13, row=18, columnspan=2
+        )
         self.total_score = ttk.Label(self, text="0", font=BOLD_FONT)
         self.total_score.grid(column=15, row=18, sticky="w")
