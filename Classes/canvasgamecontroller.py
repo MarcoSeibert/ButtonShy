@@ -1,10 +1,10 @@
 import pywinstyles
 
-from Classes.base.models import BaseModel
-from Classes.base.views import BaseView
 from tkinter import Event
 import tkinter as tk
 
+from Classes.base.models import BaseModel
+from Classes.base.views import BaseView
 from globals import LEFT_MOUSE_BUTTON
 
 
