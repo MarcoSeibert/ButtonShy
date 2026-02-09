@@ -42,9 +42,7 @@ class SprawlopolisModel(BaseModel):
             event = ModelEvent("FIRST_CARD_PLAYED", {"card": card})
         self.notify_observers(event)  # Benachrichtige alle Observer
 
-    def add_card_to_graph(
-        self, card_to_play: BaseCard, position: tuple
-    ) -> None:
+    def add_card_to_graph(self, card_to_play: BaseCard, position: tuple) -> None:
         card = next(
             c for c in self.cards_data if c["id"] == card_to_play.card_id
         )  # card_to_play.card_id)

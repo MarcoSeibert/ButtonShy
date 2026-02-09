@@ -1,9 +1,9 @@
+import tkinter as tk
 from functools import partial
+from tkinter import Event
 
 import pywinstyles
-
-from tkinter import Event
-import tkinter as tk
+from PIL import ImageTk
 
 from Classes.base.models import BaseModel, BaseCard
 from Classes.canvasgameview import CanvasGameView
@@ -14,6 +14,7 @@ BUTTON_PRESS_1 = "<ButtonPress-1>"
 
 class CanvasGameController:
     def __init__(self, model: BaseModel, view: CanvasGameView) -> None:
+        self.active_widget = None
         self.model = model
         self.view = view
 
@@ -46,7 +47,15 @@ class CanvasGameController:
         self.image_turn = tk.PhotoImage(file="Resources/Assets/Turn.png", format="png")
 
     def print_coords(self, event: Event) -> None:
-        print(f"coords: {event.x}, {event.y}")
+        # print(f"coords: {event.x}, {event.y}")
+
+        # for card in self.model.hand_cards:
+        #     print(f"card: {card.card_id}")
+        #     for i, c in enumerate(self.model.cards_data):
+        #         if c["id"] == card.card_id:
+        #             print(c)
+
+        pass
 
     def pick_up_canvas(self, mouse_press_event: Event) -> None:
         self.view.canvas_area.config(xscrollincrement=1)
@@ -129,9 +138,10 @@ class CanvasGameController:
     ) -> None:
         self.model.active_card = card
 
-        self.active_card_image = event.widget.cget("image")[0]
         pywinstyles.set_opacity(event.widget, value=0.5, color="#000001")
         self.view.add_card_to_canvas(card, "front", (30, 18), self.grid_size)
+        self.active_widget = event.widget
+        self.active_card_image = card.front_image
 
         self.show_buttons(True, self.grid_size[0] * 30, self.grid_size[1] * 18)
         for i, card_label in enumerate(self.view.hand_area.winfo_children()):
@@ -159,5 +169,62 @@ class CanvasGameController:
             )
 
     def press_turn(self, event: Event) -> None:
-        print("Turned")
-        # turn the card according to Games.json
+        active_card_obj = None
+        objs_on_canvas = self.view.canvas_area.find_all()
+        for obj in objs_on_canvas:
+            if "movable" in self.view.canvas_area.gettags(obj):
+                active_card_obj = obj
+
+        # change the image on the canvas
+        old_image = self.model.front_image_dict[self.model.active_card.card_id]
+        rotated_image = old_image.rotate(180, expand=True)
+        self.model.front_image_dict[self.model.active_card.card_id] = rotated_image
+        photo_image = ImageTk.PhotoImage(rotated_image)
+        self.active_card_image = photo_image
+        self.view.canvas_area.itemconfigure(active_card_obj, image=photo_image)
+
+        # change the image in the hand area
+        self.active_widget.config(image=photo_image)
+
+        # change the card data
+        for i, card in enumerate(self.model.cards_data):
+            if card["id"] == self.model.active_card.card_id:
+                self.model.cards_data[i] = rotate_card_values(card)
+                break
+
+
+def rotate_card_values(card_data: dict) -> dict:
+    def transform_list(lst: list[float]) -> list:
+        return [(x + 1) % 2 for x in lst]
+
+    def transform_direction(direction: str) -> str:
+        direction_map = {
+            "top": "bottom",
+            "bottom": "top",
+            "left": "right",
+            "right": "left",
+        }
+        return direction_map.get(
+            direction, direction
+        )  # Falls unbekannte Richtung, bleibt sie unverändert
+
+    transformed = {
+        "id": card_data["id"],
+        "blocks": [
+            {"coords": transform_list(block["coords"]), "color": block["color"]}
+            for block in card_data["blocks"]
+        ],
+        "streets": [
+            {"from": transform_list(street["from"]), "to": transform_list(street["to"])}
+            for street in card_data["streets"]
+        ],
+        "border_streets": [
+            {
+                "from": transform_list(border_street["from"]),
+                "to": transform_direction(border_street["to"]),
+            }
+            for border_street in card_data["border_streets"]
+        ],
+    }
+
+    return transformed

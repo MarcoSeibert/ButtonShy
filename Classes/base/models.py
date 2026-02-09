@@ -4,7 +4,7 @@ import random
 from PIL.ImageTk import PhotoImage
 
 from Classes.base.events import ModelObserver, ModelEvent
-from functions import adjust_image
+from functions import load_and_adjust_image
 
 
 class BaseCard:
@@ -26,6 +26,9 @@ class BaseCard:
 
 class BaseModel:
     def __init__(self, game_data: dict) -> None:
+        self.cards_data = None
+        self.back_image_dict = {}
+        self.front_image_dict = {}
         self.active_card = None
         self.boardstate = None
         self.hand_cards = None
@@ -53,20 +56,23 @@ class BaseModel:
         mapping_data = self.game_data["mapping"]
 
         fp = f"Resources/Assets/{self.game_data["name"]}/cards"
-        for image in os.listdir(fp):
-            page_nr, card_nr = image.split(".")[0].split("_")[1:]
+        for image_file in os.listdir(fp):
+            page_nr, card_nr = image_file.split(".")[0].split("_")[1:]
             mapping_id = page_nr + "_" + card_nr
             card_id = mapping_data[mapping_id]["card_id"]
             side = mapping_data[mapping_id]["side"]
-            adjusted_image = adjust_image(fp, image)
-
+            adjusted_photo_image, adjusted_photo = load_and_adjust_image(fp, image_file)
+            if side == "front":
+                self.front_image_dict[card_id] = adjusted_photo
+            elif side == "back":
+                self.back_image_dict[card_id] = adjusted_photo
             card_in_list = next(
                 (card for card in cards if card.card_id == card_id), None
             )
             if card_in_list is None:
-                new_card = BaseCard(card_id, side, adjusted_image)
+                new_card = BaseCard(card_id, side, adjusted_photo_image)
                 cards.append(new_card)
             else:
-                card_in_list.add_image(side, adjusted_image)
+                card_in_list.add_image(side, adjusted_photo_image)
         random.shuffle(cards)
         return cards
