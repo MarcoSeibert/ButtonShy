@@ -1,7 +1,7 @@
-from tkinter.ttk import Label
-from typing import TYPE_CHECKING
 import tkinter as tk
 from tkinter import ttk
+from tkinter.ttk import Label
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from Classes.base.apps import BaseApp

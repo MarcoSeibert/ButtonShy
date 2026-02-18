@@ -68,15 +68,12 @@ class SprawlopolisController(BaseController, CanvasGameController):
             self.view.add_card_to_canvas(
                 card, "front", (30, 18), self.grid_size, movable=False
             )
-
-        elif event.type == "CARD_PLAYED":
-            card = event.data["card"]
-            print(f"Controller: Karte {card.card_id} gespielt!")
-            self.active_card_image = card.front_image
-            # pywinstyles.set_opacity(event.widget, value=0.5, color="#000001") brauchen wir erst für spätere Karten
-            self.view.canvas_area.create_image(
-                self.grid_size[0] * 30,
-                self.grid_size[1] * 18,
-                image=self.active_card_image,
-                tag="movable",
-            )
+        elif event.type == "DRAW_NEW_CARD":
+            image = self.model.cards[0].front_image
+            for deck in self.view.deck_area.winfo_children():
+                deck.configure(image=image, background="#000001")
+            for i, card in enumerate(self.view.hand_area.winfo_children()):
+                card.config(
+                    image=self.model.hand_cards[i].front_image,
+                    background="#000001",
+                )

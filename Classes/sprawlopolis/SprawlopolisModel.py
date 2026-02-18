@@ -2,9 +2,49 @@ import json
 import random
 
 import networkx as nx
+from collections import deque, defaultdict
 
 from Classes.base.events import ModelEvent
 from Classes.base.models import BaseModel, BaseCard
+
+
+def _extend_path(
+    graph: nx.Graph,
+    start_node: tuple,
+    end_node: tuple,
+    visited_edges: set,
+    path: list = None,
+    reverse: bool = False,
+) -> list:
+    if path is None:
+        path = [start_node, end_node]
+    visited_edges.add((start_node, end_node))
+    visited_edges.add((end_node, start_node))
+
+    current_node = end_node
+    while True:
+        neighbors = [
+            n
+            for n in graph.neighbors(current_node)
+            if (current_node, n) not in visited_edges
+            and (n, current_node) not in visited_edges
+            and (current_node[0] == n[0] or current_node[1] == n[1])
+        ]
+        if len(neighbors) != 1:
+            break
+        next_node = neighbors[0]
+        # Vermeide Loops durch virtuelle Knoten
+        if next_node == start_node and len(path) > 1:
+            break
+        visited_edges.add((current_node, next_node))
+        visited_edges.add((next_node, current_node))
+        if reverse:
+            path.insert(0, next_node)
+        else:
+            path.append(next_node)
+        current_node = next_node
+
+    return path
 
 
 class SprawlopolisModel(BaseModel):
@@ -32,145 +72,228 @@ class SprawlopolisModel(BaseModel):
     def play_first_card(self) -> None:
         card_to_play = self.cards[0]
         self.cards.remove(card_to_play)
-        self.play_card_to_observer(card_to_play, first_card=True)
+        self.play_card_to_observer(card_to_play, param="play_first_card")
         self.add_card_to_graph(card_to_play, (30, 18))
 
-    def play_card_to_observer(self, card: BaseCard, first_card: bool = False) -> None:
-        if not first_card:
-            event = ModelEvent("CARD_PLAYED", {"card": card})
-        else:
+    def play_card_to_observer(self, card: BaseCard, param: str) -> None:
+        event = None
+        if param == "play_first_card":
             event = ModelEvent("FIRST_CARD_PLAYED", {"card": card})
+        elif param == "draw_new_card":
+            event = ModelEvent("DRAW_NEW_CARD", {})
         self.notify_observers(event)  # Benachrichtige alle Observer
 
+    def draw_new_card(self) -> None:
+        new_card = self.cards[0]
+        self.cards.remove(new_card)
+        self.hand_cards.append(new_card)
+        self.play_card_to_observer(new_card, param="draw_new_card")
+
     def add_card_to_graph(self, card_to_play: BaseCard, position: tuple) -> None:
-        card = next(
-            c for c in self.cards_data if c["id"] == card_to_play.card_id
-        )  # card_to_play.card_id)
+        card = next(c for c in self.cards_data if c["id"] == card_to_play.card_id)
+
+        # 1. Blöcke der Karte hinzufügen
         for block in card["blocks"]:
             block_coords = (
                 position[0] + block["coords"][0],
                 position[1] + block["coords"][1],
             )
-            self.graph.add_node(block_coords, color=block["color"], is_border=False)
-
-        for street in card["streets"]:
-            from_coords = (
-                position[0] + street["from"][0],
-                position[1] + street["from"][1],
+            self.graph.add_node(
+                block_coords,
+                color=block["color"],
+                street=block["street"],
+                is_virtual=False,
             )
-            to_coords = (position[0] + street["to"][0], position[1] + street["to"][1])
-            self.graph.add_edge(from_coords, to_coords, is_border=False)
+            # Falls der Block bereits existiert, entferne alle seine Kanten
+            if self.graph.has_node(block_coords):
+                edges_to_remove = list(self.graph.edges(block_coords))
+                self.graph.remove_edges_from(edges_to_remove)
 
-        for border_street in card["border_streets"]:
-            from_coords = (
-                position[0] + border_street["from"][0],
-                position[1] + border_street["from"][1],
+        # 2. Straßen als Kanten erstellen, nur bei passenden Richtungen
+        for block in card["blocks"]:
+            block_coords = (
+                position[0] + block["coords"][0],
+                position[1] + block["coords"][1],
             )
-            match border_street["to"]:
-                case "top":
-                    direction = (0, -1)
-                case "bottom":
-                    direction = (0, 1)
-                case "left":
-                    direction = (-1, 0)
-                case "right":
-                    direction = (1, 0)
-                case _:
-                    direction = (0, 0)
-            to_coords = tuple(x + y for x, y in zip(from_coords, direction))
-            # print(from_coords, to_coords)
-            self.graph.add_node(to_coords, color=None, is_border=True)
-            self.graph.add_edge(from_coords, to_coords, is_border=True)
-        #
-        # G = self.graph
-        #
-        # # Line-Graph erstellen
-        # line_graph = nx.line_graph(G)
-        #
-        # # Attribute der Kanten aus G in die Knoten des line_graph übertragen
-        # for u, v, data in G.edges(data=True):
-        #     if (u, v) in line_graph.nodes():
-        #         line_graph.nodes[(u, v)].update(data)
-        #     if (v, u) in line_graph.nodes():
-        #         line_graph.nodes[(v, u)].update(data)
-        #
-        # # Zusammenhängende Komponenten (Straßen) identifizieren
-        # straßen = list(nx.connected_components(line_graph))
-        #
-        # # Länge jeder Straße als Anzahl der einzigartigen nicht-Randknoten berechnen
-        # for i, straße in enumerate(straßen, 1):
-        #     # Alle Knoten der Kanten in dieser Straße sammeln
-        #     unique_nodes = set()
-        #     for edge in straße:
-        #         u, v = edge
-        #         # Nur Knoten hinzufügen, die keine Randknoten sind
-        #         if not G.nodes[u].get("is_border", False):
-        #             unique_nodes.add(u)
-        #         if not G.nodes[v].get("is_border", False):
-        #             unique_nodes.add(v)
-        #     print(f"Straße {i}: Länge = {len(unique_nodes)} Blöcke")
-        #
-        # # Anzahl der Straßen
-        # anzahl_straßen = len(straßen)
-        # print(f"\nAnzahl der Straßen: {anzahl_straßen}")
+            for direction in block["street"]:
+                dx, dy = self.direction_map[direction][0]
+                to_coords = (block_coords[0] + dx, block_coords[1] + dy)
+                # Prüfen, ob der Zielblock existiert und die komplementäre Straße hat
+                if self.graph.has_node(to_coords):
+                    # Immer eine Kante zu virtuellen Blöcken erstellen
+                    if self.graph.nodes[to_coords].get("is_virtual", False):
+                        self.graph.add_edge(block_coords, to_coords)
+                    # Bei nicht-virtuellen Blöcken: Nur bei passender Straße
+                    else:
+                        complementary_dir = self.direction_map[direction][1]
+                        if complementary_dir in self.graph.nodes[to_coords].get(
+                            "street", []
+                        ):
+                            self.graph.add_edge(block_coords, to_coords)
+                else:
+                    # Virtuellen Knoten für Randstraße erstellen
+                    self.graph.add_node(to_coords, is_virtual=True)
+                    self.graph.add_edge(block_coords, to_coords)
 
-        # print(nodes_to_remove)
-        # line_graph.remove_nodes_from(nodes_to_remove)
+    def calculate_streets_and_blocks(self) -> tuple:
+        graph = self.graph.copy()
+        streets = []
+        visited_edges = set()
+        visited_nodes = set()
 
-        # straßen = list(nx.connected_components(line_graph))
-        # for i, straße in enumerate(straßen, 1):
-        #     print(f"Straße {i}: Länge = {len(straße)} Kanten")
-        #     print(i, straße)
-        # anzahl_straßen = len(straßen)
-        # print(f"\nAnzahl der Straßen: {anzahl_straßen}")
+        # 1. Straßen aus Kanten berechnen
+        for u, v in graph.edges():
+            if (u, v) in visited_edges or (v, u) in visited_edges:
+                continue
+            if not (u[0] == v[0] or u[1] == v[1]):
+                continue
 
-        # Optional: Gesamtanzahl der Straßen
-        # anzahl_straßen = len(straßen)
-        # print(f"\nAnzahl der Straßen: {anzahl_straßen}")
-        #
-        # connected_gray_zones = find_connected_gray_zones(self.graph)
-        # for i, zone in enumerate(connected_gray_zones, 1):
-        #     print(f"Graue Zone {i}: {len(zone)} Blöcke ({len(zone)} Punkte)")
+            path = _extend_path(graph, u, v, visited_edges)
+            path = _extend_path(graph, v, u, visited_edges, path=path, reverse=True)
 
+            non_virtual_blocks = [
+                node for node in path if not graph.nodes[node].get("is_virtual", False)
+            ]
+            if len(non_virtual_blocks) > 0:
+                streets.append(non_virtual_blocks)
+                visited_nodes.update(non_virtual_blocks)
 
-from collections import deque
+        # 2. Isolierte Blöcke (Straßen der Länge 1) hinzufügen
+        for node in graph.nodes():
+            if (
+                not graph.nodes[node].get("is_virtual", False)
+                and node not in visited_nodes
+            ):
+                node_streets = graph.nodes[node].get("street", [])
+                if node_streets:
+                    has_valid_edge = False
+                    for direction in node_streets:
+                        dx, dy = 0, 0
+                        if direction == "N":
+                            dx, dy = 0, -1
+                        elif direction == "S":
+                            dx, dy = 0, 1
+                        elif direction == "W":
+                            dx, dy = -1, 0
+                        elif direction == "E":
+                            dx, dy = 1, 0
+                        neighbor_coords = (node[0] + dx, node[1] + dy)
+                        if graph.has_edge(node, neighbor_coords):
+                            has_valid_edge = True
+                            break
+                    if not has_valid_edge:
+                        streets.append([node])
 
+        # Straßen an virtuellen Blöcken teilen
+        split_streets = []
+        for street in streets:
+            if len(street) > 1:
+                # Prüfen, ob es sich um einen Loop handelt
+                is_loop = street[0] == street[-1]
+                if is_loop:
+                    # Entferne den doppelten Startpunkt
+                    street = street[:-1]
+                    split_streets.append(street)
+                    continue
 
-def find_connected_gray_zones(graph: nx.Graph) -> list:
-    # Alle grauen Blöcke finden (ohne Blockade-Prüfung)
-    gray_nodes = [
-        n for n, attr in graph.nodes(data=True) if attr.get("color") == "grey"
-    ]
+                sub_streets = []
+                current_sub_street = [street[0]]
+                for i in range(1, len(street)):
+                    prev_node = street[i - 1]
+                    current_node = street[i]
+                    # Prüfen, ob es einen Sprung in den Koordinaten gibt
+                    dx = abs(current_node[0] - prev_node[0])
+                    dy = abs(current_node[1] - prev_node[1])
+                    # Teile die Straße, wenn dx + dy >= 2
+                    if dx + dy >= 2:
+                        sub_streets.append(current_sub_street)
+                        current_sub_street = [current_node]
+                    else:
+                        current_sub_street.append(current_node)
+                sub_streets.append(current_sub_street)
+                split_streets.extend(sub_streets)
+            else:
+                split_streets.append(street)
 
-    visited = set()
-    zones = []
+        # Straßenlängen berechnen
+        street_block_counts = {
+            f"Straße {i+1}, Länge: {len(street)}, Nodes: {street}": len(street)
+            for i, street in enumerate(split_streets)
+        }
+        return len(street_block_counts), street_block_counts
 
-    for node in gray_nodes:
-        if node not in visited:
-            # Neue Zone starten
-            queue = deque([node])
-            visited.add(node)
-            zone = []
+    def calculate_connected_groups(self) -> dict:
+        # Alle Knoten nach Farbe gruppieren
+        color_groups = defaultdict(list)
+        for node, data in self.graph.nodes(data=True):
+            if not data.get("is_virtual", False):
+                color_groups[data["color"]].append(node)
 
-            while queue:
-                current = queue.popleft()
-                zone.append(current)
+        # Ergebnis: {Farbe: {"group_count": Anzahl Gruppen, "group_sizes": [Größe Gruppe 1, Größe Gruppe 2, ...]}}
+        result = {}
 
-                # Nachbarn im Koordinatensystem prüfen
-                for neighbor in get_neighbors(current):
-                    if (
-                        neighbor in graph.nodes
-                        and graph.nodes[neighbor].get("color") == "grey"
-                        and neighbor not in visited
-                    ):
-                        visited.add(neighbor)
-                        queue.append(neighbor)
+        for color, nodes in color_groups.items():
+            visited = set()
+            group_sizes = []
 
-            zones.append(zone)
+            for node in nodes:
+                if node not in visited:
+                    # Neue Gruppe starten
+                    queue = deque([node])
+                    visited.add(node)
+                    group = []
 
-    return zones
+                    while queue:
+                        current = queue.popleft()
+                        group.append(current)
 
+                        # Nachbarn prüfen (orthogonal: oben, unten, links, rechts)
+                        x, y = current
+                        neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
 
-def get_neighbors(coords: tuple) -> list:
-    x, y = coords
-    return [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+                        for neighbor in neighbors:
+                            if (
+                                neighbor in self.graph.nodes
+                                and not self.graph.nodes[neighbor].get(
+                                    "is_virtual", False
+                                )
+                                and self.graph.nodes[neighbor]["color"] == color
+                                and neighbor not in visited
+                            ):
+                                visited.add(neighbor)
+                                queue.append(neighbor)
+
+                    group_sizes.append(len(group))
+
+            result[color] = {
+                "group_count": len(group_sizes),
+                "group_sizes": group_sizes,
+            }
+
+        return result
+
+    def is_placement_valid(self, grid_x: float, grid_y: float) -> bool:
+        card_coords = {
+            (grid_x, grid_y),
+            (grid_x + 1, grid_y),
+            (grid_x + 1, grid_y + 1),
+            (grid_x, grid_y + 1),
+        }
+        occupied_coords = {
+            node[0] for node in self.graph.nodes(data=True) if not node[1]["is_virtual"]
+        }
+        allowed_coords = set(occupied_coords)
+        for x, y in occupied_coords:
+            allowed_coords.add((x + 1, y))
+            allowed_coords.add((x - 1, y))
+            allowed_coords.add((x, y + 1))
+            allowed_coords.add((x, y - 1))
+        return any(coord in allowed_coords for coord in card_coords)
+
+    # Mapping: Richtung → (Koordinatenänderung, komplementäre Richtung)
+    direction_map = {
+        "N": ((0, -1), "S"),
+        "S": ((0, 1), "N"),
+        "W": ((-1, 0), "E"),
+        "E": ((1, 0), "W"),
+    }
