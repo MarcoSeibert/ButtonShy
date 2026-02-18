@@ -1,4 +1,4 @@
 # Core Abhängigkeiten
 Pillow>=9.0.0          # Für Bildverarbeitung (PIL)
 PyMuPDF>=1.20.0        # Für PDF-Extraktion (fitz)
-tk>=0.1.0              # Für Tkinter-GUI (wird oft mit Python mitgeliefert)
+networkx>=2.6.3        # Für Graphenoperationen
