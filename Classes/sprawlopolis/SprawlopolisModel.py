@@ -111,15 +111,12 @@ class SprawlopolisModel(BaseModel):
             self.scores[color] = max(block_scores[color]["group_sizes"])
         # goal scores
         for i, card in enumerate(self.score_cards):
-            points = self.scoring_functions_mapping[card.card_id](self.graph, self)
+            points = self.scoring_functions_mapping[card.card_id](
+                self.graph, self.streets
+            )
             self.scores[f"goal_{i+1}"] = points
 
         self.talk_to_observer(param="update_scores")
-
-    def update_goal_scores(self) -> None:
-        for i, card in enumerate(self.score_cards):
-            points = self.scoring_functions_mapping[card.card_id](self.graph, self)
-            self.scores[f"goal_{i+1}"] = points
 
     def add_card_to_graph(self, card_to_play: BaseCard, position: tuple) -> None:
         card = next(c for c in self.cards_data if c["id"] == card_to_play.card_id)
@@ -168,7 +165,6 @@ class SprawlopolisModel(BaseModel):
                     self.graph.add_edge(block_coords, to_coords)
 
         self.update_scores()
-        self.update_goal_scores()
 
     def calculate_streets(self) -> dict:
         graph = self.graph.copy()
@@ -334,7 +330,12 @@ class SprawlopolisModel(BaseModel):
 
     scoring_functions_mapping = {
         1: sf.the_outskirts,
+        2: sf.bloom_boom,
+        3: sf.go_green,
         4: sf.block_party,
+        5: sf.stacks_and_scrapers,
+        7: sf.central_perks,
+        12: sf.superhighway,
         15: sf.skid_row,
         17: sf.tourist_trap,
         18: sf.sprawlopolis,

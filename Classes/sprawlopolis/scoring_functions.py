@@ -3,8 +3,7 @@ from collections import defaultdict
 import networkx as nx
 
 
-# Card 1
-def determine_point_type(graph: nx.Graph, nodes: list, index: int) -> None | str:
+def determine_end_type(graph: nx.Graph, nodes: list, index: int) -> None | str:
     direction_map = {"W": (-1, 0), "S": (0, 1), "E": (1, 0), "N": (0, -1)}
     node = nodes[index]
     x1, y1 = node
@@ -22,16 +21,50 @@ def determine_point_type(graph: nx.Graph, nodes: list, index: int) -> None | str
     )
 
 
-def the_outskirts(graph: nx.Graph, model: object) -> int:
+# Card 1
+def the_outskirts(graph: nx.Graph, streets: dict) -> int:
     points = 0
-    for i, street in model.streets.items():
+    for i, street in streets.items():
         nodes = street["nodes"]
-        start_point = determine_point_type(graph, nodes, 0)
-        end_point = determine_point_type(graph, nodes, -1)
+        start_point = determine_end_type(graph, nodes, 0)
+        end_point = determine_end_type(graph, nodes, -1)
         if start_point == "block" and end_point == "block":
             points += 1
         else:
             points -= 1
+    return points
+
+
+# Card 2
+def bloom_boom(graph: nx.Graph, _) -> int:
+    row_dict = defaultdict(int)
+    col_dict = defaultdict(int)
+    for node in graph.nodes():
+        if graph.nodes[node]["is_virtual"]:
+            continue
+        x, y = node
+        row_dict[y] += 0
+        col_dict[x] += 0
+        if graph.nodes[node]["color"] != "green":
+            continue
+        row_dict[y] += 1
+        col_dict[x] += 1
+    count_3_rows = sum(1 for value in row_dict.values() if value == 3)
+    count_3_columns = sum(1 for value in col_dict.values() if value == 3)
+    count_0_rows = sum(1 for value in row_dict.values() if value == 0)
+    count_0_columns = sum(1 for value in col_dict.values() if value == 0)
+    points = count_3_rows + count_3_columns - count_0_rows - count_0_columns
+    return points
+
+
+# Card 3
+def go_green(graph: nx.Graph, _) -> int:
+    points = 0
+    for node in graph.nodes:
+        if graph.nodes[node]["color"] == "green":
+            points += 1
+        elif graph.nodes[node]["color"] == "grey":
+            points -= 3
     return points
 
 
@@ -61,6 +94,45 @@ def block_party(graph: nx.Graph, _) -> int:
     return points
 
 
+# Card 5
+def stacks_and_scrapers(graph: nx.Graph, _) -> int:
+    points = 0
+    for node in graph.nodes():
+        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "grey":
+            continue
+        x, y = node
+        neighbors = [(x, y - 1), (x + 1, y), (x, y + 1), (x - 1, y)]
+        for neighbor in neighbors:
+            if graph.nodes[neighbor]["color"] not in ["blue", "grey"]:
+                break
+        else:
+            points += 2
+    return points
+
+
+# Card 7
+def central_perks(graph: nx.Graph, _) -> int:
+    points = 0
+    for node in graph.nodes:
+        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "green":
+            continue
+        x, y = node
+        neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+        for neighbor in neighbors:
+            if not graph.has_node(neighbor) or graph.nodes[neighbor]["is_virtual"]:
+                points -= 2
+                break
+        else:
+            points += 1
+    return points
+
+
+# Card 12
+def superhighway(_, streets: dict) -> int:
+    longest_road = max([streets[street]["Length"] for street in streets])
+    return int(longest_road / 2)
+
+
 # Card 15
 def skid_row(graph: nx.Graph, _) -> int:
     points = 0
@@ -68,18 +140,14 @@ def skid_row(graph: nx.Graph, _) -> int:
         grey_count = 0
         if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "orange":
             continue
-        else:
-            x, y = node
-            neighbors = [(x - 1, y), (x + 1, y), (x, y + 1), (x, y - 1)]
-            for neighbor in neighbors:
-                if (
-                    graph.has_node(neighbor)
-                    and graph.nodes[neighbor]["color"] == "grey"
-                ):
-                    grey_count += 1
-            if grey_count >= 2:
-                print(node, graph.nodes[node]["color"])
-                points += 2
+        x, y = node
+        neighbors = [(x - 1, y), (x + 1, y), (x, y + 1), (x, y - 1)]
+        for neighbor in neighbors:
+            if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] == "grey":
+                grey_count += 1
+        if grey_count >= 2:
+            print(node, graph.nodes[node]["color"])
+            points += 2
     return points
 
 
