@@ -32,7 +32,13 @@ class SprawlopolisView(BaseView, CanvasGameView):
             self, foreground="black", font=BASIC_FONT, relief="flat"
         )
         self.score_area.grid(column=13, columnspan=2, row=1, rowspan=12)
-
+        # add goal score per card
+        self.goal_1 = ttk.Label(self, text="0", font=BOLD_FONT)
+        self.goal_1.grid(column=15, columnspan=2, row=1, rowspan=4)
+        self.goal_2 = ttk.Label(self, text="0", font=BOLD_FONT)
+        self.goal_2.grid(column=15, columnspan=2, row=5, rowspan=4)
+        self.goal_3 = ttk.Label(self, text="0", font=BOLD_FONT)
+        self.goal_3.grid(column=15, columnspan=2, row=9, rowspan=4)
         # insert scorecard
         ## load images
         self.orange_block = tk.PhotoImage(

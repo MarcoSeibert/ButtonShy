@@ -6,6 +6,7 @@ from collections import deque, defaultdict
 
 from Classes.base.events import ModelEvent
 from Classes.base.models import BaseModel, BaseCard
+import Classes.sprawlopolis.scoring_functions as sf
 
 
 def _extend_path(
@@ -50,8 +51,20 @@ def _extend_path(
 class SprawlopolisModel(BaseModel):
     def __init__(self, game_data: dict) -> None:
         super().__init__(game_data)
+        self.streets = {}
         self.score_cards = []
         self.hand_cards = []
+        self.scores = {
+            "streets": 0,
+            "green": 0,
+            "blue": 0,
+            "orange": 0,
+            "grey": 0,
+            "goal_1": 0,
+            "goal_2": 0,
+            "goal_3": 0,
+        }
+        self.goal = 0
 
         with open("Resources/Assets/Sprawlopolis/cards_data.json", "r") as file:
             self.cards_data = json.load(file)["cards"]
@@ -62,6 +75,7 @@ class SprawlopolisModel(BaseModel):
             given_card = random.choice(self.cards)
             self.cards.remove(given_card)
             self.score_cards.append(given_card)
+            self.goal += given_card.card_id
 
         # draw three initial hand cards
         for _ in range(3):
@@ -72,22 +86,40 @@ class SprawlopolisModel(BaseModel):
     def play_first_card(self) -> None:
         card_to_play = self.cards[0]
         self.cards.remove(card_to_play)
-        self.play_card_to_observer(card_to_play, param="play_first_card")
+        self.talk_to_observer(param="play_first_card", obj=card_to_play)
         self.add_card_to_graph(card_to_play, (30, 18))
 
-    def play_card_to_observer(self, card: BaseCard, param: str) -> None:
-        event = None
+    def talk_to_observer(self, param: str, obj: object = None) -> None:
         if param == "play_first_card":
-            event = ModelEvent("FIRST_CARD_PLAYED", {"card": card})
-        elif param == "draw_new_card":
-            event = ModelEvent("DRAW_NEW_CARD", {})
-        self.notify_observers(event)  # Benachrichtige alle Observer
+            event = ModelEvent("FIRST_CARD_PLAYED", {"card": obj})
+        else:
+            event = ModelEvent(param.upper(), {})
+        self.notify_observers(event)
 
     def draw_new_card(self) -> None:
         new_card = self.cards[0]
         self.cards.remove(new_card)
         self.hand_cards.append(new_card)
-        self.play_card_to_observer(new_card, param="draw_new_card")
+        self.talk_to_observer(param="draw_new_card", obj=new_card)
+
+    def update_scores(self) -> None:
+        # base scores
+        self.scores["streets"] = -len(self.calculate_streets())
+        self.streets = self.calculate_streets()
+        block_scores = self.calculate_connected_groups()
+        for color in block_scores:
+            self.scores[color] = max(block_scores[color]["group_sizes"])
+        # goal scores
+        for i, card in enumerate(self.score_cards):
+            points = self.scoring_functions_mapping[card.card_id](self.graph, self)
+            self.scores[f"goal_{i+1}"] = points
+
+        self.talk_to_observer(param="update_scores")
+
+    def update_goal_scores(self) -> None:
+        for i, card in enumerate(self.score_cards):
+            points = self.scoring_functions_mapping[card.card_id](self.graph, self)
+            self.scores[f"goal_{i+1}"] = points
 
     def add_card_to_graph(self, card_to_play: BaseCard, position: tuple) -> None:
         card = next(c for c in self.cards_data if c["id"] == card_to_play.card_id)
@@ -132,10 +164,13 @@ class SprawlopolisModel(BaseModel):
                             self.graph.add_edge(block_coords, to_coords)
                 else:
                     # Virtuellen Knoten für Randstraße erstellen
-                    self.graph.add_node(to_coords, is_virtual=True)
+                    self.graph.add_node(to_coords, is_virtual=True, color=None)
                     self.graph.add_edge(block_coords, to_coords)
 
-    def calculate_streets_and_blocks(self) -> tuple:
+        self.update_scores()
+        self.update_goal_scores()
+
+    def calculate_streets(self) -> dict:
         graph = self.graph.copy()
         streets = []
         visited_edges = set()
@@ -216,11 +251,10 @@ class SprawlopolisModel(BaseModel):
                 split_streets.append(street)
 
         # Straßenlängen berechnen
-        street_block_counts = {
-            f"Straße {i+1}, Länge: {len(street)}, Nodes: {street}": len(street)
-            for i, street in enumerate(split_streets)
-        }
-        return len(street_block_counts), street_block_counts
+        street_block_counts = {}
+        for i, street in enumerate(split_streets):
+            street_block_counts[i] = {"Length": len(street), "nodes": street}
+        return street_block_counts
 
     def calculate_connected_groups(self) -> dict:
         # Alle Knoten nach Farbe gruppieren
@@ -296,4 +330,12 @@ class SprawlopolisModel(BaseModel):
         "S": ((0, 1), "N"),
         "W": ((-1, 0), "E"),
         "E": ((1, 0), "W"),
+    }
+
+    scoring_functions_mapping = {
+        1: sf.the_outskirts,
+        4: sf.block_party,
+        15: sf.skid_row,
+        17: sf.tourist_trap,
+        18: sf.sprawlopolis,
     }

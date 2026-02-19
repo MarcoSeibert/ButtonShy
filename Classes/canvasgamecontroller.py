@@ -142,6 +142,7 @@ class CanvasGameController:
         self.model.active_card = card
 
         pywinstyles.set_opacity(event.widget, value=0.5, color="#000001")
+        self.active_card_image = card.front_image
         self.view.add_card_to_canvas(card, "front", (30, 18), self.grid_size)
         self.active_widget = event.widget
 
@@ -184,8 +185,7 @@ class CanvasGameController:
         if self.model.cards:
             self.model.draw_new_card()
         else:
-            # TODO: end game with fewer cards
-            print("end of deck for now")
+            self.view.hand_area.winfo_children()[-1].destroy()
         for i, card in enumerate(self.view.hand_area.winfo_children()):
             pywinstyles.set_opacity(card, color="#000001")
             card.bind(
@@ -195,6 +195,8 @@ class CanvasGameController:
                 image=self.model.hand_cards[i].front_image,
                 background="#000001",
             )
+
+        # update the scores
 
     def press_decline(self, event: Event) -> None:
         # reset everything
