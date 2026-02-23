@@ -48,9 +48,30 @@ def _extend_path(
     return path
 
 
+def is_valid_loop(nodes: list) -> bool:
+    if len(nodes) < 4:
+        return False
+
+    # Überprüfen, ob der erste und der letzte Knoten gleich sind
+    if nodes[0] != nodes[-1]:
+        return False
+
+    # Überprüfen, ob jede aufeinanderfolgende Knoten nur eine Koordinate ändern
+    for i in range(len(nodes) - 1):
+        x1, y1 = nodes[i]
+        x2, y2 = nodes[i + 1]
+        dx = abs(x2 - x1)
+        dy = abs(y2 - y1)
+        if dx + dy != 1:
+            return False
+
+    return True
+
+
 class SprawlopolisModel(BaseModel):
     def __init__(self, game_data: dict) -> None:
         super().__init__(game_data)
+        self.loops = []
         self.streets = {}
         self.score_cards = []
         self.hand_cards = []
@@ -104,9 +125,9 @@ class SprawlopolisModel(BaseModel):
 
     def update_scores(self) -> None:
         # base scores
-        self.scores["streets"] = -len(self.calculate_streets())
         self.streets = self.calculate_streets()
-        block_scores = self.calculate_connected_groups()
+        self.scores["streets"] = -len(self.streets[0])
+        block_scores = sf.calculate_connected_groups(self.graph)
         for color in block_scores:
             self.scores[color] = max(block_scores[color]["group_sizes"])
         # goal scores
@@ -166,7 +187,7 @@ class SprawlopolisModel(BaseModel):
 
         self.update_scores()
 
-    def calculate_streets(self) -> dict:
+    def calculate_streets(self) -> tuple[dict, list]:
         graph = self.graph.copy()
         streets = []
         visited_edges = set()
@@ -217,11 +238,14 @@ class SprawlopolisModel(BaseModel):
 
         # Straßen an virtuellen Blöcken teilen
         split_streets = []
+        loops = []
         for street in streets:
             if len(street) > 1:
                 # Prüfen, ob es sich um einen Loop handelt
                 is_loop = street[0] == street[-1]
                 if is_loop:
+                    if is_valid_loop(street):
+                        loops.append(len(street) - 1)
                     # Entferne den doppelten Startpunkt
                     street = street[:-1]
                     split_streets.append(street)
@@ -250,57 +274,7 @@ class SprawlopolisModel(BaseModel):
         street_block_counts = {}
         for i, street in enumerate(split_streets):
             street_block_counts[i] = {"Length": len(street), "nodes": street}
-        return street_block_counts
-
-    def calculate_connected_groups(self) -> dict:
-        # Alle Knoten nach Farbe gruppieren
-        color_groups = defaultdict(list)
-        for node, data in self.graph.nodes(data=True):
-            if not data.get("is_virtual", False):
-                color_groups[data["color"]].append(node)
-
-        # Ergebnis: {Farbe: {"group_count": Anzahl Gruppen, "group_sizes": [Größe Gruppe 1, Größe Gruppe 2, ...]}}
-        result = {}
-
-        for color, nodes in color_groups.items():
-            visited = set()
-            group_sizes = []
-
-            for node in nodes:
-                if node not in visited:
-                    # Neue Gruppe starten
-                    queue = deque([node])
-                    visited.add(node)
-                    group = []
-
-                    while queue:
-                        current = queue.popleft()
-                        group.append(current)
-
-                        # Nachbarn prüfen (orthogonal: oben, unten, links, rechts)
-                        x, y = current
-                        neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-
-                        for neighbor in neighbors:
-                            if (
-                                neighbor in self.graph.nodes
-                                and not self.graph.nodes[neighbor].get(
-                                    "is_virtual", False
-                                )
-                                and self.graph.nodes[neighbor]["color"] == color
-                                and neighbor not in visited
-                            ):
-                                visited.add(neighbor)
-                                queue.append(neighbor)
-
-                    group_sizes.append(len(group))
-
-            result[color] = {
-                "group_count": len(group_sizes),
-                "group_sizes": group_sizes,
-            }
-
-        return result
+        return street_block_counts, loops
 
     def is_placement_valid(self, grid_x: float, grid_y: float) -> bool:
         card_coords = {
@@ -334,8 +308,13 @@ class SprawlopolisModel(BaseModel):
         3: sf.go_green,
         4: sf.block_party,
         5: sf.stacks_and_scrapers,
+        6: sf.master_planned,
         7: sf.central_perks,
+        8: sf.the_burbs,
+        9: sf.concrete_jungle,
+        10: sf.the_strip,
         12: sf.superhighway,
+        14: sf.looping_lanes,
         15: sf.skid_row,
         17: sf.tourist_trap,
         18: sf.sprawlopolis,

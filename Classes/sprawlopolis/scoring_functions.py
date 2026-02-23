@@ -1,6 +1,56 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 
 import networkx as nx
+
+
+def calculate_connected_groups(graph: nx.Graph) -> dict:
+    # Alle Knoten nach Farbe gruppieren
+    color_groups = defaultdict(list)
+    for node, data in graph.nodes(data=True):
+        if not data.get("is_virtual", False):
+            color_groups[data["color"]].append(node)
+
+    result = {}
+
+    for color, nodes in color_groups.items():
+        visited = set()
+        group_sizes = []
+        group_nodes = []
+
+        for node in nodes:
+            if node not in visited:
+                # Neue Gruppe starten
+                queue = deque([node])
+                visited.add(node)
+                group = []
+
+                while queue:
+                    current = queue.popleft()
+                    group.append(current)
+
+                    # Nachbarn prüfen (orthogonal: oben, unten, links, rechts)
+                    x, y = current
+                    neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+
+                    for neighbor in neighbors:
+                        if (
+                            neighbor in graph.nodes
+                            and not graph.nodes[neighbor].get("is_virtual", False)
+                            and graph.nodes[neighbor]["color"] == color
+                            and neighbor not in visited
+                        ):
+                            visited.add(neighbor)
+                            queue.append(neighbor)
+
+                group_sizes.append(len(group))
+                group_nodes.append(group)
+
+        result[color] = {
+            "group_count": len(group_sizes),
+            "group_sizes": group_sizes,
+            "group_nodes": group_nodes,
+        }
+    return result
 
 
 def determine_end_type(graph: nx.Graph, nodes: list, index: int) -> None | str:
@@ -24,7 +74,7 @@ def determine_end_type(graph: nx.Graph, nodes: list, index: int) -> None | str:
 # Card 1
 def the_outskirts(graph: nx.Graph, streets: dict) -> int:
     points = 0
-    for i, street in streets.items():
+    for i, street in streets[0].items():
         nodes = street["nodes"]
         start_point = determine_end_type(graph, nodes, 0)
         end_point = determine_end_type(graph, nodes, -1)
@@ -103,11 +153,22 @@ def stacks_and_scrapers(graph: nx.Graph, _) -> int:
         x, y = node
         neighbors = [(x, y - 1), (x + 1, y), (x, y + 1), (x - 1, y)]
         for neighbor in neighbors:
-            if graph.nodes[neighbor]["color"] not in ["blue", "grey"]:
+            if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] not in [
+                "blue",
+                "grey",
+            ]:
                 break
         else:
             points += 2
     return points
+
+
+# Card 6
+def master_planned(graph: nx.Graph, _) -> int:
+    groups = calculate_connected_groups(graph)
+    orange_score = max(groups["orange"]["group_sizes"])
+    grey_score = max(groups["grey"]["group_sizes"])
+    return orange_score - grey_score
 
 
 # Card 7
@@ -127,10 +188,76 @@ def central_perks(graph: nx.Graph, _) -> int:
     return points
 
 
+# Card 8
+def the_burbs(graph: nx.Graph, _) -> int:
+    points = []
+    orange_nodes = calculate_connected_groups(graph)["orange"]["group_nodes"]
+    max_size = len(max(orange_nodes, key=len))
+    biggest_groups = [group for group in orange_nodes if len(group) == max_size]
+    for group in biggest_groups:
+        points_for_this_group = 0
+        visited_neighbors = []
+        for node in group:
+            x, y = node
+            neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+            for neighbor in neighbors:
+                if neighbor not in visited_neighbors and graph.has_node(neighbor):
+                    visited_neighbors.append(neighbor)
+                    if graph.nodes[neighbor]["color"] == "green":
+                        points_for_this_group += 1
+                    elif graph.nodes[neighbor]["color"] == "grey":
+                        points_for_this_group -= 2
+        points.append(points_for_this_group)
+    return max(points)
+
+
+# Card 9
+def concrete_jungle(graph: nx.Graph, _) -> int:
+    points = 0
+    for node in graph.nodes():
+        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "grey":
+            continue
+        x, y = node
+        diag_neighbors = [
+            (x + 1, y + 1),
+            (x + 1, y - 1),
+            (x - 1, y - 1),
+            (x - 1, y + 1),
+        ]
+        for neighbor in diag_neighbors:
+            if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] == "grey":
+                points += 1
+                break
+    return points
+
+
+# Card 10
+def the_strip(graph: nx.Graph, _) -> int:
+    row_dict = defaultdict(int)
+    col_dict = defaultdict(int)
+    for node in graph.nodes():
+        if graph.nodes[node]["is_virtual"]:
+            continue
+        x, y = node
+        row_dict[y] += 0
+        col_dict[x] += 0
+        if graph.nodes[node]["color"] != "blue":
+            continue
+        row_dict[y] += 1
+        col_dict[x] += 1
+    points = max(list(row_dict.values()) + list(col_dict.values()))
+    return points
+
+
 # Card 12
 def superhighway(_, streets: dict) -> int:
-    longest_road = max([streets[street]["Length"] for street in streets])
+    longest_road = max([streets[0][street]["Length"] for street in streets[0]])
     return int(longest_road / 2)
+
+
+# Card 14
+def looping_lanes(_, streets: dict) -> int:
+    return sum(streets[1])
 
 
 # Card 15
@@ -146,7 +273,6 @@ def skid_row(graph: nx.Graph, _) -> int:
             if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] == "grey":
                 grey_count += 1
         if grey_count >= 2:
-            print(node, graph.nodes[node]["color"])
             points += 2
     return points
 
