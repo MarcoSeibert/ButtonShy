@@ -65,20 +65,21 @@ def determine_end_type(graph: nx.Graph, nodes: list, index: int) -> None | str:
         dx, dy = direction_map[direction]
         x2, y2 = x1 + dx, y1 + dy
     return (
-        "block"
+        (x2, y2)
         if graph.has_node((x2, y2)) and not graph.nodes[(x2, y2)]["is_virtual"]
         else "empty"
     )
 
 
 # Card 1
-def the_outskirts(graph: nx.Graph, streets: dict) -> int:
+def the_outskirts(graph: nx.Graph, streets: tuple) -> int:
     points = 0
     for i, street in streets[0].items():
         nodes = street["nodes"]
         start_point = determine_end_type(graph, nodes, 0)
         end_point = determine_end_type(graph, nodes, -1)
-        if start_point == "block" and end_point == "block":
+        if start_point != "empty" and end_point != "empty":
+            print("+1")
             points += 1
         else:
             points -= 1
@@ -249,14 +250,54 @@ def the_strip(graph: nx.Graph, _) -> int:
     return points
 
 
+# Card 11
+def mini_marts(graph: nx.Graph, streets: tuple) -> int:
+    # todo Test for loops in the streets
+    points = 0
+    for street in streets[0]:
+        if streets[0][street]["Length"] < 3:
+            continue
+        nodes = streets[0][street]["nodes"]
+        for i in range(len(nodes) - 2):
+            current_node = nodes[i]
+            next_node = nodes[i + 1]
+            next_next_node = nodes[i + 2]
+            if (
+                graph.nodes[current_node]["color"] == "orange"
+                and graph.nodes[next_node]["color"] == "blue"
+                and graph.nodes[next_next_node]["color"] == "orange"
+            ):
+                points += 2
+    return points
+
+
 # Card 12
-def superhighway(_, streets: dict) -> int:
+def superhighway(_, streets: tuple) -> int:
     longest_road = max([streets[0][street]["Length"] for street in streets[0]])
     return int(longest_road / 2)
 
 
+# Card 13
+def park_hopping(graph: nx.Graph, streets: tuple) -> int:
+    points = 0
+
+    for i, street in streets[0].items():
+        nodes = street["nodes"]
+        start_point = determine_end_type(graph, nodes, 0)
+        end_point = determine_end_type(graph, nodes, -1)
+        if (
+            start_point != end_point
+            and start_point != "empty"
+            and end_point != "empty"
+            and graph.nodes[start_point]["color"] == "green"
+            and graph.nodes[end_point]["color"] == "green"
+        ):
+            points += 3
+    return points
+
+
 # Card 14
-def looping_lanes(_, streets: dict) -> int:
+def looping_lanes(_, streets: tuple) -> int:
     return sum(streets[1])
 
 
@@ -273,6 +314,23 @@ def skid_row(graph: nx.Graph, _) -> int:
             if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] == "grey":
                 grey_count += 1
         if grey_count >= 2:
+            points += 2
+    return points
+
+
+# Card 16
+def morning_commute(graph: nx.Graph, streets: tuple) -> int:
+    points = 0
+    for street in streets[0]:
+        street_has_orange = False
+        street_has_blue = False
+        nodes = streets[0][street]["nodes"]
+        for node in nodes:
+            if graph.has_node(node) and graph.nodes[node]["color"] == "orange":
+                street_has_orange = True
+            elif graph.has_node(node) and graph.nodes[node]["color"] == "blue":
+                street_has_blue = True
+        if street_has_orange and street_has_blue:
             points += 2
     return points
 

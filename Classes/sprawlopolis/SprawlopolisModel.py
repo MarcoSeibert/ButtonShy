@@ -313,9 +313,12 @@ class SprawlopolisModel(BaseModel):
         8: sf.the_burbs,
         9: sf.concrete_jungle,
         10: sf.the_strip,
+        11: sf.mini_marts,
         12: sf.superhighway,
+        13: sf.park_hopping,
         14: sf.looping_lanes,
         15: sf.skid_row,
+        16: sf.morning_commute,
         17: sf.tourist_trap,
         18: sf.sprawlopolis,
     }
