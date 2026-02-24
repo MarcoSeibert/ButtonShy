@@ -26,9 +26,6 @@ class BaseCard:
 
 class BaseModel:
     def __init__(self, game_data: dict) -> None:
-
-        self.golden_front_image_dict = {}
-        self.golden_back_image_dict = {}
         self.cards_data = None
         self.back_image_dict = {}
         self.front_image_dict = {}
@@ -64,15 +61,11 @@ class BaseModel:
             mapping_id = page_nr + "_" + card_nr
             card_id = mapping_data[mapping_id]["card_id"]
             side = mapping_data[mapping_id]["side"]
-            adjusted_photo_image, adjusted_photo, golden_bordered_image = (
-                load_and_adjust_image(fp, image_file)
-            )
+            adjusted_photo_image, adjusted_photo = load_and_adjust_image(fp, image_file)
             if side == "front":
                 self.front_image_dict[card_id] = adjusted_photo
-                self.golden_front_image_dict[card_id] = golden_bordered_image
             elif side == "back":
                 self.back_image_dict[card_id] = adjusted_photo
-                self.golden_back_image_dict[card_id] = golden_bordered_image
             card_in_list = next(
                 (card for card in cards if card.card_id == card_id), None
             )

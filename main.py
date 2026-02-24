@@ -10,7 +10,6 @@ if __name__ == "__main__":
     app_start = StartApp()
     app_start.mainloop()
 
-# todo Goldener Rahmen um aktive Karte
 # todo Fenster am Anfang (evtl schon mit Leicht/Normal/Schwer)
 # Todo das Ende muss passen
 # Todo Fenster am Ende (inkl. restart, zurück ins Menü, Quit)

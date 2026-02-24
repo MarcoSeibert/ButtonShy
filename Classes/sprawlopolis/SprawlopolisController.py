@@ -1,6 +1,7 @@
 from functools import partial
 from tkinter import ttk
 import pywinstyles
+from PIL import ImageTk
 
 from Classes.base.controllers import BaseController
 from Classes.base.events import ModelEvent
@@ -99,3 +100,59 @@ class SprawlopolisController(BaseController, CanvasGameController):
         self.view.goal_2.config(text=scores["goal_2"])  # type: ignore
         self.view.goal_3.config(text=scores["goal_3"])  # type: ignore
         self.view.total_score.config(text=sum(scores.values()))  # type: ignore
+
+    def press_turn(self, _) -> None:
+        active_card_obj = None
+        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")
+        if objs_with_movable_tag:
+            active_card_obj = objs_with_movable_tag[0]
+
+        # change the image on the canvas
+        old_image = self.model.front_image_dict[self.model.active_card.card_id]
+        rotated_image = old_image.rotate(180, expand=True)
+        self.model.front_image_dict[self.model.active_card.card_id] = rotated_image
+        photo_image = ImageTk.PhotoImage(rotated_image)
+
+        self.active_card_image = photo_image
+        self.view.canvas_area.itemconfigure(active_card_obj, image=photo_image)
+
+        # change the card data and image
+        for i, card in enumerate(self.model.cards_data):
+            if card["id"] == self.model.active_card.card_id:
+                self.model.cards_data[i] = rotate_card_values(card)
+                break
+        self.model.active_card.front_image = photo_image
+
+        # change the image in the hand area
+        for i, card in enumerate(self.view.hand_area.winfo_children()):
+            card.config(
+                image=self.model.hand_cards[i].front_image,
+                background="#000001",
+            )
+
+
+def rotate_card_values(card_data: dict) -> dict:
+    def transform_coords(coords: list[int]) -> list[int]:
+        return [1 - x for x in coords]
+
+    def transform_direction(direction: str) -> str:
+        direction_map = {
+            "N": "S",
+            "S": "N",
+            "W": "E",
+            "E": "W",
+        }
+        return direction_map.get(direction, direction)
+
+    transformed = {
+        "id": card_data["id"],
+        "blocks": [
+            {
+                "coords": transform_coords(block["coords"]),
+                "colour": block["colour"],
+                "street": [transform_direction(d) for d in block["street"]],
+            }
+            for block in card_data["blocks"]
+        ],
+    }
+    return transformed

@@ -35,17 +35,14 @@ def load_and_adjust_image(
     card_size: tuple = CARD_SIZE,
     radius: int = 5,
     border_size: int = 3,
-) -> tuple[ImageTk.PhotoImage, PIL.Image.Image, PIL.Image.Image]:
+) -> tuple[ImageTk.PhotoImage, PIL.Image.Image]:
     # Bild öffnen, drehen und Größe anpassen
     with Image.open(os.path.join(fp, image_name)) as img:
         img = img.convert("RGBA").rotate(-90, expand=True)
 
         adjusted_image = adjust_image(img, border_size, card_size, radius)
-        golden_border = adjust_image(
-            img, border_size, card_size, radius, (255, 215, 0, 255)
-        )
 
-        return ImageTk.PhotoImage(adjusted_image), adjusted_image, golden_border
+        return (ImageTk.PhotoImage(adjusted_image), adjusted_image)
 
 
 def adjust_image(

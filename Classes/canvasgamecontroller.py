@@ -15,7 +15,6 @@ BUTTON_PRESS_1 = "<ButtonPress-1>"
 class CanvasGameController:
     def __init__(self, model: BaseModel, view: CanvasGameView) -> None:
         self.drop_data = {"x": 30, "y": 18}
-        self.golden_image = None
         self.active_widget = None
         self.model = model
         self.view = view
@@ -146,9 +145,6 @@ class CanvasGameController:
         self.view.add_card_to_canvas(card, "front", (30, 18), self.grid_size)
         self.active_widget = event.widget
 
-        # golden_image = self.model.golden_front_image_dict[card.card_id]
-        # self.active_card_image = ImageTk.PhotoImage(golden_image)
-
         event.widget.image = self.active_card_image
 
         objs_on_canvas = self.view.canvas_area.find_all()
@@ -218,65 +214,4 @@ class CanvasGameController:
             )
 
     def press_turn(self, _) -> None:
-        active_card_obj = None
-        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")
-        if objs_with_movable_tag:
-            active_card_obj = objs_with_movable_tag[0]
-
-        # change the image on the canvas
-        old_image = self.model.front_image_dict[self.model.active_card.card_id]
-        rotated_image = old_image.rotate(180, expand=True)
-        self.model.front_image_dict[self.model.active_card.card_id] = rotated_image
-        # old_golden_image = self.model.golden_front_image_dict[
-        #     self.model.active_card.card_id
-        # ]
-        # rotated_golden_image = old_golden_image.rotate(180, expand=True)
-        # self.model.golden_front_image_dict[self.model.active_card.card_id] = (
-        #     rotated_golden_image
-        # )
-        photo_image = ImageTk.PhotoImage(rotated_image)
-
-        self.active_card_image = photo_image
-        self.view.canvas_area.itemconfigure(active_card_obj, image=photo_image)
-
-        # change the card data and image
-        for i, card in enumerate(self.model.cards_data):
-            if card["id"] == self.model.active_card.card_id:
-                self.model.cards_data[i] = rotate_card_values(card)
-                break
-        self.model.active_card.front_image = photo_image
-
-        # change the image in the hand area
-        # self.active_widget.config(image=photo_image)
-        for i, card in enumerate(self.view.hand_area.winfo_children()):
-            card.config(
-                image=self.model.hand_cards[i].front_image,
-                background="#000001",
-            )
-
-
-def rotate_card_values(card_data: dict) -> dict:
-    def transform_coords(coords: list[int]) -> list[int]:
-        return [1 - x for x in coords]
-
-    def transform_direction(direction: str) -> str:
-        direction_map = {
-            "N": "S",
-            "S": "N",
-            "W": "E",
-            "E": "W",
-        }
-        return direction_map.get(direction, direction)
-
-    transformed = {
-        "id": card_data["id"],
-        "blocks": [
-            {
-                "coords": transform_coords(block["coords"]),
-                "colour": block["colour"],
-                "street": [transform_direction(d) for d in block["street"]],
-            }
-            for block in card_data["blocks"]
-        ],
-    }
-    return transformed
+        raise NotImplementedError

@@ -76,7 +76,6 @@ def the_outskirts(graph: nx.Graph, streets: tuple) -> int:
         start_point = determine_end_type(graph, nodes, 0)
         end_point = determine_end_type(graph, nodes, -1)
         if start_point != "empty" and end_point != "empty":
-            print("+1")
             points += 1
         else:
             points -= 1
