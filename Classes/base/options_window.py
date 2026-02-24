@@ -4,12 +4,24 @@ from tkinter import ttk
 from globals import TITLE_FONT, BASIC_FONT
 
 
-class OptionsWindow(tk.Toplevel):
+# Model
+class OptionsModel:
+    def __init__(self):
+        self.options = {}
+        self.difficulty = "Normal"
+
+    def set_difficulty(self, difficulty):
+        self.difficulty = difficulty
+        self.options["difficulty"] = difficulty
+
+
+# View
+class OptionsView(tk.Toplevel):
     def __init__(self, parent: tk.Tk, game_name: str) -> None:
         super().__init__(parent)
         self.parent = parent
         self.game_name = game_name
-        self.options = {}
+        self.controller = None
 
         self.title(f"Options for {game_name}")
         
@@ -56,18 +68,43 @@ class OptionsWindow(tk.Toplevel):
             column=0, row=1, pady=10
         )
         self.difficulty_var = tk.StringVar(value="Normal")
-        ttk.Combobox(
+        self.difficulty_combobox = ttk.Combobox(
             self, textvariable=self.difficulty_var, values=["Easy", "Normal", "Hard"], font=BASIC_FONT
-        ).grid(column=0, row=2, pady=10)
+        )
+        self.difficulty_combobox.grid(column=0, row=2, pady=10)
 
         # Add a button to confirm the options
         self.confirm_button = ttk.Button(self, text="Confirm", style=my_button_style, command=self.on_confirm)
         self.confirm_button.grid(column=0, row=3, pady=20)
 
+    def set_controller(self, controller):
+        self.controller = controller
+
     def on_confirm(self):
-        # Store the selected options
-        self.options = {
-            "difficulty": self.difficulty_var.get()
-        }
-        # Close the window
-        self.destroy()
+        if self.controller:
+            self.controller.on_confirm()
+
+
+# Controller
+class OptionsController:
+    def __init__(self, model, view):
+        self.model = model
+        self.view = view
+        self.view.set_controller(self)
+
+    def on_confirm(self):
+        difficulty = self.view.difficulty_var.get()
+        self.model.set_difficulty(difficulty)
+        self.view.destroy()
+
+
+# Factory class to create and manage the MVC components
+class OptionsWindow:
+    def __init__(self, parent: tk.Tk, game_name: str) -> None:
+        self.model = OptionsModel()
+        self.view = OptionsView(parent, game_name)
+        self.controller = OptionsController(self.model, self.view)
+        self.view.mainloop()
+
+    def get_options(self):
+        return self.model.options
