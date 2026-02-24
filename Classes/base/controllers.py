@@ -1,7 +1,7 @@
 from Classes.base.events import ModelObserver, ModelEvent
 from Classes.base.models import BaseModel
 from Classes.base.views import StartView, BaseView
-from Classes.base.options_window import OptionsWindow
+from Classes.sprawlopolis.options_window import OptionsWindow
 from functions import start_game
 from start_up import games_dict
 
@@ -14,11 +14,12 @@ class StartController:
         chosen_game = self.view.chosen_game.get()
         chosen_game_name = games_dict[chosen_game].replace(" ", "")
         # Show the options window
-        options_window = OptionsWindow(self.view.master, chosen_game_name)
-        self.view.master.wait_window(options_window.view)
-        # Get the selected options
-        options = options_window.get_options()
-        # Start the game with the selected options
+        if chosen_game_name == "Sprawlopolis":
+            options_window = OptionsWindow(self.view.master, chosen_game_name)
+            self.view.master.wait_window(options_window.view)
+            options = options_window.get_options()
+        else:
+            options = None
         start_game(self.view.master, chosen_game_name, options)
 
 

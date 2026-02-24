@@ -31,7 +31,6 @@ class SprawlopolisModel(BaseModel):
             "goal_3": 0,
         }
         self.goal = 0
-        print(self.options)
 
         with open("Resources/Assets/Sprawlopolis/cards_data.json", "r") as file:
             self.cards_data = json.load(file)["cards"]

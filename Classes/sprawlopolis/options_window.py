@@ -24,7 +24,6 @@ class OptionsModel:
         self.options = {"difficulty": 1}
 
 
-# View
 class OptionsView(tk.Toplevel):
     def __init__(self, parent: tk.Tk, game_name: str) -> None:
         super().__init__(parent)
@@ -123,7 +122,6 @@ class OptionsView(tk.Toplevel):
             self.controller.click_diff(event)
 
 
-# Controller
 class OptionsController:
 
     def __init__(self, model: OptionsModel, view: OptionsView) -> None:
@@ -258,7 +256,8 @@ def get_frames_from_gif(img: PhotoImage) -> list:
         while True:
             try:
                 gif.seek(index)
-                frame = ImageTk.PhotoImage(gif)
+                gif_transparent = gif.convert("RGBA")
+                frame = ImageTk.PhotoImage(gif_transparent)
                 frames.append(frame)
             except EOFError:
                 break

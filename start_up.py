@@ -9,22 +9,26 @@ from PIL import Image
 games_dict = {}
 ASSET_BASE_PATH = "Resources/Assets"
 
-def crop_and_resize_image(input_path, output_path, crop_margin):
+
+def crop_and_resize_image(input_path: str, output_path: str, crop_margin: int) -> None:
     # Bild öffnen
     with Image.open(input_path) as image:
         # Bild in RGB-Modus konvertieren, falls notwendig
-        if image.mode == 'CMYK':
-            image = image.convert('RGB')
+        if image.mode == "CMYK":
+            image = image.convert("RGB")
 
         # Bild zuschneiden
         width, height = image.size
-        cropped_image = image.crop((crop_margin, crop_margin, width - crop_margin, height - crop_margin))
+        cropped_image = image.crop(
+            (crop_margin, crop_margin, width - crop_margin, height - crop_margin)
+        )
 
         # Bild auf die ursprüngliche Größe skalieren
         resized_image = cropped_image.resize((width, height))
 
         # Bild speichern
         resized_image.save(output_path)
+
 
 def extract_images(args: tuple) -> None:
     game_name, first_page = args
@@ -46,7 +50,8 @@ def extract_images(args: tuple) -> None:
                 f.write(image_bytes)
 
             # Bild zuschneiden und skalieren
-            crop_and_resize_image(image_path, image_path, 35)
+            crop_and_resize_image(image_path, image_path, 45)
+
 
 def create_assets(args: tuple) -> tuple:
     game_name, game_data = args
@@ -66,10 +71,12 @@ def create_assets(args: tuple) -> tuple:
     elapsed = time.time() - start_time
     return game_name, elapsed
 
+
 def process_game(args: tuple, result_queue: Queue = None) -> None:
     game_name, elapsed = create_assets(args)
     if result_queue:
         result_queue.put((game_name, elapsed))
+
 
 def check_for_assets() -> None:
     with open("Resources/Games.json") as json_file:
@@ -88,6 +95,7 @@ def check_for_assets() -> None:
     if games_to_process:
         with Pool(cpu_count()) as pool:
             pool.starmap(process_game, [(args, None) for args in games_to_process])
+
 
 def get_games_to_process(
     game: dict, game_data: dict, game_name: str, games_to_process: list
