@@ -15,9 +15,9 @@ class StartController:
         chosen_game_name = games_dict[chosen_game].replace(" ", "")
         # Show the options window
         options_window = OptionsWindow(self.view.master, chosen_game_name)
-        self.view.master.wait_window(options_window)
+        self.view.master.wait_window(options_window.view)
         # Get the selected options
-        options = options_window.options
+        options = options_window.get_options()
         # Start the game with the selected options
         start_game(self.view.master, chosen_game_name, options)
 
