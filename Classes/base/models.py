@@ -25,7 +25,7 @@ class BaseCard:
 
 
 class BaseModel:
-    def __init__(self, game_data: dict) -> None:
+    def __init__(self, game_data: dict, options: dict) -> None:
         self.cards_data = None
         self.back_image_dict = {}
         self.front_image_dict = {}
@@ -34,6 +34,7 @@ class BaseModel:
         self.hand_cards = None
         self.score_cards = None
         self.game_data = game_data
+        self.options = options if options else {}
 
         self.cards = self.create_deck_of_cards()
 

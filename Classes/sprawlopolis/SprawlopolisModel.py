@@ -14,8 +14,8 @@ from Classes.sprawlopolis.functions import (
 
 
 class SprawlopolisModel(BaseModel):
-    def __init__(self, game_data: dict) -> None:
-        super().__init__(game_data)
+    def __init__(self, game_data: dict, options: dict = None) -> None:
+        super().__init__(game_data, options)
         self.loops = []
         self.streets = {}
         self.score_cards = []
@@ -31,6 +31,7 @@ class SprawlopolisModel(BaseModel):
             "goal_3": 0,
         }
         self.goal = 0
+        print(self.options)
 
         with open("Resources/Assets/Sprawlopolis/cards_data.json", "r") as file:
             self.cards_data = json.load(file)["cards"]
