@@ -71,25 +71,40 @@ class OptionsView(tk.Toplevel):
 
         # Insert title
         ttk.Label(self, text="Options", font=TITLE_FONT).grid(
-            column=0, row=0, columnspan=6
+            column=0, row=0, columnspan=6, pady=20
         )
 
         ttk.Label(self, text="Difficulty", font=BOLD_FONT).grid(
-            column=4, row=1, columnspan=2
+            column=4, row=1, columnspan=2, pady=10
         )
         ttk.Label(self, text="Easy\n\nStandard\n\nHard", font=BASIC_FONT).grid(
-            column=5, row=2, sticky="W", rowspan=5
+            column=5, row=2, sticky="W", rowspan=5, padx=20
         )
         self.scale_difficulty = MyLabel(self, image=self.switch_difficulty)
         self.scale_difficulty.value = 1
         self.scale_difficulty.bind(LEFT_MOUSE_BUTTON, partial(self.on_click_diff))
-        self.scale_difficulty.grid(column=4, row=2, rowspan=5, sticky="E")
+        self.scale_difficulty.grid(column=4, row=2, rowspan=5, sticky="E", padx=20)
 
         # Add a button to confirm the options
         self.confirm_button = ttk.Button(
             self, text="Confirm", style=my_button_style, command=self.on_confirm
         )
-        self.confirm_button.grid(column=0, row=3, pady=20)
+        self.confirm_button.grid(column=0, row=6, pady=20)
+
+        # Configure grid weights for rows and columns to center the widgets
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=1)
+        self.grid_rowconfigure(5, weight=1)
+        self.grid_rowconfigure(6, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
+        self.grid_columnconfigure(3, weight=1)
+        self.grid_columnconfigure(4, weight=1)
+        self.grid_columnconfigure(5, weight=1)
 
     def set_controller(self, controller: object) -> None:
         self.controller = controller
