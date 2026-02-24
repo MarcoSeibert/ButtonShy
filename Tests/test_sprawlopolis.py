@@ -9,6 +9,17 @@ from Classes.sprawlopolis.functions import (
     calculate_streets,
 )
 
+from Classes.sprawlopolis.scoring_functions import (
+    calculate_connected_groups,
+    the_outskirts,
+    bloom_boom,
+)
+
+
+def add_card_to_graph(graph: nx.Graph, card: dict, position: tuple) -> None:
+    add_blocks_to_graph(graph, card, position)
+    add_streets_to_graph(graph, card, position)
+
 
 class TestGraphFunctions(unittest.TestCase):
     def setUp(self) -> None:
@@ -17,8 +28,6 @@ class TestGraphFunctions(unittest.TestCase):
         self.graph.add_node((0, 1), colour="green", is_virtual=False, street=[])
         self.graph.add_node((1, 0), colour="blue", is_virtual=False, street=[])
         self.graph.add_node((1, 1), colour="yellow", is_virtual=False, street=[])
-        self.edges = None
-        self.nodes = None
 
     def test_add_blocks_to_graph(self) -> None:
         card = {"blocks": [{"coords": [0, 0], "colour": "purple", "street": None}]}
@@ -133,6 +142,134 @@ class TestGraphFunctions(unittest.TestCase):
         self.assertTrue(streets3[0][0]["length"], 12)
         # one loop, length = 12
         self.assertEqual(streets3[1], [12])
+
+    def test_calculate_connected_groups(self) -> None:
+        expected = {
+            "red": {"group_count": 1, "group_sizes": [1], "group_nodes": [[(0, 0)]]},
+            "green": {"group_count": 1, "group_sizes": [1], "group_nodes": [[(0, 1)]]},
+            "blue": {"group_count": 1, "group_sizes": [1], "group_nodes": [[(1, 0)]]},
+            "yellow": {"group_count": 1, "group_sizes": [1], "group_nodes": [[(1, 1)]]},
+        }
+        self.assertEqual(expected, calculate_connected_groups(self.graph))
+
+
+class TestScoringFunctions(unittest.TestCase):
+    def setUp(self) -> None:
+        self.graph = nx.Graph()
+        self.streets = calculate_streets(self.graph)
+
+    def test_the_outskirts(self) -> None:
+        # Example from card
+        card = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "beige", "street": ["N", "W"]},
+                {"coords": [1, 0], "colour": "beige", "street": []},
+                {"coords": [2, 0], "colour": "beige", "street": ["W", "E"]},
+                {"coords": [3, 0], "colour": "beige", "street": ["W", "S"]},
+                {"coords": [0, 1], "colour": "beige", "street": ["W", "E"]},
+                {"coords": [1, 1], "colour": "beige", "street": ["W", "E"]},
+                {"coords": [2, 1], "colour": "beige", "street": []},
+                {"coords": [3, 1], "colour": "beige", "street": ["N", "S"]},
+                {"coords": [0, 2], "colour": "beige", "street": ["N", "S"]},
+                {"coords": [1, 2], "colour": "beige", "street": []},
+                {"coords": [2, 2], "colour": "beige", "street": ["N", "W"]},
+                {"coords": [3, 2], "colour": "beige", "street": []},
+                {"coords": [0, 3], "colour": "beige", "street": ["N", "E"]},
+                {"coords": [1, 3], "colour": "beige", "street": ["W", "E"]},
+                {"coords": [2, 3], "colour": "beige", "street": ["W", "E"]},
+                {"coords": [3, 3], "colour": "beige", "street": ["W", "S"]},
+            ]
+        }
+        add_card_to_graph(self.graph, card, (0, 0))
+        self.streets = calculate_streets(self.graph)
+        points = the_outskirts(self.graph, self.streets)
+        self.assertEqual(points, -1)
+
+        # loop
+        self.graph = nx.Graph()
+        card = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "beige", "street": ["S", "E"]},
+                {"coords": [1, 0], "colour": "beige", "street": ["S", "W"]},
+                {"coords": [1, 1], "colour": "beige", "street": ["N", "W"]},
+                {"coords": [0, 1], "colour": "beige", "street": ["N", "E"]},
+            ]
+        }
+        add_card_to_graph(self.graph, card, (0, 0))
+        self.streets = calculate_streets(self.graph)
+        points = the_outskirts(self.graph, self.streets)
+        self.assertEqual(points, 1)
+
+    def test_bloom_boom(self) -> None:
+        # Example from card
+        card = {
+            "blocks": [
+                {"coords": [1, 0], "colour": "green", "street": []},
+                {"coords": [2, 0], "colour": "beige", "street": []},
+                {"coords": [3, 0], "colour": "beige", "street": []},
+                {"coords": [0, 1], "colour": "green", "street": []},
+                {"coords": [1, 1], "colour": "green", "street": []},
+                {"coords": [2, 1], "colour": "beige", "street": []},
+                {"coords": [3, 1], "colour": "green", "street": []},
+                {"coords": [0, 2], "colour": "beige", "street": []},
+                {"coords": [1, 2], "colour": "beige", "street": []},
+                {"coords": [2, 2], "colour": "beige", "street": []},
+                {"coords": [3, 2], "colour": "green", "street": []},
+                {"coords": [0, 3], "colour": "green", "street": []},
+                {"coords": [1, 3], "colour": "green", "street": []},
+                {"coords": [2, 3], "colour": "beige", "street": []},
+                {"coords": [3, 3], "colour": "green", "street": []},
+                {"coords": [1, 4], "colour": "beige", "street": []},
+                {"coords": [2, 4], "colour": "beige", "street": []},
+                {"coords": [3, 4], "colour": "beige", "street": []},
+                {"coords": [1, 5], "colour": "green", "street": []},
+                {"coords": [2, 5], "colour": "beige", "street": []},
+            ]
+        }
+        add_card_to_graph(self.graph, card, (0, 0))
+        points = bloom_boom(self.graph, None)
+        self.assertEqual(points, 1)
+
+        # no green at all
+        self.graph = nx.Graph()
+        card = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "beige", "street": []},
+                {"coords": [1, 0], "colour": "beige", "street": []},
+                {"coords": [1, 1], "colour": "beige", "street": []},
+                {"coords": [0, 1], "colour": "beige", "street": []},
+            ]
+        }
+        add_card_to_graph(self.graph, card, (0, 0))
+        points = bloom_boom(self.graph, None)
+        self.assertEqual(points, -4)
+
+        # all green
+        card = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "green", "street": []},
+                {"coords": [1, 0], "colour": "green", "street": []},
+                {"coords": [1, 1], "colour": "green", "street": []},
+                {"coords": [0, 1], "colour": "green", "street": []},
+            ]
+        }
+        add_card_to_graph(self.graph, card, (0, 0))
+        points = bloom_boom(self.graph, None)
+        self.assertEqual(points, 0)
+
+        # all 3 green
+        card = {
+            "blocks": [
+                {"coords": [2, 0], "colour": "green", "street": []},
+                {"coords": [2, 1], "colour": "green", "street": []},
+                {"coords": [2, 2], "colour": "green", "street": []},
+                {"coords": [1, 2], "colour": "green", "street": []},
+                {"coords": [0, 2], "colour": "green", "street": []},
+            ]
+        }
+        add_card_to_graph(self.graph, card, (0, 0))
+        points = bloom_boom(self.graph, None)
+        self.assertEqual(points, 6)
 
 
 if __name__ == "__main__":
