@@ -11,13 +11,13 @@ if TYPE_CHECKING:
     from Classes.base.apps import StartApp
 
 
-def start_game(app: StartApp, chosen_game_name: str) -> None:
+def start_game(app: StartApp, chosen_game_name: str, options: dict = None) -> None:
     app.destroy()
     app_class = getattr(
         import_module(f"Classes.{chosen_game_name.lower()}.{chosen_game_name}App"),
         f"{chosen_game_name}App",
     )
-    app_game = app_class(chosen_game_name)
+    app_game = app_class(chosen_game_name, options)
     app_game.focus_force()
     app_game.mainloop()
 
