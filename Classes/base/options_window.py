@@ -104,7 +104,7 @@ class OptionsWindow:
         self.model = OptionsModel()
         self.view = OptionsView(parent, game_name)
         self.controller = OptionsController(self.model, self.view)
-        self.view.mainloop()
+        # Remove mainloop to avoid blocking
 
     def get_options(self):
         return self.model.options
