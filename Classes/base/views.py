@@ -103,6 +103,9 @@ class BaseView(ttk.Frame):
         # Create menu bar
         menu_bar = tk.Menu(parent)
         file_menu = tk.Menu(menu_bar, tearoff=False, font=BASIC_FONT)
+        file_menu.add_command(
+            label="Back to Start", command=self.return_to_start, underline=0
+        )
         file_menu.add_command(label="Quit", command=self.quit, underline=0)
         menu_bar.add_cascade(label="Menu", menu=file_menu, underline=0)
         self.parent.config(menu=menu_bar)
@@ -119,6 +122,14 @@ class BaseView(ttk.Frame):
 
     def quit(self) -> None:
         self.parent.destroy()
+
+    def return_to_start(self) -> None:
+        self.parent.destroy()
+        from main import StartApp
+
+        app = StartApp()
+        app.focus_force()
+        app.mainloop()
 
     def add_card_to_canvas(self, *args, **kwargs) -> None:
         # Placeholder for child class

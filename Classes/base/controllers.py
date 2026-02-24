@@ -16,6 +16,7 @@ class StartController:
         # Show the options window
         if chosen_game_name == "Sprawlopolis":
             options_window = OptionsWindow(self.view.master, chosen_game_name)
+            options_window.view.focus_force()
             self.view.master.wait_window(options_window.view)
             options = options_window.get_options()
         else:

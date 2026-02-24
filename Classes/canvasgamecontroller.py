@@ -1,9 +1,10 @@
+import json
 import tkinter as tk
+from datetime import datetime
 from functools import partial
 from tkinter import Event
 
 import pywinstyles
-from PIL import ImageTk
 
 from Classes.base.models import BaseModel, BaseCard
 from Classes.canvasgameview import CanvasGameView
@@ -178,6 +179,13 @@ class CanvasGameController:
         )
         # draw new card and reactivate hand area
         self.model.hand_cards.remove(card_to_play)
+        if len(self.model.hand_cards) == 0:
+            total_score = sum(self.model.scores.values())
+            if total_score >= self.model.goal:  # type: ignore
+                result = "Win"
+            else:
+                result = "Loss"
+            self.show_result_window(result)
         if self.model.cards:
             self.model.draw_new_card()
         else:
@@ -215,3 +223,29 @@ class CanvasGameController:
 
     def press_turn(self, _) -> None:
         raise NotImplementedError
+
+    def show_result_window(self, result: str) -> None:
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        result_data = {
+            "game": self.model.game_data["name"],
+            "date": current_time,
+            "result": result,
+        }
+        try:
+            with open("game_results.json", "r") as f:
+                results = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            results = []
+        results.append(result_data)
+        with open("game_results.json", "w") as f:
+            json.dump(results, f, indent=4)
+
+        result_window = tk.Toplevel()
+        result_window.title("Game Result")
+        label = tk.Label(result_window, text=f"Game Over: {result}")
+        label.pack()
+        close_button = tk.Button(
+            result_window, text="Close", command=result_window.destroy
+        )
+        close_button.pack()
