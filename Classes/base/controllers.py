@@ -1,6 +1,7 @@
 from Classes.base.events import ModelObserver, ModelEvent
 from Classes.base.models import BaseModel
 from Classes.base.views import StartView, BaseView
+from Classes.base.options_window import OptionsWindow
 from functions import start_game
 from start_up import games_dict
 
@@ -12,7 +13,13 @@ class StartController:
     def click_play(self) -> None:
         chosen_game = self.view.chosen_game.get()
         chosen_game_name = games_dict[chosen_game].replace(" ", "")
-        start_game(self.view.master, chosen_game_name)
+        # Show the options window
+        options_window = OptionsWindow(self.view.master, chosen_game_name)
+        self.view.master.wait_window(options_window)
+        # Get the selected options
+        options = options_window.options
+        # Start the game with the selected options
+        start_game(self.view.master, chosen_game_name, options)
 
 
 class BaseController(ModelObserver):
