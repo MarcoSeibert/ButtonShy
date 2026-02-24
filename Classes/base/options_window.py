@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 
+from globals import TITLE_FONT, BASIC_FONT
+
 
 class OptionsWindow(tk.Toplevel):
-    def __init__(self, parent, game_name):
+    def __init__(self, parent: tk.Tk, game_name: str) -> None:
         super().__init__(parent)
         self.parent = parent
         self.game_name = game_name
@@ -13,15 +15,42 @@ class OptionsWindow(tk.Toplevel):
         self.geometry("400x300")
         self.resizable(False, False)
 
+        # Configure grid
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+
+        # Configure styles
+        style_buttons = ttk.Style()
+        my_button_style = "MyButton.TButton"
+        style_buttons.configure(my_button_style, font=BASIC_FONT)
+        radio_style_buttons = ttk.Style()
+        my_radio_button_style = "MyRadioButton.Toolbutton"
+        radio_style_buttons.configure(
+            my_radio_button_style, font=BASIC_FONT, background="white", anchor="c"
+        )
+        radio_style_buttons.map(
+            my_radio_button_style,
+            foreground=[("selected", "black"), ("!selected", "grey")],
+        )
+
+        # Insert title
+        ttk.Label(self, text=f"Options for {game_name}", font=TITLE_FONT).grid(
+            column=0, row=0, pady=10
+        )
+
         # Add widgets for game options here
         # For example, a checkbox for difficulty level
+        ttk.Label(self, text="Difficulty Level:", font=BASIC_FONT).grid(
+            column=0, row=1, pady=10
+        )
         self.difficulty_var = tk.StringVar(value="Normal")
-        ttk.Label(self, text="Difficulty Level:").pack(pady=10)
-        ttk.Combobox(self, textvariable=self.difficulty_var, values=["Easy", "Normal", "Hard"]).pack(pady=10)
+        ttk.Combobox(
+            self, textvariable=self.difficulty_var, values=["Easy", "Normal", "Hard"], font=BASIC_FONT
+        ).grid(column=0, row=2, pady=10)
 
         # Add a button to confirm the options
-        self.confirm_button = ttk.Button(self, text="Confirm", command=self.on_confirm)
-        self.confirm_button.pack(pady=20)
+        self.confirm_button = ttk.Button(self, text="Confirm", style=my_button_style, command=self.on_confirm)
+        self.confirm_button.grid(column=0, row=3, pady=20)
 
     def on_confirm(self):
         # Store the selected options
