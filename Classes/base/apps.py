@@ -47,7 +47,7 @@ class StartApp(App):
 
 
 class BaseApp(App):
-    def __init__(self, chosen_game_name: str) -> None:
+    def __init__(self, chosen_game_name: str, options: dict = None) -> None:
         super().__init__(1e6, 1e6, 0)
         self.model = None
         self.view = None
@@ -58,6 +58,7 @@ class BaseApp(App):
         self.game_data = get_game_data_by_name(json_data, chosen_game_name)
         self.chosen_game = self.game_data["name"]
         self.chosen_game_compact = self.chosen_game.replace(" ", "")
+        self.options = options if options else {}
         self.start_up()
 
     def start_up(self) -> None:
@@ -67,8 +68,8 @@ class BaseApp(App):
             components, self.chosen_game_compact
         )
 
-        # set up model
-        self.model = model_class(self.game_data)
+        # set up model with options
+        self.model = model_class(self.game_data, self.options)
 
         # set up view
         self.view = view_class(self)
