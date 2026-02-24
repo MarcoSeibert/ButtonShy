@@ -12,7 +12,19 @@ class OptionsWindow(tk.Toplevel):
         self.options = {}
 
         self.title(f"Options for {game_name}")
-        self.geometry("400x300")
+        
+        # Get screen dimensions
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        
+        # Calculate position to center the window
+        window_width = 400
+        window_height = 300
+        offset_x = (screen_width - window_width) // 2
+        offset_y = (screen_height - window_height) // 2
+        
+        # Set geometry with position
+        self.geometry(f"{window_width}x{window_height}+{offset_x}+{offset_y}")
         self.resizable(False, False)
 
         # Configure grid
