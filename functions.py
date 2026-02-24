@@ -53,7 +53,7 @@ def adjust_image(
     border_size: int = 3,
     card_size: tuple = CARD_SIZE,
     radius: int = 5,
-    color: tuple = (0, 0, 0, 255),
+    colour: tuple = (0, 0, 0, 255),
 ) -> Image.Image:
     # 1. Bild auf die gewünschte Größe skalieren
     img = img.resize(card_size)
@@ -84,7 +84,7 @@ def adjust_image(
     ImageDraw.Draw(adjusted_image).rounded_rectangle(
         (0, 0, card_size[0] - 1, card_size[1] - 1),
         radius + border_size,
-        fill=color,
+        fill=colour,
     )
 
     # 6. Originalbild (mit Maske) in den Rahmen einfügen
@@ -107,7 +107,7 @@ def adjust_image(
     #     (0, 0, 0, 0),
     # )
     # ImageDraw.Draw(adjusted_image).rounded_rectangle(
-    #     (0, 0, *adjusted_image.size), radius + border_size, fill=color
+    #     (0, 0, *adjusted_image.size), radius + border_size, fill=colour
     # )
     # adjusted_image.paste(img, (border_size, border_size), img)
     # # Endgröße anpassen und zurückgeben

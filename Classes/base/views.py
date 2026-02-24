@@ -40,7 +40,7 @@ class StartView(ttk.Frame):
         )
         radio_style_buttons.map(
             my_radio_button_style,
-            foreground=[("selected", "black"), ("!selected", "gray")],
+            foreground=[("selected", "black"), ("!selected", "grey")],
         )
 
         # set up game radio buttons

@@ -64,28 +64,35 @@ def check_for_assets() -> None:
         game_name = pnp_file.split(".")[0]
         for game in game_data:
             if game["name"] == game_name:
-                nr_of_cards = (
-                    2 * game["double_sided_cards"]
-                    + game["single_sided_cards"]
-                    + game["backsides"]
+                games_to_process = get_games_to_process(
+                    game, game_data, game_name, games_to_process
                 )
-                game_asset_path = f"{ASSET_BASE_PATH}/{game_name}/Cards/"
-                nr_of_assets = (
-                    sum(
-                        1
-                        for asset_file in os.listdir(game_asset_path)
-                        if asset_file.startswith(f"{game_name}_")
-                    )
-                    if os.path.exists(game_asset_path)
-                    else 0
-                )
-                if nr_of_assets != nr_of_cards:
-                    games_to_process.append((game_name, game_data))
-                if "-" not in game_name:
-                    new_key = len(games_dict)
-                    games_dict[new_key] = game_name
                 break
 
     if games_to_process:
         with Pool(cpu_count()) as pool:
             pool.starmap(process_game, [(args, None) for args in games_to_process])
+
+
+def get_games_to_process(
+    game: dict, game_data: dict, game_name: str, games_to_process: list
+) -> list:
+    nr_of_cards = (
+        2 * game["double_sided_cards"] + game["single_sided_cards"] + game["backsides"]
+    )
+    game_asset_path = f"{ASSET_BASE_PATH}/{game_name}/Cards/"
+    nr_of_assets = (
+        sum(
+            1
+            for asset_file in os.listdir(game_asset_path)
+            if asset_file.startswith(f"{game_name}_")
+        )
+        if os.path.exists(game_asset_path)
+        else 0
+    )
+    if nr_of_assets != nr_of_cards:
+        games_to_process.append((game_name, game_data))
+    if "-" not in game_name:
+        new_key = len(games_dict)
+        games_dict[new_key] = game_name
+    return games_to_process

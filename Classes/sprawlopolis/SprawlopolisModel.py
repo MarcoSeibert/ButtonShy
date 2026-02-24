@@ -2,70 +2,15 @@ import json
 import random
 
 import networkx as nx
-from collections import deque, defaultdict
 
 from Classes.base.events import ModelEvent
 from Classes.base.models import BaseModel, BaseCard
 import Classes.sprawlopolis.scoring_functions as sf
-
-
-def _extend_path(
-    graph: nx.Graph,
-    start_node: tuple,
-    end_node: tuple,
-    visited_edges: set,
-    path: list = None,
-    reverse: bool = False,
-) -> list:
-    if path is None:
-        path = [start_node, end_node]
-    visited_edges.add((start_node, end_node))
-    visited_edges.add((end_node, start_node))
-
-    current_node = end_node
-    while True:
-        neighbors = [
-            n
-            for n in graph.neighbors(current_node)
-            if (current_node, n) not in visited_edges
-            and (n, current_node) not in visited_edges
-            and (current_node[0] == n[0] or current_node[1] == n[1])
-        ]
-        if len(neighbors) != 1:
-            break
-        next_node = neighbors[0]
-        # Vermeide Loops durch virtuelle Knoten
-        if next_node == start_node and len(path) > 1:
-            break
-        visited_edges.add((current_node, next_node))
-        visited_edges.add((next_node, current_node))
-        if reverse:
-            path.insert(0, next_node)
-        else:
-            path.append(next_node)
-        current_node = next_node
-
-    return path
-
-
-def is_valid_loop(nodes: list) -> bool:
-    if len(nodes) < 4:
-        return False
-
-    # Überprüfen, ob der erste und der letzte Knoten gleich sind
-    if nodes[0] != nodes[-1]:
-        return False
-
-    # Überprüfen, ob jede aufeinanderfolgende Knoten nur eine Koordinate ändern
-    for i in range(len(nodes) - 1):
-        x1, y1 = nodes[i]
-        x2, y2 = nodes[i + 1]
-        dx = abs(x2 - x1)
-        dy = abs(y2 - y1)
-        if dx + dy != 1:
-            return False
-
-    return True
+from Classes.sprawlopolis.functions import (
+    calculate_streets,
+    add_blocks_to_graph,
+    add_streets_to_graph,
+)
 
 
 class SprawlopolisModel(BaseModel):
@@ -125,11 +70,11 @@ class SprawlopolisModel(BaseModel):
 
     def update_scores(self) -> None:
         # base scores
-        self.streets = self.calculate_streets()
+        self.streets = calculate_streets(self.graph)
         self.scores["streets"] = -len(self.streets[0])
         block_scores = sf.calculate_connected_groups(self.graph)
-        for color in block_scores:
-            self.scores[color] = max(block_scores[color]["group_sizes"])
+        for colour in block_scores:
+            self.scores[colour] = max(block_scores[colour]["group_sizes"])
         # goal scores
         for i, card in enumerate(self.score_cards):
             points = self.scoring_functions_mapping[card.card_id](
@@ -142,139 +87,10 @@ class SprawlopolisModel(BaseModel):
     def add_card_to_graph(self, card_to_play: BaseCard, position: tuple) -> None:
         card = next(c for c in self.cards_data if c["id"] == card_to_play.card_id)
 
-        # 1. Blöcke der Karte hinzufügen
-        for block in card["blocks"]:
-            block_coords = (
-                position[0] + block["coords"][0],
-                position[1] + block["coords"][1],
-            )
-            self.graph.add_node(
-                block_coords,
-                color=block["color"],
-                street=block["street"],
-                is_virtual=False,
-            )
-            # Falls der Block bereits existiert, entferne alle seine Kanten
-            if self.graph.has_node(block_coords):
-                edges_to_remove = list(self.graph.edges(block_coords))
-                self.graph.remove_edges_from(edges_to_remove)
-
-        # 2. Straßen als Kanten erstellen, nur bei passenden Richtungen
-        for block in card["blocks"]:
-            block_coords = (
-                position[0] + block["coords"][0],
-                position[1] + block["coords"][1],
-            )
-            for direction in block["street"]:
-                dx, dy = self.direction_map[direction][0]
-                to_coords = (block_coords[0] + dx, block_coords[1] + dy)
-                # Prüfen, ob der Zielblock existiert und die komplementäre Straße hat
-                if self.graph.has_node(to_coords):
-                    # Immer eine Kante zu virtuellen Blöcken erstellen
-                    if self.graph.nodes[to_coords].get("is_virtual", False):
-                        self.graph.add_edge(block_coords, to_coords)
-                    # Bei nicht-virtuellen Blöcken: Nur bei passender Straße
-                    else:
-                        complementary_dir = self.direction_map[direction][1]
-                        if complementary_dir in self.graph.nodes[to_coords].get(
-                            "street", []
-                        ):
-                            self.graph.add_edge(block_coords, to_coords)
-                else:
-                    # Virtuellen Knoten für Randstraße erstellen
-                    self.graph.add_node(to_coords, is_virtual=True, color=None)
-                    self.graph.add_edge(block_coords, to_coords)
+        add_blocks_to_graph(self.graph, card, position)
+        add_streets_to_graph(self.graph, card, position)
 
         self.update_scores()
-
-    def calculate_streets(self) -> tuple[dict, list]:
-        graph = self.graph.copy()
-        streets = []
-        visited_edges = set()
-        visited_nodes = set()
-
-        # 1. Straßen aus Kanten berechnen
-        for u, v in graph.edges():
-            if (u, v) in visited_edges or (v, u) in visited_edges:
-                continue
-            if not (u[0] == v[0] or u[1] == v[1]):
-                continue
-
-            path = _extend_path(graph, u, v, visited_edges)
-            path = _extend_path(graph, v, u, visited_edges, path=path, reverse=True)
-
-            non_virtual_blocks = [
-                node for node in path if not graph.nodes[node].get("is_virtual", False)
-            ]
-            if len(non_virtual_blocks) > 0:
-                streets.append(non_virtual_blocks)
-                visited_nodes.update(non_virtual_blocks)
-
-        # 2. Isolierte Blöcke (Straßen der Länge 1) hinzufügen
-        for node in graph.nodes():
-            if (
-                not graph.nodes[node].get("is_virtual", False)
-                and node not in visited_nodes
-            ):
-                node_streets = graph.nodes[node].get("street", [])
-                if node_streets:
-                    has_valid_edge = False
-                    for direction in node_streets:
-                        dx, dy = 0, 0
-                        if direction == "N":
-                            dx, dy = 0, -1
-                        elif direction == "S":
-                            dx, dy = 0, 1
-                        elif direction == "W":
-                            dx, dy = -1, 0
-                        elif direction == "E":
-                            dx, dy = 1, 0
-                        neighbor_coords = (node[0] + dx, node[1] + dy)
-                        if graph.has_edge(node, neighbor_coords):
-                            has_valid_edge = True
-                            break
-                    if not has_valid_edge:
-                        streets.append([node])
-
-        # Straßen an virtuellen Blöcken teilen
-        split_streets = []
-        loops = []
-        for street in streets:
-            if len(street) > 1:
-                # Prüfen, ob es sich um einen Loop handelt
-                is_loop = street[0] == street[-1]
-                if is_loop:
-                    if is_valid_loop(street):
-                        loops.append(len(street) - 1)
-                    # Entferne den doppelten Startpunkt
-                    street = street[:-1]
-                    split_streets.append(street)
-                    continue
-
-                sub_streets = []
-                current_sub_street = [street[0]]
-                for i in range(1, len(street)):
-                    prev_node = street[i - 1]
-                    current_node = street[i]
-                    # Prüfen, ob es einen Sprung in den Koordinaten gibt
-                    dx = abs(current_node[0] - prev_node[0])
-                    dy = abs(current_node[1] - prev_node[1])
-                    # Teile die Straße, wenn dx + dy >= 2
-                    if dx + dy >= 2:
-                        sub_streets.append(current_sub_street)
-                        current_sub_street = [current_node]
-                    else:
-                        current_sub_street.append(current_node)
-                sub_streets.append(current_sub_street)
-                split_streets.extend(sub_streets)
-            else:
-                split_streets.append(street)
-
-        # Straßenlängen berechnen
-        street_block_counts = {}
-        for i, street in enumerate(split_streets):
-            street_block_counts[i] = {"Length": len(street), "nodes": street}
-        return street_block_counts, loops
 
     def is_placement_valid(self, grid_x: float, grid_y: float) -> bool:
         card_coords = {
@@ -293,14 +109,6 @@ class SprawlopolisModel(BaseModel):
             allowed_coords.add((x, y + 1))
             allowed_coords.add((x, y - 1))
         return any(coord in allowed_coords for coord in card_coords)
-
-    # Mapping: Richtung → (Koordinatenänderung, komplementäre Richtung)
-    direction_map = {
-        "N": ((0, -1), "S"),
-        "S": ((0, 1), "N"),
-        "W": ((-1, 0), "E"),
-        "E": ((1, 0), "W"),
-    }
 
     scoring_functions_mapping = {
         1: sf.the_outskirts,

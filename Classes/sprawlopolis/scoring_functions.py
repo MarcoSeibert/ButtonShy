@@ -1,51 +1,48 @@
-from collections import defaultdict, deque
+from collections import deque, defaultdict
 
 import networkx as nx
 
 
+def bfs_group(graph: nx.Graph, start_node: list, colour: str, visited: set) -> list:
+    queue = deque([start_node])
+    visited.add(start_node)
+    group = []
+    while queue:
+        current = queue.popleft()
+        group.append(current)
+        x, y = current
+        neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+        for neighbor in neighbors:
+            if (
+                neighbor in graph.nodes
+                and not graph.nodes[neighbor].get("is_virtual", False)
+                and graph.nodes[neighbor]["colour"] == colour
+                and neighbor not in visited
+            ):
+                visited.add(neighbor)
+                queue.append(neighbor)
+    return group
+
+
 def calculate_connected_groups(graph: nx.Graph) -> dict:
     # Alle Knoten nach Farbe gruppieren
-    color_groups = defaultdict(list)
+    colour_groups = defaultdict(list)
     for node, data in graph.nodes(data=True):
         if not data.get("is_virtual", False):
-            color_groups[data["color"]].append(node)
+            colour_groups[data["colour"]].append(node)
 
     result = {}
 
-    for color, nodes in color_groups.items():
+    for colour, nodes in colour_groups.items():
         visited = set()
         group_sizes = []
         group_nodes = []
-
         for node in nodes:
             if node not in visited:
-                # Neue Gruppe starten
-                queue = deque([node])
-                visited.add(node)
-                group = []
-
-                while queue:
-                    current = queue.popleft()
-                    group.append(current)
-
-                    # Nachbarn prüfen (orthogonal: oben, unten, links, rechts)
-                    x, y = current
-                    neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-
-                    for neighbor in neighbors:
-                        if (
-                            neighbor in graph.nodes
-                            and not graph.nodes[neighbor].get("is_virtual", False)
-                            and graph.nodes[neighbor]["color"] == color
-                            and neighbor not in visited
-                        ):
-                            visited.add(neighbor)
-                            queue.append(neighbor)
-
+                group = bfs_group(graph, node, colour, visited)
                 group_sizes.append(len(group))
                 group_nodes.append(group)
-
-        result[color] = {
+        result[colour] = {
             "group_count": len(group_sizes),
             "group_sizes": group_sizes,
             "group_nodes": group_nodes,
@@ -96,7 +93,7 @@ def bloom_boom(graph: nx.Graph, _) -> int:
         x, y = node
         row_dict[y] += 0
         col_dict[x] += 0
-        if graph.nodes[node]["color"] != "green":
+        if graph.nodes[node]["colour"] != "green":
             continue
         row_dict[y] += 1
         col_dict[x] += 1
@@ -112,9 +109,9 @@ def bloom_boom(graph: nx.Graph, _) -> int:
 def go_green(graph: nx.Graph, _) -> int:
     points = 0
     for node in graph.nodes:
-        if graph.nodes[node]["color"] == "green":
+        if graph.nodes[node]["colour"] == "green":
             points += 1
-        elif graph.nodes[node]["color"] == "grey":
+        elif graph.nodes[node]["colour"] == "grey":
             points -= 3
     return points
 
@@ -134,9 +131,9 @@ def block_party(graph: nx.Graph, _) -> int:
                 break
         if not all_neighbors_exist:
             continue
-        colors = [graph.nodes[neighbor]["color"] for neighbor in neighbors]
-        color = colors[0]
-        if all(c == color for c in colors):
+        colours = [graph.nodes[neighbor]["colour"] for neighbor in neighbors]
+        colour = colours[0]
+        if all(c == colour for c in colours):
             amount += 1
     if amount > 5:
         points = 7
@@ -149,12 +146,12 @@ def block_party(graph: nx.Graph, _) -> int:
 def stacks_and_scrapers(graph: nx.Graph, _) -> int:
     points = 0
     for node in graph.nodes():
-        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "grey":
+        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["colour"] != "grey":
             continue
         x, y = node
         neighbors = [(x, y - 1), (x + 1, y), (x, y + 1), (x - 1, y)]
         for neighbor in neighbors:
-            if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] not in [
+            if graph.has_node(neighbor) and graph.nodes[neighbor]["colour"] not in [
                 "blue",
                 "grey",
             ]:
@@ -176,7 +173,7 @@ def master_planned(graph: nx.Graph, _) -> int:
 def central_perks(graph: nx.Graph, _) -> int:
     points = 0
     for node in graph.nodes:
-        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "green":
+        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["colour"] != "green":
             continue
         x, y = node
         neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
@@ -199,34 +196,43 @@ def the_burbs(graph: nx.Graph, _) -> int:
         points_for_this_group = 0
         visited_neighbors = []
         for node in group:
-            x, y = node
-            neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-            for neighbor in neighbors:
-                if neighbor not in visited_neighbors and graph.has_node(neighbor):
-                    visited_neighbors.append(neighbor)
-                    if graph.nodes[neighbor]["color"] == "green":
-                        points_for_this_group += 1
-                    elif graph.nodes[neighbor]["color"] == "grey":
-                        points_for_this_group -= 2
+            points_for_this_group, visited_neighbors = calculate_points_for_group(
+                graph, node, points_for_this_group, visited_neighbors
+            )
         points.append(points_for_this_group)
     return max(points)
+
+
+def calculate_points_for_group(
+    graph: nx.Graph, node: list, points_for_this_group: int, visited_neighbors: list
+) -> tuple:
+    x, y = node
+    neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+    for neighbor in neighbors:
+        if neighbor not in visited_neighbors and graph.has_node(neighbor):
+            visited_neighbors.append(neighbor)
+            if graph.nodes[neighbor]["colour"] == "green":
+                points_for_this_group += 1
+            elif graph.nodes[neighbor]["colour"] == "grey":
+                points_for_this_group -= 2
+    return points_for_this_group, visited_neighbors
 
 
 # Card 9
 def concrete_jungle(graph: nx.Graph, _) -> int:
     points = 0
     for node in graph.nodes():
-        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "grey":
+        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["colour"] != "grey":
             continue
         x, y = node
-        diag_neighbors = [
+        diagonal_neighbors = [
             (x + 1, y + 1),
             (x + 1, y - 1),
             (x - 1, y - 1),
             (x - 1, y + 1),
         ]
-        for neighbor in diag_neighbors:
-            if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] == "grey":
+        for neighbor in diagonal_neighbors:
+            if graph.has_node(neighbor) and graph.nodes[neighbor]["colour"] == "grey":
                 points += 1
                 break
     return points
@@ -242,7 +248,7 @@ def the_strip(graph: nx.Graph, _) -> int:
         x, y = node
         row_dict[y] += 0
         col_dict[x] += 0
-        if graph.nodes[node]["color"] != "blue":
+        if graph.nodes[node]["colour"] != "blue":
             continue
         row_dict[y] += 1
         col_dict[x] += 1
@@ -255,7 +261,7 @@ def mini_marts(graph: nx.Graph, streets: tuple) -> int:
     # todo Test for loops in the streets
     points = 0
     for street in streets[0]:
-        if streets[0][street]["Length"] < 3:
+        if streets[0][street]["length"] < 3:
             continue
         nodes = streets[0][street]["nodes"]
         for i in range(len(nodes) - 2):
@@ -263,9 +269,9 @@ def mini_marts(graph: nx.Graph, streets: tuple) -> int:
             next_node = nodes[i + 1]
             next_next_node = nodes[i + 2]
             if (
-                graph.nodes[current_node]["color"] == "orange"
-                and graph.nodes[next_node]["color"] == "blue"
-                and graph.nodes[next_next_node]["color"] == "orange"
+                graph.nodes[current_node]["colour"] == "orange"
+                and graph.nodes[next_node]["colour"] == "blue"
+                and graph.nodes[next_next_node]["colour"] == "orange"
             ):
                 points += 2
     return points
@@ -273,7 +279,7 @@ def mini_marts(graph: nx.Graph, streets: tuple) -> int:
 
 # Card 12
 def superhighway(_, streets: tuple) -> int:
-    longest_road = max([streets[0][street]["Length"] for street in streets[0]])
+    longest_road = max([streets[0][street]["length"] for street in streets[0]])
     return int(longest_road / 2)
 
 
@@ -289,8 +295,8 @@ def park_hopping(graph: nx.Graph, streets: tuple) -> int:
             start_point != end_point
             and start_point != "empty"
             and end_point != "empty"
-            and graph.nodes[start_point]["color"] == "green"
-            and graph.nodes[end_point]["color"] == "green"
+            and graph.nodes[start_point]["colour"] == "green"
+            and graph.nodes[end_point]["colour"] == "green"
         ):
             points += 3
     return points
@@ -306,12 +312,12 @@ def skid_row(graph: nx.Graph, _) -> int:
     points = 0
     for node in graph.nodes():
         grey_count = 0
-        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["color"] != "orange":
+        if graph.nodes[node]["is_virtual"] or graph.nodes[node]["colour"] != "orange":
             continue
         x, y = node
         neighbors = [(x - 1, y), (x + 1, y), (x, y + 1), (x, y - 1)]
         for neighbor in neighbors:
-            if graph.has_node(neighbor) and graph.nodes[neighbor]["color"] == "grey":
+            if graph.has_node(neighbor) and graph.nodes[neighbor]["colour"] == "grey":
                 grey_count += 1
         if grey_count >= 2:
             points += 2
@@ -326,9 +332,9 @@ def morning_commute(graph: nx.Graph, streets: tuple) -> int:
         street_has_blue = False
         nodes = streets[0][street]["nodes"]
         for node in nodes:
-            if graph.has_node(node) and graph.nodes[node]["color"] == "orange":
+            if graph.has_node(node) and graph.nodes[node]["colour"] == "orange":
                 street_has_orange = True
-            elif graph.has_node(node) and graph.nodes[node]["color"] == "blue":
+            elif graph.has_node(node) and graph.nodes[node]["colour"] == "blue":
                 street_has_blue = True
         if street_has_orange and street_has_blue:
             points += 2
@@ -339,7 +345,7 @@ def morning_commute(graph: nx.Graph, streets: tuple) -> int:
 def tourist_trap(graph: nx.Graph, _) -> int:
     points = 0
     for node in graph.nodes():
-        if graph.nodes[node].get("color") != "blue":
+        if graph.nodes[node].get("colour") != "blue":
             continue
         empty_count = 0
         x, y = node

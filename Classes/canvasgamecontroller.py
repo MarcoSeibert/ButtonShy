@@ -164,7 +164,7 @@ class CanvasGameController:
         for i, card_label in enumerate(self.view.hand_area.winfo_children()):
             card_label.unbind(LEFT_MOUSE_BUTTON)
 
-    def press_approve(self, event: Event) -> None:
+    def press_approve(self, _) -> None:
         card_to_play = self.model.active_card
 
         # add the card to the canvas
@@ -198,7 +198,7 @@ class CanvasGameController:
 
         # update the scores
 
-    def press_decline(self, event: Event) -> None:
+    def press_decline(self, _) -> None:
         # reset everything
         objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")
         if objs_with_movable_tag:
@@ -217,7 +217,7 @@ class CanvasGameController:
                 background="#000001",
             )
 
-    def press_turn(self, event: Event) -> None:
+    def press_turn(self, _) -> None:
         active_card_obj = None
         objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")
         if objs_with_movable_tag:
@@ -273,7 +273,7 @@ def rotate_card_values(card_data: dict) -> dict:
         "blocks": [
             {
                 "coords": transform_coords(block["coords"]),
-                "color": block["color"],
+                "colour": block["colour"],
                 "street": [transform_direction(d) for d in block["street"]],
             }
             for block in card_data["blocks"]

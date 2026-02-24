@@ -45,7 +45,7 @@ class SprawlopolisView(BaseView, CanvasGameView):
             file="Resources/Assets/Sprawlopolis/Orange.png"
         )
         self.blue_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Blue.png")
-        self.gray_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Gray.png")
+        self.grey_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Gray.png")
         self.green_block = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Green.png")
         self.streets = tk.PhotoImage(file="Resources/Assets/Sprawlopolis/Street.png")
         ## add cells
@@ -56,9 +56,9 @@ class SprawlopolisView(BaseView, CanvasGameView):
         ttk.Label(self, image=self.blue_block).grid(column=13, row=14, sticky="e")
         self.blue_score = ttk.Label(self, text="0", font=BOLD_FONT)
         self.blue_score.grid(column=14, row=14)
-        ttk.Label(self, image=self.gray_block).grid(column=15, row=13, sticky="e")
-        self.gray_score = ttk.Label(self, text="0", font=BOLD_FONT)
-        self.gray_score.grid(column=16, row=13)
+        ttk.Label(self, image=self.grey_block).grid(column=15, row=13, sticky="e")
+        self.grey_score = ttk.Label(self, text="0", font=BOLD_FONT)
+        self.grey_score.grid(column=16, row=13)
         ttk.Label(self, image=self.green_block).grid(column=15, row=14, sticky="e")
         self.green_score = ttk.Label(self, text="0", font=BOLD_FONT)
         self.green_score.grid(column=16, row=14)
