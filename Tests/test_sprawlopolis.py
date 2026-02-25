@@ -13,6 +13,8 @@ from Classes.sprawlopolis.scoring_functions import (
     calculate_connected_groups,
     the_outskirts,
     bloom_boom,
+    go_green,
+    block_party,
 )
 
 
@@ -151,6 +153,51 @@ class TestGraphFunctions(unittest.TestCase):
             "yellow": {"group_count": 1, "group_sizes": [1], "group_nodes": [[(1, 1)]]},
         }
         self.assertEqual(expected, calculate_connected_groups(self.graph))
+        self.assertFalse(calculate_connected_groups(self.graph).get("purple"))
+
+        card1 = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "purple", "street": []},
+                {"coords": [1, 0], "colour": "purple", "street": []},
+                {"coords": [1, 1], "colour": "purple", "street": []},
+                {"coords": [0, 1], "colour": "purple", "street": []},
+            ]
+        }
+        add_card_to_graph(self.graph, card1, (1, 0))
+        result1 = calculate_connected_groups(self.graph)
+        purple_result = result1.get("purple")
+        expected_purple_result = {
+            "group_count": 1,
+            "group_sizes": [4],
+            "group_nodes": [[(1, 0), (2, 0), (1, 1), (2, 1)]],
+        }
+        self.assertEqual(purple_result, expected_purple_result)
+
+        card2 = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "beige", "street": []},
+                {"coords": [1, 0], "colour": "black", "street": []},
+                {"coords": [1, 1], "colour": "beige", "street": []},
+                {"coords": [0, 1], "colour": "black", "street": []},
+            ]
+        }
+
+        add_card_to_graph(self.graph, card2, (1, 1))
+        result2 = calculate_connected_groups(self.graph)
+        purple_result = result2.get("purple")
+        expected_purple_result = {
+            "group_count": 1,
+            "group_sizes": [2],
+            "group_nodes": [[(1, 0), (2, 0)]],
+        }
+        self.assertEqual(purple_result, expected_purple_result)
+        beige_result = result2.get("beige")
+        expected_beige_result = {
+            "group_count": 2,
+            "group_sizes": [1, 1],
+            "group_nodes": [[(1, 1)], [(2, 2)]],
+        }
+        self.assertEqual(beige_result, expected_beige_result)
 
 
 class TestScoringFunctions(unittest.TestCase):
@@ -159,6 +206,7 @@ class TestScoringFunctions(unittest.TestCase):
         self.streets = calculate_streets(self.graph)
 
     def test_the_outskirts(self) -> None:
+        self.assertFalse(the_outskirts(self.graph, self.streets))
         # Example from card
         card = {
             "blocks": [
@@ -201,6 +249,7 @@ class TestScoringFunctions(unittest.TestCase):
         self.assertEqual(points, 1)
 
     def test_bloom_boom(self) -> None:
+        self.assertFalse(bloom_boom(self.graph, None))
         # Example from card
         card = {
             "blocks": [
@@ -271,6 +320,72 @@ class TestScoringFunctions(unittest.TestCase):
         points = bloom_boom(self.graph, None)
         self.assertEqual(points, 6)
 
+    def test_go_green(self) -> None:
+        self.assertFalse(go_green(self.graph, None))
+
+        card = {"blocks": [{"coords": [0, 0], "colour": "green", "street": []}]}
+        add_blocks_to_graph(self.graph, card, (0, 0))
+        points = go_green(self.graph, None)
+        self.assertEqual(points, 1)
+
+        card = {"blocks": [{"coords": [0, 0], "colour": "grey", "street": []}]}
+        add_blocks_to_graph(self.graph, card, (1, 0))
+        points = go_green(self.graph, None)
+        self.assertEqual(points, -2)
+
+    def test_block_party(self) -> None:
+        self.assertEqual(block_party(self.graph, None), -8)
+
+        card = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "black", "street": []},
+                {"coords": [1, 0], "colour": "black", "street": []},
+                {"coords": [1, 1], "colour": "black", "street": []},
+                {"coords": [0, 1], "colour": "black", "street": []},
+            ]
+        }
+        add_blocks_to_graph(self.graph, card, (0, 0))
+        self.assertEqual(block_party(self.graph, None), -5)
+
+        card = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "green", "street": []},
+                {"coords": [1, 0], "colour": "green", "street": []},
+                {"coords": [1, 1], "colour": "green", "street": []},
+                {"coords": [0, 1], "colour": "green", "street": []},
+            ]
+        }
+        add_blocks_to_graph(self.graph, card, (2, 0))
+        self.assertEqual(block_party(self.graph, None), -2)
+
+        add_blocks_to_graph(self.graph, card, (4, 0))
+        self.assertEqual(block_party(self.graph, None), 4)
+
+        add_blocks_to_graph(self.graph, card, (5, 0))
+        self.assertEqual(block_party(self.graph, None), 7)
+
+        add_blocks_to_graph(self.graph, card, (7, 0))
+        self.assertEqual(block_party(self.graph, None), 7)
+
+        card = {
+            "blocks": [
+                {"coords": [0, 0], "colour": "blue", "street": []},
+                {"coords": [1, 0], "colour": "blue", "street": []},
+                {"coords": [2, 0], "colour": "blue", "street": []},
+                {"coords": [3, 0], "colour": "blue", "street": []},
+                {"coords": [4, 0], "colour": "blue", "street": []},
+                {"coords": [5, 0], "colour": "blue", "street": []},
+                {"coords": [6, 0], "colour": "blue", "street": []},
+                {"coords": [7, 0], "colour": "blue", "street": []},
+                {"coords": [8, 0], "colour": "blue", "street": []},
+            ]
+        }
+        add_blocks_to_graph(self.graph, card, (0, 0))
+        self.assertEqual(block_party(self.graph, None), -8)
+
 
 if __name__ == "__main__":
     unittest.main()
+
+# card = {"blocks": [{"coords": [0, 0], "colour": "black", "street": []}]}
+# self.assertFalse(go_green(self.graph, self.streets))
