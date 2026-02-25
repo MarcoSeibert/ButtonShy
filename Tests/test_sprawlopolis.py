@@ -2,14 +2,14 @@ import unittest
 
 import networkx as nx
 
-from Classes.sprawlopolis.functions import (
+from Utils.Sprawlopolis.functions import (
     add_blocks_to_graph,
     add_streets_to_graph,
     is_valid_loop,
     calculate_streets,
 )
 
-from Classes.sprawlopolis.scoring_functions import (
+from Utils.Sprawlopolis.scoring_functions import (
     calculate_connected_groups,
     the_outskirts,
     bloom_boom,

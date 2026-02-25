@@ -3,10 +3,10 @@ import random
 
 import networkx as nx
 
+import Utils.Sprawlopolis.scoring_functions as sf
 from Classes.base.events import ModelEvent
 from Classes.base.models import BaseModel, BaseCard
-import Classes.sprawlopolis.scoring_functions as sf
-from Classes.sprawlopolis.functions import (
+from Utils.Sprawlopolis.functions import (
     calculate_streets,
     add_blocks_to_graph,
     add_streets_to_graph,

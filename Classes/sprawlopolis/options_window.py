@@ -90,7 +90,7 @@ class OptionsView(tk.Toplevel):
         )
         self.confirm_button.grid(column=0, row=6, pady=20)
 
-        # Configure grid weights for rows and columns to center the widgets
+        # Configure grid weights for rows and columns to centre the widgets
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=1)
