@@ -3,7 +3,7 @@ import tkinter as tk
 
 from Classes.base.controllers import StartController
 from Classes.base.views import StartView
-from functions import get_game_data_by_name, import_mvc_components
+from Utils.functions import get_game_data_by_name, import_mvc_components
 
 
 class App(tk.Tk):
@@ -57,7 +57,7 @@ class BaseApp(App):
             json_data = json.load(json_file)["games"]
         self.game_data = get_game_data_by_name(json_data, chosen_game_name)
         self.chosen_game = self.game_data["name"]
-        self.chosen_game_compact = self.chosen_game.replace(" ", "")
+        self.chosen_game_compact = self.chosen_game.replace(" ", "").replace("'", "")
         self.options = options if options else {}
         self.start_up()
 

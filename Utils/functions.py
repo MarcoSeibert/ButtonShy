@@ -5,19 +5,22 @@ from typing import TYPE_CHECKING
 import PIL
 from PIL import Image, ImageTk, ImageDraw
 
-from globals import CARD_SIZE
+from Utils.globals import CARD_SIZE
 
 if TYPE_CHECKING:
     from Classes.base.apps import StartApp
 
+horizontal_cards_games_list = ["Sprawlopolis"]
+
 
 def start_game(app: StartApp, chosen_game_name: str, options: dict = None) -> None:
     app.destroy()
+    chosen_game_name = chosen_game_name.replace("'", "")
     app_class = getattr(
         import_module(f"Classes.{chosen_game_name.lower()}.{chosen_game_name}App"),
         f"{chosen_game_name}App",
     )
-    app_game = app_class(chosen_game_name, options)
+    app_game = app_class(options) if options else app_class()
     app_game.focus_force()
     app_game.mainloop()
 
@@ -38,11 +41,18 @@ def load_and_adjust_image(
 ) -> tuple[ImageTk.PhotoImage, PIL.Image.Image]:
     # Bild öffnen, drehen und Größe anpassen
     with Image.open(os.path.join(fp, image_name)) as img:
-        img = img.convert("RGBA").rotate(-90, expand=True)
+        img = img.convert("RGBA")
+        game_name = image_name.split("_")[0]
+        horizontal = False
+        if game_name in horizontal_cards_games_list:
+            horizontal = True
+        if horizontal:
+            img = img.rotate(-90, expand=True)
+            card_size = tuple(reversed(card_size))
 
         adjusted_image = adjust_image(img, border_size, card_size, radius)
 
-        return (ImageTk.PhotoImage(adjusted_image), adjusted_image)
+        return ImageTk.PhotoImage(adjusted_image), adjusted_image
 
 
 def adjust_image(
@@ -53,6 +63,7 @@ def adjust_image(
     colour: tuple = (0, 0, 0, 255),
 ) -> Image.Image:
     # 1. Bild auf die gewünschte Größe skalieren
+
     img = img.resize(card_size)
 
     # 2. Originalbild zuschneiden (ohne Rahmen)
@@ -92,23 +103,6 @@ def adjust_image(
     )
 
     return adjusted_image
-    # # Maske für abgerundete Ecken erstellen
-    # img = img.resize(card_size)
-    # mask = Image.new("L", card_size, 0)
-    # ImageDraw.Draw(mask).rounded_rectangle((0, 0, *card_size), radius, fill=255)
-    # img.putalpha(mask)
-    # # Rahmen hinzufügen
-    # adjusted_image = Image.new(
-    #     "RGBA",
-    #     (card_size[0] + border_size * 2, card_size[1] + border_size * 2),
-    #     (0, 0, 0, 0),
-    # )
-    # ImageDraw.Draw(adjusted_image).rounded_rectangle(
-    #     (0, 0, *adjusted_image.size), radius + border_size, fill=colour
-    # )
-    # adjusted_image.paste(img, (border_size, border_size), img)
-    # # Endgröße anpassen und zurückgeben
-    # return adjusted_image.resize(card_size)
 
 
 def import_mvc_components(components: dict, chosen_game_name: str) -> tuple:

@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class ModelEvent:
-    type: str  # z.B. "CARD_PLAYED"
-    data: dict  # z.B. {"card_id": 15, "position": (18, 30)}
+    type: str
+    data: dict
 
 
 class ModelObserver:

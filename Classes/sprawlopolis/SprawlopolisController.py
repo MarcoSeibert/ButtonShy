@@ -1,5 +1,6 @@
 from functools import partial
 from tkinter import ttk
+
 import pywinstyles
 from PIL import ImageTk
 
@@ -8,7 +9,7 @@ from Classes.base.events import ModelEvent
 from Classes.canvasgamecontroller import CanvasGameController
 from Classes.sprawlopolis.SprawlopolisModel import SprawlopolisModel
 from Classes.sprawlopolis.SprawlopolisView import SprawlopolisView
-from globals import LEFT_MOUSE_BUTTON
+from Utils.globals import LEFT_MOUSE_BUTTON
 
 
 class SprawlopolisController(BaseController, CanvasGameController):
@@ -19,38 +20,38 @@ class SprawlopolisController(BaseController, CanvasGameController):
         # show goal scores
         self.view.goal_score.config(text=self.model.goal)  # type: ignore
         # add scoring cards to the grid
-        self.scoring_card = ttk.Label(self.view.score_area)
-        self.scoring_card = ttk.Label(self.view.score_area)
-        self.scoring_card = ttk.Label(self.view.score_area)
-        for i, card in enumerate(self.view.score_area.winfo_children()):
+        self.scoring_card = ttk.Label(self.view.score_area)  # type: ignore
+        self.scoring_card = ttk.Label(self.view.score_area)  # type: ignore
+        self.scoring_card = ttk.Label(self.view.score_area)  # type: ignore
+        for i, card in enumerate(self.view.score_area.winfo_children()):  # type: ignore
             card.grid(column=13, row=4 * i + 1, columnspan=2, rowspan=4)
             card.config(
-                image=self.model.score_cards[i].back_image, background="#100001"
+                image=self.model.score_cards[i].back_image, background="#100001"  # type: ignore
             )
             pywinstyles.set_opacity(card, color="#100001")
 
         # add initial hand cards to the grid
         for _ in range(3):
-            self.hand_card = ttk.Label(self.view.hand_area)
-        for i, card in enumerate(self.view.hand_area.winfo_children()):
+            self.hand_card = ttk.Label(self.view.hand_area)  # type: ignore
+        for i, card in enumerate(self.view.hand_area.winfo_children()):  # type: ignore
             card.grid(column=1 + 2 * i, row=17, rowspan=2, columnspan=2)
         # add images to the cards
-        for i, card in enumerate(self.view.hand_area.winfo_children()):
+        for i, card in enumerate(self.view.hand_area.winfo_children()):  # type: ignore
             card.config(
-                image=self.model.hand_cards[i].front_image,
+                image=self.model.hand_cards[i].front_image,  # type: ignore
                 background="#000001",
             )
             pywinstyles.set_opacity(card, color="#000001")
             card.bind(
-                LEFT_MOUSE_BUTTON, partial(self.play_card, self.model.hand_cards[i])
+                LEFT_MOUSE_BUTTON, partial(self.play_card, self.model.hand_cards[i])  # type: ignore
             )
 
         # add deck to the grid
-        self.next_card = ttk.Label(self.view.deck_area)
+        self.next_card = ttk.Label(self.view.deck_area)  # type: ignore
         self.next_card.grid(column=7, row=17, rowspan=2, columnspan=6)
         # add image to the card
         image = self.model.cards[0].front_image
-        for card in self.view.deck_area.winfo_children():
+        for card in self.view.deck_area.winfo_children():  # type: ignore
             card.configure(image=image, background="#000001")
             pywinstyles.set_opacity(card, color="#000001")
 
@@ -59,36 +60,36 @@ class SprawlopolisController(BaseController, CanvasGameController):
         if event.type == "FIRST_CARD_PLAYED":
             self.controller_play_first_card(event)
         elif event.type == "DRAW_NEW_CARD":
-            self.draw_new_card()
+            self.controller_draw_new_card()
         elif event.type == "UPDATE_SCORES":
-            self.update_scores()
+            self.controller_update_scores()
 
     def controller_play_first_card(self, event: ModelEvent) -> None:
         card = event.data["card"]
         # update the deck
         image = self.model.cards[0].front_image
-        for deck in self.view.deck_area.winfo_children():
+        for deck in self.view.deck_area.winfo_children():  # type: ignore
             deck.configure(image=image, background="#000001")
         # show the first card on the canvas
         self.view.add_card_to_canvas(
-            card, "front", (30, 18), self.grid_size, movable=False
+            card, "front", self.model.start_position_on_canvas, self.grid_size, movable=False  # type: ignore
         )
 
-    def draw_new_card(self) -> None:
+    def controller_draw_new_card(self) -> None:
         if self.model.cards:
             image = self.model.cards[0].front_image
-            for deck in self.view.deck_area.winfo_children():
+            for deck in self.view.deck_area.winfo_children():  # type: ignore
                 deck.configure(image=image, background="#000001")
         else:
-            for deck in self.view.deck_area.winfo_children():
+            for deck in self.view.deck_area.winfo_children():  # type: ignore
                 deck.destroy()
-        for i, card in enumerate(self.view.hand_area.winfo_children()):
+        for i, card in enumerate(self.view.hand_area.winfo_children()):  # type: ignore
             card.config(
-                image=self.model.hand_cards[i].front_image,
+                image=self.model.hand_cards[i].front_image,  # type: ignore
                 background="#000001",
             )
 
-    def update_scores(self) -> None:
+    def controller_update_scores(self) -> None:
         scores = self.model.scores  # type: ignore
         self.view.orange_score.config(text=scores["orange"])  # type: ignore
         self.view.blue_score.config(text=scores["blue"])  # type: ignore
@@ -103,7 +104,7 @@ class SprawlopolisController(BaseController, CanvasGameController):
 
     def press_turn(self, _) -> None:
         active_card_obj = None
-        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")
+        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")  # type: ignore
         if objs_with_movable_tag:
             active_card_obj = objs_with_movable_tag[0]
 
@@ -114,7 +115,7 @@ class SprawlopolisController(BaseController, CanvasGameController):
         photo_image = ImageTk.PhotoImage(rotated_image)
 
         self.active_card_image = photo_image
-        self.view.canvas_area.itemconfigure(active_card_obj, image=photo_image)
+        self.view.canvas_area.itemconfigure(active_card_obj, image=photo_image)  # type: ignore
 
         # change the card data and image
         for i, card in enumerate(self.model.cards_data):
@@ -124,9 +125,67 @@ class SprawlopolisController(BaseController, CanvasGameController):
         self.model.active_card.front_image = photo_image
 
         # change the image in the hand area
-        for i, card in enumerate(self.view.hand_area.winfo_children()):
+        for i, card in enumerate(self.view.hand_area.winfo_children()):  # type: ignore
             card.config(
-                image=self.model.hand_cards[i].front_image,
+                image=self.model.hand_cards[i].front_image,  # type: ignore
+                background="#000001",
+            )
+
+    def press_approve(self, _) -> None:
+        card_to_play = self.model.active_card
+
+        # add the card to the canvas
+        active_card_obj = None
+        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")  # type: ignore
+        if objs_with_movable_tag:
+            active_card_obj = objs_with_movable_tag[0]
+        self.view.canvas_area.itemconfigure(active_card_obj, tags=())  # type: ignore
+        # set the active card to None
+        self.model.active_card = None
+        # remove the buttons
+        self.show_buttons(False, 0, 0)
+        self.model.add_card_to_graph(
+            card_to_play, (self.drop_data["x"], self.drop_data["y"])
+        )
+        # draw new card and reactivate hand area
+        self.model.hand_cards.remove(card_to_play)  # type: ignore
+        if len(self.model.hand_cards) == 0:  # type: ignore
+            total_score = sum(self.model.scores.values())
+            if total_score >= self.model.goal:  # type: ignore
+                result = "Win"
+            else:
+                result = "Loss"
+            self.show_result_window(result)
+        if self.model.cards:
+            self.model.draw_new_card()
+        else:
+            self.view.hand_area.winfo_children()[-1].destroy()  # type: ignore
+        for i, card in enumerate(self.view.hand_area.winfo_children()):  # type: ignore
+            pywinstyles.set_opacity(card, color="#000001")
+            card.bind(
+                LEFT_MOUSE_BUTTON, partial(self.play_card, self.model.hand_cards[i])  # type: ignore
+            )
+            card.config(
+                image=self.model.hand_cards[i].front_image,  # type: ignore
+                background="#000001",
+            )
+
+    def press_decline(self, _) -> None:
+        # reset everything
+        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")  # type: ignore
+        if objs_with_movable_tag:
+            self.view.delete_card_from_canvas(objs_with_movable_tag[0])
+
+        self.model.active_card = None
+        self.show_buttons(False, 0, 0)
+
+        for i, card in enumerate(self.view.hand_area.winfo_children()):  # type: ignore
+            pywinstyles.set_opacity(card, color="#000001")
+            card.bind(
+                LEFT_MOUSE_BUTTON, partial(self.play_card, self.model.hand_cards[i])  # type: ignore
+            )
+            card.config(
+                image=self.model.hand_cards[i].front_image,  # type: ignore
                 background="#000001",
             )
 

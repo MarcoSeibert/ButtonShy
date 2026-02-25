@@ -4,7 +4,7 @@ import random
 from PIL.ImageTk import PhotoImage
 
 from Classes.base.events import ModelObserver, ModelEvent
-from functions import load_and_adjust_image
+from Utils.functions import load_and_adjust_image
 
 
 class BaseCard:
@@ -30,13 +30,10 @@ class BaseModel:
         self.back_image_dict = {}
         self.front_image_dict = {}
         self.active_card = None
-        self.boardstate = None
-        self.hand_cards = None
-        self.score_cards = None
         self.game_data = game_data
         self.options = options if options else {}
 
-        self.cards = self.create_deck_of_cards()
+        self.cards = self.create_decks_of_cards()
 
         self.observers: list[ModelObserver] = []
 
@@ -52,7 +49,7 @@ class BaseModel:
     def play_card(self, card: BaseCard, position: tuple) -> None:
         raise NotImplementedError()
 
-    def create_deck_of_cards(self) -> list:
+    def create_decks_of_cards(self) -> list:
         cards = []
         mapping_data = self.game_data["mapping"]
 

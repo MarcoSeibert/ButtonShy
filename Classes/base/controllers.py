@@ -1,9 +1,13 @@
+import json
+import tkinter as tk
+from datetime import datetime
+
 from Classes.base.events import ModelObserver, ModelEvent
 from Classes.base.models import BaseModel
 from Classes.base.views import StartView, BaseView
 from Classes.sprawlopolis.options_window import OptionsWindow
-from functions import start_game
-from start_up import games_dict
+from Utils.functions import start_game
+from Utils.start_up import games_dict
 
 
 class StartController:
@@ -38,3 +42,29 @@ class BaseController(ModelObserver):
 
     def quit(self, _) -> None:
         self.view.master.destroy()
+
+    def show_result_window(self, result: str) -> None:
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        result_data = {
+            "game": self.model.game_data["name"],
+            "date": current_time,
+            "result": result,
+        }
+        try:
+            with open("game_results.json", "r") as f:
+                results = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            results = []
+        results.append(result_data)
+        with open("game_results.json", "w") as f:
+            json.dump(results, f, indent=4)
+
+        result_window = tk.Toplevel()
+        result_window.title("Game Result")
+        label = tk.Label(result_window, text=f"Game Over: {result}")
+        label.pack()
+        close_button = tk.Button(
+            result_window, text="Close", command=result_window.destroy
+        )
+        close_button.pack()

@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 from Classes.base.views import BaseView
 import tkinter as tk
 from tkinter import ttk
-from globals import BASIC_FONT, BOLD_FONT
+from Utils.globals import BASIC_FONT, BOLD_FONT
 
 
 class SprawlopolisView(BaseView, CanvasGameView):
@@ -39,7 +39,7 @@ class SprawlopolisView(BaseView, CanvasGameView):
         self.goal_2.grid(column=15, columnspan=2, row=5, rowspan=4)
         self.goal_3 = ttk.Label(self, text="0", font=BOLD_FONT)
         self.goal_3.grid(column=15, columnspan=2, row=9, rowspan=4)
-        # insert scorecard
+        # insert scorepad
         ## load images
         self.orange_block = tk.PhotoImage(
             file="Resources/Assets/Sprawlopolis/Orange.png"

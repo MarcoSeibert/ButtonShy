@@ -1,0 +1,339 @@
+{
+  "_street_exits_": {
+    "top": "1, 2",
+    "upper": "8, 3",
+    "lower": "7, 4",
+    "bottom": "6, 5"
+  },
+  "cards": [
+    {
+      "id": 1,
+      "craftsperson": "purple",
+      "raw_resource": "green",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 2, 8]},
+        {"connected_locations": [], "exits": [3, 4, 7]},
+        {"connected_locations": ["raw_resource"], "exits": [5, 6]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": ["craftsperson"], "exits": [23, 78]},
+        {"connected_locations": [], "exits": [34]},
+        {"connected_locations": ["raw_resource"], "exits": [45, 67]},
+        {"connected_locations": [], "exits": [56]}
+      ]
+    },
+    {
+      "id": 2,
+      "craftsperson": "green",
+      "raw_resource": "grey",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 7, 8]},
+        {"connected_locations": [], "exits": [2, 3]},
+        {"connected_locations": ["raw_resource"], "exits": [4, 5, 6]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": ["craftsperson", "raw_resource"], "exits": [12, 34, 67]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    },
+    {
+      "id": 3,
+      "craftsperson": "blue",
+      "raw_resource": "purple",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 2, 3, 8]},
+        {"connected_locations": ["raw_resource"], "exits": [4, 5]},
+        {"connected_locations": [], "exits": [6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": ["craftsperson", "raw_resource"], "exits": [34, 56, 78]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 4,
+      "craftsperson": "orange",
+      "raw_resource": "purple",
+      "roads": [
+        {"connected_locations": ["raw_resource"], "exits": [1, 2, 3, 8]},
+        {"connected_locations": ["craftsperson"], "exits": [4, 5]},
+        {"connected_locations": [], "exits": [6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": ["raw_resource", "craftsperson"], "exits": [34, 56, 78]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 5,
+      "craftsperson": "green",
+      "raw_resource": "grey",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 2]},
+        {"connected_locations": ["raw_resource"], "exits": [3, 4, 8]},
+        {"connected_locations": ["craftsperson"], "exits": [5, 6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": ["raw_resource"], "exits": [81, 23]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [34]},
+        {"connected_locations": ["craftsperson"], "exits": [45, 78]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 6,
+      "craftsperson": "cyan",
+      "raw_resource": "green",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 2, 3]},
+        {"connected_locations": ["raw_resource","craftsperson"], "exits": [4, 5, 6, 7, 8]}
+      ],
+      "meadows": [
+        {"connected_locations": ["raw_resource"], "exits": [81, 34]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": ["craftsperson"], "exits": [45, 78]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 7,
+      "craftsperson": "cyan",
+      "raw_resource": "purple",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 2, 3, 8]},
+        {"connected_locations": ["raw_resource"], "exits": [4, 5]},
+        {"connected_locations": ["craftsperson"], "exits": [6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": ["raw_resource", "craftsperson"], "exits": [34, 56, 78]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 8,
+      "craftsperson": "pink",
+      "raw_resource": "green",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 7, 8]},
+        {"connected_locations": ["raw_resource"], "exits": [2, 3]},
+        {"connected_locations": ["craftsperson"], "exits": [4, 5, 6]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": ["raw_resource", "craftsperson"], "exits": [12, 34, 67]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    },
+    {
+      "id": 9,
+      "craftsperson": "pink",
+      "raw_resource": "grey",
+      "roads": [
+        {"connected_locations": ["raw_resource"], "exits": [1, 2, 3]},
+        {"connected_locations": ["craftsperson"], "exits": [4, 5, 6]},
+        {"connected_locations": [], "exits": [7, 8]}
+      ],
+      "meadows": [
+        {"connected_locations": ["raw_resource", "craftsperson"], "exits": [81, 34, 67]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    },
+    {
+      "id": 10,
+      "craftsperson": "purple",
+      "raw_resource": "green",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 2]},
+        {"connected_locations": ["craftsperson"], "exits": [3, 4]},
+        {"connected_locations": [], "exits": [5, 6]},
+        {"connected_locations": ["raw_resource"], "exits": [7, 8]}
+      ],
+      "meadows": [
+        {"connected_locations": ["raw_resource", "craftsperson"], "exits": [81, 23, 45, 67]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [34]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    },
+    {
+      "id": 11,
+      "craftsperson": "orange",
+      "raw_resource": "grey",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 8]},
+        {"connected_locations": ["craftsperson"], "exits": [2, 3]},
+        {"connected_locations": ["raw_resource"], "exits": [4, 5, 6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": ["raw_resource", "craftsperson"], "exits": [12, 34, 78]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 12,
+      "craftsperson": "blue",
+      "raw_resource": "purple",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 2, 3, 8]},
+        {"connected_locations": ["raw_resource"], "exits": [4, 5]},
+        {"connected_locations": [], "exits": [6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": ["raw_resource", "craftsperson"], "exits": [34, 56, 78]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 13,
+      "craftsperson": "quill",
+      "raw_resource": "",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 2, 3, 4, 5, 8]},
+        {"connected_locations": [], "exits": [6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [34]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": ["craftsperson"], "exits": [56, 78]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 14,
+      "craftsperson": "harp",
+      "raw_resource": "",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 2, 3, 6, 7, 8]},
+        {"connected_locations": [], "exits": [4, 5]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": ["craftsperson"], "exits": [34, 56]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [67]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    },
+    {
+      "id": 15,
+      "craftsperson": "potions",
+      "raw_resource": "",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 8]},
+        {"connected_locations": ["craftsperson"], "exits": [2, 3, 4, 5, 6, 7]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": ["craftsperson"], "exits": [12, 78]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [34]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [67]}
+      ]
+    },
+    {
+      "id": 16,
+      "craftsperson": "chest",
+      "raw_resource": "",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 2, 3, 4, 7, 8]},
+        {"connected_locations": [], "exits": [5, 6]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [34]},
+        {"connected_locations": ["craftsperson"], "exits": [45, 67]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    },
+    {
+      "id": 17,
+      "craftsperson": "robot",
+      "raw_resource": "",
+      "roads": [
+        {"connected_locations": [], "exits": [1, 2]},
+        {"connected_locations": ["craftsperson"], "exits": [3, 4, 5, 6, 7, 8]}
+      ],
+      "meadows": [
+        {"connected_locations": ["craftsperson"], "exits": [81, 23]},
+        {"connected_locations": [], "exits": [12]},
+        {"connected_locations": [], "exits": [34]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [67]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    },
+    {
+      "id": 18,
+      "craftsperson": "mirror",
+      "raw_resource": "",
+      "roads": [
+        {"connected_locations": ["craftsperson"], "exits": [1, 4, 5, 6, 7, 8]},
+        {"connected_locations": [], "exits": [2, 3]}
+      ],
+      "meadows": [
+        {"connected_locations": [], "exits": [81]},
+        {"connected_locations": ["craftsperson"], "exits": [12, 34]},
+        {"connected_locations": [], "exits": [23]},
+        {"connected_locations": [], "exits": [45]},
+        {"connected_locations": [], "exits": [56]},
+        {"connected_locations": [], "exits": [67]},
+        {"connected_locations": [], "exits": [78]}
+      ]
+    }
+  ]
+}
+
+
+
+
+
+

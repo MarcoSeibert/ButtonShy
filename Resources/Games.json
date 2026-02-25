@@ -1,6 +1,310 @@
 {
   "games": [
     {
+      "name": "A Dragon's Gift",
+      "nr_of_cards": 18,
+      "first_page_with_cards": 1,
+      "double_sided_cards": 18,
+      "single_sided_cards": 0,
+      "backsides": 0,
+      "grid_size": [
+        74.5,
+        100
+      ],
+      "canvas_size": [
+        1500,
+        700
+      ],
+      "start_position": [
+        40,
+        14
+      ],
+      "mapping": {
+        "1_0": {
+          "card_id": 1,
+          "side": "front"
+        },
+        "1_1": {
+          "card_id": 2,
+          "side": "front"
+        },
+        "1_2": {
+          "card_id": 3,
+          "side": "front"
+        },
+        "1_3": {
+          "card_id": 4,
+          "side": "front"
+        },
+        "1_4": {
+          "card_id": 5,
+          "side": "front"
+        },
+        "1_5": {
+          "card_id": 6,
+          "side": "front"
+        },
+        "2_0": {
+          "card_id": 3,
+          "side": "back"
+        },
+        "2_1": {
+          "card_id": 2,
+          "side": "back"
+        },
+        "2_2": {
+          "card_id": 1,
+          "side": "back"
+        },
+        "2_3": {
+          "card_id": 6,
+          "side": "back"
+        },
+        "2_4": {
+          "card_id": 5,
+          "side": "back"
+        },
+        "2_5": {
+          "card_id": 4,
+          "side": "back"
+        },
+        "3_0": {
+          "card_id": 7,
+          "side": "front"
+        },
+        "3_1": {
+          "card_id": 8,
+          "side": "front"
+        },
+        "3_2": {
+          "card_id": 9,
+          "side": "front"
+        },
+        "3_3": {
+          "card_id": 10,
+          "side": "front"
+        },
+        "3_4": {
+          "card_id": 11,
+          "side": "front"
+        },
+        "3_5": {
+          "card_id": 12,
+          "side": "front"
+        },
+        "4_0": {
+          "card_id": 9,
+          "side": "back"
+        },
+        "4_1": {
+          "card_id": 8,
+          "side": "back"
+        },
+        "4_2": {
+          "card_id": 7,
+          "side": "back"
+        },
+        "4_3": {
+          "card_id": 12,
+          "side": "back"
+        },
+        "4_4": {
+          "card_id": 11,
+          "side": "back"
+        },
+        "4_5": {
+          "card_id": 10,
+          "side": "back"
+        },
+        "5_0": {
+          "card_id": 13,
+          "side": "front"
+        },
+        "5_1": {
+          "card_id": 14,
+          "side": "front"
+        },
+        "5_2": {
+          "card_id": 15,
+          "side": "front"
+        },
+        "5_3": {
+          "card_id": 16,
+          "side": "front"
+        },
+        "5_4": {
+          "card_id": 17,
+          "side": "front"
+        },
+        "5_5": {
+          "card_id": 18,
+          "side": "front"
+        },
+        "6_0": {
+          "card_id": 15,
+          "side": "back"
+        },
+        "6_1": {
+          "card_id": 14,
+          "side": "back"
+        },
+        "6_2": {
+          "card_id": 13,
+          "side": "back"
+        },
+        "6_3": {
+          "card_id": 18,
+          "side": "back"
+        },
+        "6_4": {
+          "card_id": 17,
+          "side": "back"
+        },
+        "6_5": {
+          "card_id": 16,
+          "side": "back"
+        }
+      },
+      "mvc_components": {
+        "controller": "ADragonsGiftController",
+        "model": "ADragonsGiftModel",
+        "view": "ADragonsGiftView"
+      },
+      "typ": "Base"
+    },
+    {
+      "name": "A Nice Cuppa",
+      "nr_of_cards": 18,
+      "first_page_with_cards": 1,
+      "double_sided_cards": 8,
+      "single_sided_cards": 10,
+      "backsides": 2,
+      "grid_size": [
+        1,
+        1
+      ],
+      "canvas_size": [
+        0,
+        0
+      ],
+      "mapping": {
+        "1_0": {
+          "card_id": 1,
+          "side": "front"
+        },
+        "1_1": {
+          "card_id": 4,
+          "side": "front"
+        },
+        "1_2": {
+          "card_id": 2,
+          "side": "front"
+        },
+        "1_3": {
+          "card_id": 5,
+          "side": "front"
+        },
+        "1_4": {
+          "card_id": 3,
+          "side": "front"
+        },
+        "1_5": {
+          "card_id": 6,
+          "side": "front"
+        },
+        "2_0": {
+          "card_id": 3,
+          "side": "back"
+        },
+        "2_1": {
+          "card_id": 6,
+          "side": "back"
+        },
+        "2_2": {
+          "card_id": 2,
+          "side": "back"
+        },
+        "2_3": {
+          "card_id": 5,
+          "side": "back"
+        },
+        "2_4": {
+          "card_id": 1,
+          "side": "back"
+        },
+        "2_5": {
+          "card_id": 4,
+          "side": "back"
+        },
+        "3_0": {
+          "card_id": 7,
+          "side": "front"
+        },
+        "3_1": {
+          "card_id": "Technology",
+          "side": "front"
+        },
+        "3_2": {
+          "card_id": "Home",
+          "side": "front"
+        },
+        "3_3": {
+          "card_id": "Work",
+          "side": "front"
+        },
+        "3_4": {
+          "card_id": "Politics",
+          "side": "front"
+        },
+        "3_5": {
+          "card_id": "Health",
+          "side": "front"
+        },
+        "4_0": {
+          "card_id": "Back1",
+          "side": "back"
+        },
+        "4_1": {
+          "card_id": 7,
+          "side": "back"
+        },
+        "5_0": {
+          "card_id": "Commute",
+          "side": "front"
+        },
+        "5_1": {
+          "card_id": "Aging",
+          "side": "front"
+        },
+        "5_2": {
+          "card_id": "Finances",
+          "side": "front"
+        },
+        "5_3": {
+          "card_id": "Education",
+          "side": "front"
+        },
+        "5_4": {
+          "card_id": "Existential",
+          "side": "front"
+        },
+        "5_5": {
+          "card_id": "Ref",
+          "side": "front"
+        },
+        "6_0": {
+          "card_id": "Back2",
+          "side": "back"
+        }
+      },
+      "mvc_components": {
+        "model": "ANiceCuppaModel",
+        "view": "ANiceCuppaView",
+        "controller": "ANiceCuppaController"
+      },
+      "typ": "Base"
+    },
+    {
       "name": "Sprawlopolis",
       "nr_of_cards": 18,
       "first_page_with_cards": 1,
@@ -14,6 +318,10 @@
       "canvas_size": [
         1500,
         700
+      ],
+      "start_position": [
+        30,
+        18
       ],
       "mapping": {
         "1_0": {
@@ -199,138 +507,6 @@
         "view": "SprawlopolisWrecktarView"
       },
       "typ": "Exp"
-    },
-    {
-      "name": "A Nice Cuppa",
-      "nr_of_cards": 18,
-      "first_page_with_cards": 1,
-      "double_sided_cards": 8,
-      "single_sided_cards": 10,
-      "backsides": 2,
-      "grid_size": [
-        1,
-        1
-      ],
-      "canvas_size": [
-        0,
-        0
-      ],
-      "mapping": {
-        "1_0": {
-          "card_id": 1,
-          "side": "front"
-        },
-        "1_1": {
-          "card_id": 4,
-          "side": "front"
-        },
-        "1_2": {
-          "card_id": 2,
-          "side": "front"
-        },
-        "1_3": {
-          "card_id": 5,
-          "side": "front"
-        },
-        "1_4": {
-          "card_id": 3,
-          "side": "front"
-        },
-        "1_5": {
-          "card_id": 6,
-          "side": "front"
-        },
-        "2_0": {
-          "card_id": 3,
-          "side": "back"
-        },
-        "2_1": {
-          "card_id": 6,
-          "side": "back"
-        },
-        "2_2": {
-          "card_id": 2,
-          "side": "back"
-        },
-        "2_3": {
-          "card_id": 5,
-          "side": "back"
-        },
-        "2_4": {
-          "card_id": 1,
-          "side": "back"
-        },
-        "2_5": {
-          "card_id": 4,
-          "side": "back"
-        },
-        "3_0": {
-          "card_id": 7,
-          "side": "front"
-        },
-        "3_1": {
-          "card_id": "Technology",
-          "side": "front"
-        },
-        "3_2": {
-          "card_id": "Home",
-          "side": "front"
-        },
-        "3_3": {
-          "card_id": "Work",
-          "side": "front"
-        },
-        "3_4": {
-          "card_id": "Politics",
-          "side": "front"
-        },
-        "3_5": {
-          "card_id": "Health",
-          "side": "front"
-        },
-        "4_0": {
-          "card_id": "Back1",
-          "side": "back"
-        },
-        "4_1": {
-          "card_id": 7,
-          "side": "back"
-        },
-        "5_0": {
-          "card_id": "Commute",
-          "side": "front"
-        },
-        "5_1": {
-          "card_id": "Aging",
-          "side": "front"
-        },
-        "5_2": {
-          "card_id": "Finances",
-          "side": "front"
-        },
-        "5_3": {
-          "card_id": "Education",
-          "side": "front"
-        },
-        "5_4": {
-          "card_id": "Existential",
-          "side": "front"
-        },
-        "5_5": {
-          "card_id": "Ref",
-          "side": "front"
-        },
-        "6_0": {
-          "card_id": "Back2",
-          "side": "back"
-        }
-      },
-      "mvc_components": {
-        "model": "ANiceCuppaModel",
-        "view": "ANiceCuppaView",
-        "controller": "ANiceCuppaController"
-      },
-      "typ": "Base"
     }
   ]
 }

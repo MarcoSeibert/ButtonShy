@@ -50,7 +50,7 @@ def extract_images(args: tuple) -> None:
                 f.write(image_bytes)
 
             # Bild zuschneiden und skalieren
-            crop_and_resize_image(image_path, image_path, 45)
+            crop_and_resize_image(image_path, image_path, 40)
 
 
 def create_assets(args: tuple) -> tuple:
@@ -69,6 +69,7 @@ def create_assets(args: tuple) -> tuple:
 
     extract_images((game_name, first_page))
     elapsed = time.time() - start_time
+    print(f"Created assets for {game_name}. Elapsed time: {elapsed:.2f} seconds")
     return game_name, elapsed
 
 

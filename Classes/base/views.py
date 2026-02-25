@@ -3,8 +3,8 @@ from functools import partial
 from tkinter import ttk
 from typing import TYPE_CHECKING
 
-from globals import TITLE_FONT, BASIC_FONT, LEFT_MOUSE_BUTTON
-from start_up import games_dict
+from Utils.globals import TITLE_FONT, BASIC_FONT, LEFT_MOUSE_BUTTON
+from Utils.start_up import games_dict
 
 if TYPE_CHECKING:
     from Classes.base.controllers import StartController, BaseController
@@ -89,15 +89,6 @@ class StartView(ttk.Frame):
 class BaseView(ttk.Frame):
     def __init__(self, parent: BaseApp) -> None:
         super().__init__(parent)
-        self.images_on_canvas = None
-        self.deck_area = None
-        self.hand_area = None
-        self.play_area = None
-        self.score_area = None
-        self.vbar = None
-        self.hbar = None
-        self.canvas_area = None
-        self.canvas = None
         self.controller = None
         self.parent = parent
         # Create menu bar

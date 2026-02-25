@@ -31,12 +31,13 @@ class SprawlopolisModel(BaseModel):
             "goal_3": 0,
         }
         self.goal = 0
+        self.start_position_on_canvas = self.game_data.get("start_position")
 
         with open("Resources/Assets/Sprawlopolis/cards_data.json", "r") as file:
             self.cards_data = json.load(file)["cards"]
         self.graph = nx.Graph()
 
-        # draw three scoring card
+        # draw three scoring cards
         for _ in range(3):
             given_card = random.choice(self.cards)
             self.cards.remove(given_card)
@@ -53,7 +54,7 @@ class SprawlopolisModel(BaseModel):
         card_to_play = self.cards[0]
         self.cards.remove(card_to_play)
         self.talk_to_observer(param="play_first_card", obj=card_to_play)
-        self.add_card_to_graph(card_to_play, (30, 18))
+        self.add_card_to_graph(card_to_play, self.start_position_on_canvas)
 
     def talk_to_observer(self, param: str, obj: object = None) -> None:
         if param == "play_first_card":

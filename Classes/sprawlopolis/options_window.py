@@ -7,7 +7,9 @@ from tkinter.ttk import Label
 from PIL import Image, ImageTk
 from PIL.ImageTk import PhotoImage
 
-from globals import TITLE_FONT, BASIC_FONT, BOLD_FONT, LEFT_MOUSE_BUTTON
+from Utils.globals import TITLE_FONT, BASIC_FONT, BOLD_FONT, LEFT_MOUSE_BUTTON
+
+DIFFICULTY01 = "Resources/Assets/Difficulty01.gif"
 
 
 class MyLabel(ttk.Label):
@@ -30,9 +32,7 @@ class OptionsView(tk.Toplevel):
         self.parent = parent
         self.game_name = game_name
         self.controller = None
-        self.switch_difficulty = tk.PhotoImage(
-            file="Resources/Assets/Difficulty01.gif", format="gif -index 0"
-        )
+        self.switch_difficulty = tk.PhotoImage(file=DIFFICULTY01, format="gif -index 0")
 
         self.title("Options")
 
@@ -139,7 +139,7 @@ class OptionsController:
         match scale.value:
             case 0:
                 scale.value = 1
-                frames_scale = get_frames_from_gif("Resources/Assets/Difficulty01.gif")
+                frames_scale = get_frames_from_gif(DIFFICULTY01)
                 frames_scale.reverse()
             case 1:
                 if y_click >= 96:
@@ -150,9 +150,7 @@ class OptionsController:
                     frames_scale.reverse()
                 else:
                     scale.value = 0
-                    frames_scale = get_frames_from_gif(
-                        "Resources/Assets/Difficulty01.gif"
-                    )
+                    frames_scale = get_frames_from_gif(DIFFICULTY01)
             case 2:
                 scale.value = 1
                 frames_scale = get_frames_from_gif("Resources/Assets/Difficulty12.gif")

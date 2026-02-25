@@ -1,21 +1,20 @@
-import json
 import tkinter as tk
-from datetime import datetime
-from functools import partial
 from tkinter import Event
 
 import pywinstyles
 
 from Classes.base.models import BaseModel, BaseCard
 from Classes.canvasgameview import CanvasGameView
-from globals import LEFT_MOUSE_BUTTON
+from Utils.globals import LEFT_MOUSE_BUTTON
 
 BUTTON_PRESS_1 = "<ButtonPress-1>"
 
 
 class CanvasGameController:
     def __init__(self, model: BaseModel, view: CanvasGameView) -> None:
-        self.drop_data = {"x": 30, "y": 18}
+        x = self.model.start_position_on_canvas[0]  # type: ignore
+        y = self.model.start_position_on_canvas[1]  # type: ignore
+        self.drop_data = {"x": x, "y": y}
         self.active_widget = None
         self.model = model
         self.view = view
@@ -90,8 +89,10 @@ class CanvasGameController:
         grid_y = grid_y_pix / self.grid_size[1]
 
         if not self.model.is_placement_valid(grid_x, grid_y):
-            grid_x_pix = 30 * self.grid_size[0]
-            grid_y_pix = 18 * self.grid_size[1]
+            x = self.model.start_position_on_canvas[0]  # type: ignore
+            y = self.model.start_position_on_canvas[1]  # type: ignore
+            grid_x_pix = x * self.grid_size[0]
+            grid_y_pix = y * self.grid_size[1]
         self.drop_data["x"] = grid_x
         self.drop_data["y"] = grid_y
         self.view.canvas_area.coords(self.drag_data["item"], grid_x_pix, grid_y_pix)
@@ -143,7 +144,7 @@ class CanvasGameController:
 
         pywinstyles.set_opacity(event.widget, value=0.5, color="#000001")
         self.active_card_image = card.front_image
-        self.view.add_card_to_canvas(card, "front", (30, 18), self.grid_size)
+        self.view.add_card_to_canvas(card, "front", self.model.start_position_on_canvas, self.grid_size)  # type: ignore
         self.active_widget = event.widget
 
         event.widget.image = self.active_card_image
@@ -157,95 +158,17 @@ class CanvasGameController:
             active_card_obj, image=self.active_card_image
         )
 
-        self.show_buttons(True, self.grid_size[0] * 30, self.grid_size[1] * 18)
+        x = self.model.start_position_on_canvas[0]  # type: ignore
+        y = self.model.start_position_on_canvas[1]  # type: ignore
+        self.show_buttons(True, self.grid_size[0] * x, self.grid_size[1] * y)
         for i, card_label in enumerate(self.view.hand_area.winfo_children()):
             card_label.unbind(LEFT_MOUSE_BUTTON)
 
     def press_approve(self, _) -> None:
-        card_to_play = self.model.active_card
-
-        # add the card to the canvas
-        active_card_obj = None
-        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")
-        if objs_with_movable_tag:
-            active_card_obj = objs_with_movable_tag[0]
-        self.view.canvas_area.itemconfigure(active_card_obj, tags=())
-        # set the active card to None
-        self.model.active_card = None
-        # remove the buttons
-        self.show_buttons(False, 0, 0)
-        self.model.add_card_to_graph(
-            card_to_play, (self.drop_data["x"], self.drop_data["y"])
-        )
-        # draw new card and reactivate hand area
-        self.model.hand_cards.remove(card_to_play)
-        if len(self.model.hand_cards) == 0:
-            total_score = sum(self.model.scores.values())
-            if total_score >= self.model.goal:  # type: ignore
-                result = "Win"
-            else:
-                result = "Loss"
-            self.show_result_window(result)
-        if self.model.cards:
-            self.model.draw_new_card()
-        else:
-            self.view.hand_area.winfo_children()[-1].destroy()
-        for i, card in enumerate(self.view.hand_area.winfo_children()):
-            pywinstyles.set_opacity(card, color="#000001")
-            card.bind(
-                LEFT_MOUSE_BUTTON, partial(self.play_card, self.model.hand_cards[i])
-            )
-            card.config(
-                image=self.model.hand_cards[i].front_image,
-                background="#000001",
-            )
-
-        # update the scores
+        raise NotImplementedError
 
     def press_decline(self, _) -> None:
-        # reset everything
-        objs_with_movable_tag = self.view.canvas_area.find_withtag("movable")
-        if objs_with_movable_tag:
-            self.view.delete_card_from_canvas(objs_with_movable_tag[0])
-
-        self.model.active_card = None
-        self.show_buttons(False, 0, 0)
-
-        for i, card in enumerate(self.view.hand_area.winfo_children()):
-            pywinstyles.set_opacity(card, color="#000001")
-            card.bind(
-                LEFT_MOUSE_BUTTON, partial(self.play_card, self.model.hand_cards[i])
-            )
-            card.config(
-                image=self.model.hand_cards[i].front_image,
-                background="#000001",
-            )
+        raise NotImplementedError
 
     def press_turn(self, _) -> None:
         raise NotImplementedError
-
-    def show_result_window(self, result: str) -> None:
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        result_data = {
-            "game": self.model.game_data["name"],
-            "date": current_time,
-            "result": result,
-        }
-        try:
-            with open("game_results.json", "r") as f:
-                results = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            results = []
-        results.append(result_data)
-        with open("game_results.json", "w") as f:
-            json.dump(results, f, indent=4)
-
-        result_window = tk.Toplevel()
-        result_window.title("Game Result")
-        label = tk.Label(result_window, text=f"Game Over: {result}")
-        label.pack()
-        close_button = tk.Button(
-            result_window, text="Close", command=result_window.destroy
-        )
-        close_button.pack()
