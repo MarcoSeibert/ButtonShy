@@ -1,4 +1,4 @@
 # Core Abhängigkeiten
-Pillow>=9.0.0          # Für Bildverarbeitung (PIL)
-PyMuPDF>=1.20.0        # Für PDF-Extraktion (fitz)
-networkx>=2.6.3        # Für Graphenoperationen
+Pillow>=12.1.1          # Für Bildverarbeitung (PIL)
+PyMuPDF>=1.27.1        # Für PDF-Extraktion (fitz)
+networkx>=3.6.1        # Für Graphenoperationen
