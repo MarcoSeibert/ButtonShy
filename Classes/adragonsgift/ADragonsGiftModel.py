@@ -1,12 +1,10 @@
 import json
-import os
 import random
 
 import networkx as nx
 
 from Classes.base.events import ModelEvent
 from Classes.base.models import BaseModel, BaseCard
-from Utils.functions import load_and_adjust_image
 
 
 class ADragonsGiftModel(BaseModel):
@@ -55,37 +53,10 @@ class ADragonsGiftModel(BaseModel):
         print("Hi")
 
     def create_decks_of_cards(self) -> tuple:
-        village_cards = []
-        gift_cards = []
-        mapping_data = self.game_data["mapping"]
+        def deck_selector(card_id: int) -> str:
+            return "village_cards" if card_id <= 12 else "gift_cards"
 
-        fp = f"Resources/Assets/{self.game_data["name"]}/cards"
-        for image_file in os.listdir(fp):
-            page_nr, card_nr = image_file.split(".")[0].split("_")[1:]
-            mapping_id = page_nr + "_" + card_nr
-            card_id = mapping_data[mapping_id]["card_id"]
-            side = mapping_data[mapping_id]["side"]
-            adjusted_photo_image, adjusted_photo = load_and_adjust_image(fp, image_file)
-            if side == "front":
-                self.front_image_dict[card_id] = adjusted_photo
-            elif side == "back":
-                self.back_image_dict[card_id] = adjusted_photo
-            if card_id <= 12:
-                relevant_deck = village_cards
-            else:
-                relevant_deck = gift_cards
-            card_in_list = next(
-                (card for card in relevant_deck if card.card_id == card_id), None
-            )
-            if card_in_list is None:
-                new_card = BaseCard(card_id, side, adjusted_photo_image)
-                relevant_deck.append(new_card)
-            else:
-                card_in_list.add_image(side, adjusted_photo_image)
-
-        random.shuffle(village_cards)
-        random.shuffle(gift_cards)
-        return village_cards, gift_cards
+        return super()._create_decks_of_cards(deck_selector)
 
     def is_placement_valid(self, grid_x: float, grid_y: float) -> bool:
         # todo

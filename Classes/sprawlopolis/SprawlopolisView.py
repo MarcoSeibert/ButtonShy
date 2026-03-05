@@ -15,6 +15,8 @@ class SprawlopolisView(BaseView, CanvasGameView):
         BaseView.__init__(self, parent)
         CanvasGameView.__init__(self, parent)
 
+        self.grid_columnconfigure((15, 16), minsize=75)
+
         # add area for decks
         self.deck_area = tk.LabelFrame(
             self, text="Deck", foreground="black", font=BASIC_FONT, relief="flat"

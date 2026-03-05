@@ -89,6 +89,7 @@ class StartView(ttk.Frame):
 class BaseView(ttk.Frame):
     def __init__(self, parent: BaseApp) -> None:
         super().__init__(parent)
+        self.zoomed_label = tk.Label(self)
         self.controller = None
         self.parent = parent
         # Create menu bar
@@ -100,8 +101,6 @@ class BaseView(ttk.Frame):
         file_menu.add_command(label="Quit", command=self.quit, underline=0)
         menu_bar.add_cascade(label="Menu", menu=file_menu, underline=0)
         self.parent.config(menu=menu_bar)
-
-        self.grid_columnconfigure((15, 16), minsize=75)
 
         # insert title
         ttk.Label(self, text=self.parent.chosen_game, font=TITLE_FONT).grid(

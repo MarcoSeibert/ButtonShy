@@ -3,14 +3,12 @@ from importlib import import_module
 from typing import TYPE_CHECKING
 
 import PIL
-from PIL import Image, ImageTk, ImageDraw
+from PIL import Image, ImageDraw
 
-from Utils.globals import CARD_SIZE
+from Utils.globals import CARD_SIZE, HORIZONTAL_GAMES
 
 if TYPE_CHECKING:
     from Classes.base.apps import StartApp
-
-horizontal_cards_games_list = ["Sprawlopolis"]
 
 
 def start_game(app: StartApp, chosen_game_name: str, options: dict = None) -> None:
@@ -38,13 +36,13 @@ def load_and_adjust_image(
     card_size: tuple = CARD_SIZE,
     radius: int = 5,
     border_size: int = 3,
-) -> tuple[ImageTk.PhotoImage, PIL.Image.Image]:
+) -> PIL.Image.Image:
     # Bild öffnen, drehen und Größe anpassen
     with Image.open(os.path.join(fp, image_name)) as img:
         img = img.convert("RGBA")
         game_name = image_name.split("_")[0]
         horizontal = False
-        if game_name in horizontal_cards_games_list:
+        if game_name in HORIZONTAL_GAMES:
             horizontal = True
         if horizontal:
             img = img.rotate(-90, expand=True)
@@ -52,7 +50,7 @@ def load_and_adjust_image(
 
         adjusted_image = adjust_image(img, border_size, card_size, radius)
 
-        return ImageTk.PhotoImage(adjusted_image), adjusted_image
+        return adjusted_image
 
 
 def adjust_image(
@@ -63,7 +61,6 @@ def adjust_image(
     colour: tuple = (0, 0, 0, 255),
 ) -> Image.Image:
     # 1. Bild auf die gewünschte Größe skalieren
-
     img = img.resize(card_size)
 
     # 2. Originalbild zuschneiden (ohne Rahmen)
